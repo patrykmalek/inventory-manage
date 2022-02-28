@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="jar/sqlite-jdbc-3.36.0.3.jar"/>
 	<classpathentry kind="lib" path="jar/json-simple_1.1.jar"/>
 	<classpathentry kind="lib" path="miglayout15-swing.jar" sourcepath="miglayout-src.zip"/>
+	<classpathentry kind="lib" path="jar/miglayout15-swing.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
