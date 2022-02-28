@@ -43,6 +43,7 @@ public class Controller {
 	
 	public Controller(DatabaseProvider databaseProvider) {
 		this.setDatabaseProvider(databaseProvider);
+		this.deviceDAO = new DeviceDAO(this);
 	}
 
 	public DatabaseProvider getDatabaseProvider() {
@@ -103,6 +104,7 @@ public class Controller {
 	
 	public void addDevicesPanel() {
 		this.getTabbedPanel().addTabbedPanel(TabbedPanel.DEVICES_PANEL, new DeviceTablePanel(this));
+		this.getDeviceTablePanel().updateTable(getDeviceDAO().getAll());
 	}
 	
 	public void addDevicesTypeDictionaryPanel() {
