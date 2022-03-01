@@ -7,13 +7,12 @@ import javax.swing.WindowConstants;
 import com.toedter.calendar.JDateChooser;
 
 import kruszywo.sa.computers.manage.controller.Controller;
+import kruszywo.sa.computers.manage.dao.TypeDAO;
 import kruszywo.sa.computers.manage.model.Device;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
-import kruszywo.sa.computers.manage.view.util.ClipboardKeyAdapter;
 import kruszywo.sa.computers.manage.view.util.PMJTextField;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 
@@ -49,12 +48,17 @@ public class DeviceDetailsFrame extends JFrame {
 	
 	private ButtonPanel buttonFooterPanel;
 	
-	private boolean editable = true;
+	private boolean editable;
+	
 	private Controller controller;
+	
 	
 	public DeviceDetailsFrame(Controller controller) {
 		this.controller = controller;
 		this.controller.setDeviceDetailsFrame(this);
+	}
+	
+	public void showWindow() {
 		createVisuals();
 		createEventListeners();
 	}
@@ -194,6 +198,7 @@ public class DeviceDetailsFrame extends JFrame {
 		detailsPanel.add(deviceLastInstallationDateField, "cell 2 9,grow");
 		
 		deviceNotes = new JTextPane();
+		deviceNotes.setEnabled(isEditable());
 		deviceNotes.setBorder(BorderFactory.createTitledBorder("Dodatkowe informacje"));
 		deviceNotes.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		
@@ -212,8 +217,14 @@ public class DeviceDetailsFrame extends JFrame {
 
 		buttonFooterPanel = new ButtonPanel(FlowLayout.TRAILING);
 		
-		buttonFooterPanel.addSaveButton(new JButton());
-		buttonFooterPanel.addCancelButton(new JButton());
+		JButton saveButton = new JButton();
+		JButton cancelButton = new JButton();
+		
+		saveButton.setEnabled(isEditable());
+		cancelButton.setEnabled(isEditable());
+		
+		buttonFooterPanel.addSaveButton(saveButton);
+		buttonFooterPanel.addCancelButton(cancelButton);
 		
 		footerPanel.add(buttonFooterPanel, BorderLayout.CENTER);
 
@@ -227,7 +238,6 @@ public class DeviceDetailsFrame extends JFrame {
 		saveButton.removeActionListener(saveButton.getActionListeners()[0]);
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				System.out.println("Zapisywanie");
 				saveDeviceData();
 				dispose();
 			}
@@ -237,7 +247,6 @@ public class DeviceDetailsFrame extends JFrame {
 		cancelButton.removeActionListener(cancelButton.getActionListeners()[0]);
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				System.out.println("Anulowanie");
 				dispose();
 			}
 		});
@@ -245,6 +254,8 @@ public class DeviceDetailsFrame extends JFrame {
 	}
 	
 	public void addDeviceDataToView(Device device) {
+		
+		if(device == null) return;
 		
 		deviceNameField.setText(device.getDeviceName());                
 		deviceUniqueNumberField.setText(device.getDeviceUniqueNumber());
@@ -273,7 +284,8 @@ public class DeviceDetailsFrame extends JFrame {
 		device.setLastInstallationDate(deviceLastInstallationDateField.getDateFormatString());
 		device.setNotes(deviceNotes.getText());
 		
-		getController().saveDeviceData(device);
+		
+		getController().insertDevice(device);
 	}
 
 	private String getCorrectTitle() {
@@ -285,6 +297,7 @@ public class DeviceDetailsFrame extends JFrame {
 	}
 
 	public void setEditable(boolean editable) {
+		System.out.println("test: " + editable);
 		this.editable = editable;
 	}
 

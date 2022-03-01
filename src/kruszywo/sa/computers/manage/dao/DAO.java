@@ -2,15 +2,15 @@ package kruszywo.sa.computers.manage.dao;
 
 import java.util.List;
 
-public interface Dao<T> {
+public interface DAO<T> {
     
     T get(int id);
     
     List<T> getAll();
     
-    void save(T t);
+    void insert(T t);
     
-    void update(T t, String[] params);
+    void update(T t);
     
     void delete(T t);
 }

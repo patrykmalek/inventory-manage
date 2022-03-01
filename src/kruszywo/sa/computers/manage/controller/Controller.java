@@ -165,9 +165,39 @@ public class Controller {
 		return calendar;
 	}
 	
+	public void openDeviceWindowToAddNew() {
+		DeviceDetailsFrame deviceDetailsWindow = new DeviceDetailsFrame(this);
+		deviceDetailsWindow.setEditable(true);
+		deviceDetailsWindow.showWindow();
+	}
+	
+	public void openDeviceWindowToOnlyShowDetails(int deviceID) {
+		Device device = getDeviceDAO().get(deviceID);
+		
+		DeviceDetailsFrame deviceDetailsWindow = new DeviceDetailsFrame(this);
+		deviceDetailsWindow.setEditable(false);
+		deviceDetailsWindow.showWindow();
+		deviceDetailsWindow.addDeviceDataToView(device);
+	}
+	
+	public void openDeviceWindowToUpdate(int deviceID) {	
+		Device device = getDeviceDAO().get(deviceID);
+		DeviceDetailsFrame deviceDetailsWindow = new DeviceDetailsFrame(this);
+		deviceDetailsWindow.setEditable(true);
+		deviceDetailsWindow.showWindow();
+		deviceDetailsWindow.addDeviceDataToView(device);
+	}
 
-	public void saveDeviceData(Device device) {
-		getDeviceDAO().save(device);
+	public void insertDevice(Device device) {
+		getDeviceDAO().insert(device);
+	}
+
+	public void updateDevice(Device device) {
+		getDeviceDAO().update(device);
+	}
+	
+	public void deleteDevice(Device device) {
+		getDeviceDAO().delete(device);
 	}
 
 }

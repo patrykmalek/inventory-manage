@@ -10,7 +10,7 @@ import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.exception.SystemOperationException;
 import kruszywo.sa.computers.manage.model.Device;
 
-public class DeviceDAO implements Dao<Device>{
+public class DeviceDAO implements DAO<Device>{
 
 	private List<Device> devices;
 	private Controller controller;
@@ -27,17 +27,18 @@ public class DeviceDAO implements Dao<Device>{
 	}
 	
 	@Override
-	public Device get(int id) {
+	public Device get(int deviceID) {
 		Device device = null;
      	try {
-     	 PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(FIND_BY_ID);	 
-   		 controller.getDatabaseProvider().executePreparedStatement(ps);
+     	 PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(FIND_BY_ID);
+     	 ps.setInt(1, deviceID);
+     	 
+   		 controller.getDatabaseProvider().executePreparedStatementWithResult(ps);
    		 ResultSet resultSet = controller.getDatabaseProvider().getResultSet();
    		 
 		 if(resultSet.next()) {
 				
 		 	device = new Device();
-		 	
 		 	device.setDeviceID(resultSet.getInt("id_device"));
 		 	device.setDeviceUniqueNumber(resultSet.getString("device_unique_number"));
 		 	device.setDeviceName(resultSet.getString("device_name"));
@@ -51,6 +52,7 @@ public class DeviceDAO implements Dao<Device>{
 		 	device.setNotes(resultSet.getString("notes"));
 			 
 		 }
+		  ps.close();
 		  resultSet.close();
 		} catch (SQLException e) {
 			new SystemOperationException("Błąd podczas odczytu wszystkich urządzeń z bazy", e);
@@ -63,7 +65,8 @@ public class DeviceDAO implements Dao<Device>{
 		 devices = new ArrayList<Device>();
 	 
          	try {
-       		 controller.getDatabaseProvider().executeQuery(FIND_ALL);
+       		 PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(FIND_ALL);
+       		 controller.getDatabaseProvider().executePreparedStatementWithResult(ps);
        		 ResultSet resultSet = controller.getDatabaseProvider().getResultSet();
        		 Device device = null;
 			 while (resultSet.next()) {
@@ -83,6 +86,7 @@ public class DeviceDAO implements Dao<Device>{
 				 	
 				 devices.add(device);
 				}
+			  ps.close();
 			  resultSet.close();
 			} catch (SQLException e) {
 				new SystemOperationException("Błąd podczas odczytu wszystkich urządzeń z bazy", e);
@@ -91,7 +95,7 @@ public class DeviceDAO implements Dao<Device>{
 	}
 
 	@Override
-	public void save(Device device) {
+	public void insert(Device device) {
 			try {
 				PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(INSERT);
 				 
@@ -115,7 +119,7 @@ public class DeviceDAO implements Dao<Device>{
 	}
 
 	@Override
-	public void update(Device device, String[] params) {
+	public void update(Device device) {
 		try {
 			PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(UPDATE);
 			 

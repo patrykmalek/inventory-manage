@@ -7,6 +7,8 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -103,7 +105,7 @@ public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 		insertButton.removeActionListener(insertButton.getActionListeners()[0]);
 		insertButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				DeviceDetailsFrame ddf = new DeviceDetailsFrame(controller);
+				getController().openDeviceWindowToAddNew();
 			}
 		});
 		
@@ -111,15 +113,27 @@ public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 		editButton.removeActionListener(editButton.getActionListeners()[0]);
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				int modelRow = table.convertRowIndexToModel(table.getSelectedRow());
+				int deviceID = (int) table.getModel().getValueAt(modelRow, 0);
+				getController().openDeviceWindowToUpdate(deviceID);
+			}
+		});
+		
+		JButton deleteButton = buttonPanel.getButtons().get(2);
+		deleteButton.removeActionListener(deleteButton.getActionListeners()[0]);
+		deleteButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
 				
 			}
 		});
 		
-		JButton deletButton = buttonPanel.getButtons().get(2);
-		deletButton.removeActionListener(deletButton.getActionListeners()[0]);
-		deletButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				
+		this.table.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+					if (e.getClickCount() == 2) {
+						int modelRow = table.convertRowIndexToModel(table.getSelectedRow());
+						int deviceID = (int) table.getModel().getValueAt(modelRow, 0);
+						getController().openDeviceWindowToOnlyShowDetails(deviceID);
+				}
 			}
 		});
 		

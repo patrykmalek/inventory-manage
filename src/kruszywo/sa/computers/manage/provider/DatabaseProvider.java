@@ -73,7 +73,6 @@ public class DatabaseProvider {
 		try {
 			this.resultSet = null;
 			this.resultSet = preparedStatement.executeQuery();
-			preparedStatement.close();
 		} catch (SQLException e) {
 			new SystemOperationException("Błąd podczas zapisu do bazy danych.", e);
 		}
