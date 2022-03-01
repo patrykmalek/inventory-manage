@@ -10,6 +10,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -34,6 +35,7 @@ public class MainFrame extends JFrame {
 	
 	private void createVisuals() {
 		this.setTitle("Ewidencja urządzeń");
+		this.setIconImage(new ImageIcon(getClass().getResource("/industry-solid-25.png")).getImage());
 		this.setSize(1900, 800);
 		this.mainPanel = createMainPanel();
 		this.getContentPane().add(this.mainPanel, BorderLayout.CENTER);

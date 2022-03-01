@@ -4,6 +4,7 @@ package kruszywo.sa.computers.manage.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -18,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.exception.SystemOperationException;
 import kruszywo.sa.computers.manage.model.Device;
+import kruszywo.sa.computers.manage.view.device.DeviceDetailsFrame;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
 import kruszywo.sa.computers.manage.view.util.ClipboardKeyAdapter;
 import kruszywo.sa.computers.manage.view.util.PMJTable;
@@ -36,7 +38,7 @@ public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 		this.controller = controller;
 		this.controller.setDeviceTablePanel(this);
 		this.createVisuals();
-//		this.createEventListeners();
+		this.createEventListeners();
 	}
 	
 	@Override
@@ -75,7 +77,7 @@ public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 		this.table.setRowSorter(this.table.getTableSorter());
 		this.tableContainer = new JScrollPane(table);
 		
-		this.buttonPanel = new ButtonPanel();
+		this.buttonPanel = new ButtonPanel(FlowLayout.LEADING);
 		this.buttonPanel.addInsertButton(new JButton());
 		this.buttonPanel.addEditButton(new JButton());
 		this.buttonPanel.addDeleteButton(new JButton());
@@ -101,7 +103,7 @@ public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 		insertButton.removeActionListener(insertButton.getActionListeners()[0]);
 		insertButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				
+				DeviceDetailsFrame ddf = new DeviceDetailsFrame(controller);
 			}
 		});
 		

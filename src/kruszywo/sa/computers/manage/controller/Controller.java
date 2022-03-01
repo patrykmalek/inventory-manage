@@ -1,9 +1,13 @@
 package kruszywo.sa.computers.manage.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import kruszywo.sa.computers.manage.dao.DeviceDAO;
+import kruszywo.sa.computers.manage.model.CommonFunctions;
+import kruszywo.sa.computers.manage.model.Device;
 import kruszywo.sa.computers.manage.provider.DatabaseProvider;
 import kruszywo.sa.computers.manage.view.TabbedPanel;
 import kruszywo.sa.computers.manage.view.DepartmentDictionaryTablePanel;
@@ -11,6 +15,7 @@ import kruszywo.sa.computers.manage.view.DeviceTablePanel;
 import kruszywo.sa.computers.manage.view.DeviceTypeDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.MainFrame;
 import kruszywo.sa.computers.manage.view.WaitWindow;
+import kruszywo.sa.computers.manage.view.device.DeviceDetailsFrame;
 
 public class Controller {
 
@@ -22,11 +27,17 @@ public class Controller {
 	private DeviceTypeDictionaryTablePanel deviceTypeDictionaryTable;
 	private DepartmentDictionaryTablePanel departmentDictionaryTable;
 	
+	private DeviceDetailsFrame deviceDetailsFrame;
+	
 	public static WaitWindow waitWindow;
 	
 	private DeviceDAO deviceDAO;
 	
 	private static List<String> errors = new ArrayList<String>();
+	
+	private SimpleDateFormat defaultDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+	private Calendar calendar;
 	
 	
 //	public void doSomething() {
@@ -44,6 +55,7 @@ public class Controller {
 	public Controller(DatabaseProvider databaseProvider) {
 		this.setDatabaseProvider(databaseProvider);
 		this.deviceDAO = new DeviceDAO(this);
+		this.calendar = Calendar.getInstance();
 	}
 
 	public DatabaseProvider getDatabaseProvider() {
@@ -121,6 +133,41 @@ public class Controller {
 
 	public void setDeviceDAO(DeviceDAO deviceDAO) {
 		this.deviceDAO = deviceDAO;
+	}
+
+	public SimpleDateFormat getDefaultDateFormat() {
+		return defaultDateFormat;
+	}
+
+	public void setDefaultDateFormat(SimpleDateFormat defaultDateFormat) {
+		this.defaultDateFormat = defaultDateFormat;
+	}
+
+	public DeviceDetailsFrame getDeviceDetailsFrame() {
+		return deviceDetailsFrame;
+	}
+
+	public void setDeviceDetailsFrame(DeviceDetailsFrame deviceDetailsFrame) {
+		this.deviceDetailsFrame = deviceDetailsFrame;
+	}
+
+	public Calendar getCalendarWithTodayDate() {
+		this.calendar.set(Calendar.DAY_OF_MONTH, 1);
+		return calendar;
+	}
+	
+	public Calendar getCalendarWithCustomDate(String date, SimpleDateFormat simpleDateFormat) {
+		calendar.setTime(CommonFunctions.parseDate(date, simpleDateFormat));
+		return calendar;
+	}
+	
+	public Calendar getCalendar() {
+		return calendar;
+	}
+	
+
+	public void saveDeviceData(Device device) {
+		getDeviceDAO().save(device);
 	}
 
 }

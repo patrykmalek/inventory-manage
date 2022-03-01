@@ -23,13 +23,13 @@ public class ButtonPanel extends JPanel{
 	private static final long serialVersionUID = 9159475743311541651L;
 	private List<JButton> buttons = new ArrayList<JButton>();
 
-	public ButtonPanel() {
-		this.createVisuals();
+	public ButtonPanel(int layoutPosition) {
+		this.createVisuals(layoutPosition);
 	}
 
-	private void createVisuals() {
+	private void createVisuals(int layoutPosition) {
 		this.setBackground(new Color(245,245,245));
-		this.setLayout(new FlowLayout(FlowLayout.LEADING));
+		this.setLayout(new FlowLayout(layoutPosition));
 	}
 	
 	public void addInsertButton(JButton button) {
@@ -53,6 +53,24 @@ public class ButtonPanel extends JPanel{
 	public void addDeleteButton(JButton button) {
 		if (button.getText().equals("")) button.setText("Usuń");
 		Icon icon = new ImageIcon(getClass().getResource("/trash-alt-solid.png"));
+		button.setIcon(icon);
+		button = createDefultButton(button);
+		this.add(button);
+		this.buttons.add(button);
+	}
+	
+	public void addSaveButton(JButton button) {
+		if (button.getText().equals("")) button.setText("Zapisz");
+		Icon icon = new ImageIcon(getClass().getResource("/check-solid.png"));
+		button.setIcon(icon);
+		button = createDefultButton(button);
+		this.add(button);
+		this.buttons.add(button);
+	}
+
+	public void addCancelButton(JButton button) {
+		if (button.getText().equals("")) button.setText("Anuluj");
+		Icon icon = new ImageIcon(getClass().getResource("/times-solid.png"));
 		button.setIcon(icon);
 		button = createDefultButton(button);
 		this.add(button);

@@ -4,6 +4,7 @@ package kruszywo.sa.computers.manage.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -70,7 +71,7 @@ public class DepartmentDictionaryTablePanel extends JPanel implements TablePanel
 		this.table.setRowSorter(this.table.getTableSorter());
 		this.tableContainer = new JScrollPane(table);
 		
-		this.buttonPanel = new ButtonPanel();
+		this.buttonPanel = new ButtonPanel(FlowLayout.LEADING);
 		this.buttonPanel.addInsertButton(new JButton());
 		this.buttonPanel.addEditButton(new JButton());
 		this.buttonPanel.addDeleteButton(new JButton());

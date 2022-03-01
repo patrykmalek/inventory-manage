@@ -1,86 +1,104 @@
 package kruszywo.sa.computers.manage.view.device;
 
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
+import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
 import com.toedter.calendar.JDateChooser;
 
+import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.model.Device;
+import kruszywo.sa.computers.manage.view.util.ButtonPanel;
+import kruszywo.sa.computers.manage.view.util.ClipboardKeyAdapter;
+import kruszywo.sa.computers.manage.view.util.PMJTextField;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
 import java.awt.SystemColor;
-import java.awt.FlowLayout;
-import java.awt.Component;
-import javax.swing.Box;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JTextPane;
 
 public class DeviceDetailsFrame extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
-	private JTextField deviceNameField;
-	private JTextField deviceUniqueNumberField;
-	private JTextField deviceInventoryNumberField;
-	private JTextField deviceTypeNameField;
-	private JTextField deviceAssignedDepartmentField;
-	private JTextField deviceAssignedEmployeeField;
-	private JTextField deviceInvoiceNumberField;
+	private PMJTextField deviceNameField;
+	private PMJTextField deviceUniqueNumberField;
+	private PMJTextField deviceInventoryNumberField;
+	private PMJTextField deviceTypeNameField;
+	private PMJTextField deviceAssignedDepartmentField;
+	private PMJTextField deviceAssignedEmployeeField;
+	private PMJTextField deviceInvoiceNumberField;
 	private JDateChooser devicePurchaseDateField;
 	private JDateChooser deviceLastInstallationDateField;
+	private JTextPane deviceNotes;
 	
 	private JPanel headerPanel;
 	private JPanel detailsPanel;
+	private JPanel footerPanel;
 	
+	private ButtonPanel buttonFooterPanel;
 	
-	public DeviceDetailsFrame() {
+	private boolean editable = true;
+	private Controller controller;
+	
+	public DeviceDetailsFrame(Controller controller) {
+		this.controller = controller;
+		this.controller.setDeviceDetailsFrame(this);
 		createVisuals();
+		createEventListeners();
 	}
 
 	private void createVisuals() {
-		this.setTitle("Szczegóły urządzenia");
-		this.setSize(800, 600);
+		this.setTitle(getCorrectTitle());
+		this.setIconImage(new ImageIcon(getClass().getResource("/edit-solid-dark-blue-15.png")).getImage());
+		this.setSize(800, 650);
 		this.headerPanel = createHeaderPanel();
 		this.detailsPanel = createDetailsPanel();
+		this.footerPanel = createFooterPanel();
 		this.getContentPane().add(this.headerPanel, BorderLayout.NORTH);
 		this.getContentPane().add(this.detailsPanel, BorderLayout.CENTER);
+		this.getContentPane().add(this.footerPanel, BorderLayout.SOUTH);
 		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		this.setLocationRelativeTo(null);
+		this.setVisible(true);
 	}
-	
+
 	private JPanel createHeaderPanel() {
 		JPanel headerPanel = new JPanel();
 		headerPanel.setLayout(new BorderLayout(25, 25));
 		headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 25));
 		
-		JLabel iconLabel = new JLabel(new ImageIcon("C:\\Users\\Patryk\\Documents\\EclipseWorkspace\\Java\\ComputersManage\\resources\\icon\\desktop-solid-header.png"));
-//		JLabel iconLabel = new JLabel(new ImageIcon(getClass().getResource("/desktop-solid-header.png")));
+//		JLabel iconLabel = new JLabel(new ImageIcon("C:\\Users\\Patryk\\Documents\\EclipseWorkspace\\Java\\ComputersManage\\resources\\icon\\desktop-solid-header.png"));
+		JLabel iconLabel = new JLabel(new ImageIcon("C:\\Users\\pmalek\\eclipse\\Java\\ComputersManage\\resources\\icon\\desktop-solid-75.png"));
+//		JLabel iconLabel = new JLabel(new ImageIcon(getClass().getResource("/desktop-solid-75.png")));
 		headerPanel.add(iconLabel, BorderLayout.LINE_START);
 		
 		
 		JPanel titlePanel = new JPanel();
-		titlePanel.setLayout(new MigLayout("", "[grow][grow]", "[][][][]"));
+		titlePanel.setLayout(new MigLayout("", "[grow][grow]", "[][][]"));
 		
 		headerPanel.add(titlePanel, BorderLayout.CENTER);
 		
 		JLabel titleHeaderLabel = new JLabel("Urządzenie");
 		titleHeaderLabel.setForeground(SystemColor.textInactiveText);
 		titleHeaderLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		titlePanel.add(titleHeaderLabel, "cell 0 1,alignx left,growy");
+		titlePanel.add(titleHeaderLabel, "cell 0 0,alignx left,growy");
 		
 		JLabel additionalTitleHeaderLabel = new JLabel("Komputer, Patryk Małek, Dział IT");
 		additionalTitleHeaderLabel.setForeground(SystemColor.textInactiveText);
 		additionalTitleHeaderLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		titlePanel.add(additionalTitleHeaderLabel, "cell 0 2,grow");
+		titlePanel.add(additionalTitleHeaderLabel, "cell 0 1,grow");
 		
 		return headerPanel;
 	}
@@ -88,96 +106,79 @@ public class DeviceDetailsFrame extends JFrame {
 	private JPanel createDetailsPanel() {
 		JPanel detailsPanel = new JPanel();
 		detailsPanel.setBackground(SystemColor.text);
-		detailsPanel.setLayout(new MigLayout("", "[10px][150px][grow][grow][grow][grow][150px]", "[25px][25px][25px][25px][25px][25px][25px][25px][25px][25px]"));
+		detailsPanel.setLayout(new MigLayout("", "[10px][150px][grow][grow][grow][grow][grow][10px]", "[25px][25px][25px][25px][25px][25px][25px][25px][25px][25px][25px][grow][10px]"));
 		
 		JLabel deviceNameLabel = new JLabel("Nazwa:");
 		deviceNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceNameLabel, "cell 1 1,alignx left");
 		
-		deviceNameField = new JTextField();
+		deviceNameField = new PMJTextField(true, 13);
+		deviceNameField.setEditable(isEditable());
 		deviceNameField.setColumns(10);
-		deviceNameField.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		deviceNameField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.getColor("Button.shadow")));
-		deviceNameField.setBackground(SystemColor.menu);
-		detailsPanel.add(deviceNameField, "cell 2 1 3 1,grow");
+		detailsPanel.add(deviceNameField, "cell 2 1 4 1,grow");
 		
 		JLabel deviceUniqueNumberLabel = new JLabel("Numer seryjny:");
 		deviceUniqueNumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceUniqueNumberLabel, "cell 1 2,alignx left");
 		
-		deviceUniqueNumberField = new JTextField();
-		deviceUniqueNumberField.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		deviceUniqueNumberField = new PMJTextField(true, 13);
+		deviceUniqueNumberField.setEditable(isEditable());
 		deviceUniqueNumberField.setColumns(10);
-		deviceUniqueNumberField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.getColor("Button.shadow")));
-		deviceUniqueNumberField.setBackground(SystemColor.menu);
-		detailsPanel.add(deviceUniqueNumberField, "cell 2 2 3 1,grow");
+		detailsPanel.add(deviceUniqueNumberField, "cell 2 2 4 1,grow");
 		
 		JLabel deviceInventoryNumberLabel = new JLabel("Numer inwentarzowy:");
 		deviceInventoryNumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceInventoryNumberLabel, "cell 1 3,alignx left");
 		
-		deviceInventoryNumberField = new JTextField();
-		deviceInventoryNumberField.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		deviceInventoryNumberField = new PMJTextField(true, 13);
+		deviceInventoryNumberField.setEditable(isEditable());
 		deviceInventoryNumberField.setColumns(10);
-		deviceInventoryNumberField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.getColor("Button.shadow")));
-		deviceInventoryNumberField.setBackground(SystemColor.menu);
-		detailsPanel.add(deviceInventoryNumberField, "cell 2 3 3 1,grow");
+		detailsPanel.add(deviceInventoryNumberField, "cell 2 3 4 1,grow");
 		
 		JLabel deviceTypeNameLabel = new JLabel("Typ urządzenia:");
 		deviceTypeNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceTypeNameLabel, "cell 1 4,alignx left");
 		
-		deviceTypeNameField = new JTextField();
-		deviceTypeNameField.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		deviceTypeNameField = new PMJTextField(true, 13);
+		deviceTypeNameField.setEditable(isEditable());
 		deviceTypeNameField.setColumns(10);
-		deviceTypeNameField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.getColor("Button.shadow")));
-		deviceTypeNameField.setBackground(SystemColor.menu);
-		detailsPanel.add(deviceTypeNameField, "cell 2 4 3 1,grow");
+		detailsPanel.add(deviceTypeNameField, "cell 2 4 4 1,grow");
 		
 		JLabel deviceAssignedDepartmentLabel = new JLabel("Miejsce użycia:");
 		deviceAssignedDepartmentLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceAssignedDepartmentLabel, "cell 1 5,alignx left");
 		
-		deviceAssignedDepartmentField = new JTextField();
-		deviceAssignedDepartmentField.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		deviceAssignedDepartmentField = new PMJTextField(true, 13);
+		deviceAssignedDepartmentField.setEditable(isEditable());
 		deviceAssignedDepartmentField.setColumns(10);
-		deviceAssignedDepartmentField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.getColor("Button.shadow")));
-		deviceAssignedDepartmentField.setBackground(SystemColor.menu);
-		detailsPanel.add(deviceAssignedDepartmentField, "cell 2 5 3 1,grow");
+		detailsPanel.add(deviceAssignedDepartmentField, "cell 2 5 4 1,grow");
 		
 		JLabel deviceAssignedEmployeeLabel = new JLabel("Przypisany pracownik:");
 		deviceAssignedEmployeeLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceAssignedEmployeeLabel, "cell 1 6,alignx left");
 		
-		deviceAssignedEmployeeField = new JTextField();
-		deviceAssignedEmployeeField.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		deviceAssignedEmployeeField = new PMJTextField(true, 13);
+		deviceAssignedEmployeeField.setEditable(isEditable());
 		deviceAssignedEmployeeField.setColumns(10);
-		deviceAssignedEmployeeField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.getColor("Button.shadow")));
-		deviceAssignedEmployeeField.setBackground(SystemColor.menu);
-		detailsPanel.add(deviceAssignedEmployeeField, "cell 2 6 3 1,grow");
+		detailsPanel.add(deviceAssignedEmployeeField, "cell 2 6 4 1,grow");
 		
 		JLabel deviceInvoiceNumberLabel = new JLabel("Powiązana faktura:");
 		deviceInvoiceNumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceInvoiceNumberLabel, "cell 1 7,alignx left");
 		
-		deviceInvoiceNumberField = new JTextField();
-		deviceInvoiceNumberField.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		deviceInvoiceNumberField = new PMJTextField(true, 13);
+		deviceInvoiceNumberField.setEditable(isEditable());
 		deviceInvoiceNumberField.setColumns(10);
-		deviceInvoiceNumberField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.getColor("Button.shadow")));
-		deviceInvoiceNumberField.setBackground(SystemColor.menu);
-		detailsPanel.add(deviceInvoiceNumberField, "cell 2 7 3 1,grow");
-		
-		
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		detailsPanel.add(deviceInvoiceNumberField, "cell 2 7 4 1,grow");
 		
 		JLabel devicePurchaseDateLabel = new JLabel("Data zakupu:");
 		devicePurchaseDateLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(devicePurchaseDateLabel, "cell 1 8,alignx left");
 		
 		devicePurchaseDateField = new JDateChooser();
-		devicePurchaseDateField.setDateFormatString(new SimpleDateFormat("yyyy-MM-dd").toPattern());
-		devicePurchaseDateField.setDate(calendar.getTime());
+		devicePurchaseDateField.setEnabled(isEditable());
+		devicePurchaseDateField.setDateFormatString(controller.getDefaultDateFormat().toPattern());
+		devicePurchaseDateField.setDate(getController().getCalendarWithTodayDate().getTime());
 		devicePurchaseDateField.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(devicePurchaseDateField, "cell 2 8,grow");
 		
@@ -186,17 +187,110 @@ public class DeviceDetailsFrame extends JFrame {
 		detailsPanel.add(deviceLastInstallationDateLabel, "cell 1 9,alignx left");
 		
 		deviceLastInstallationDateField = new JDateChooser();
-		deviceLastInstallationDateField.setDateFormatString(new SimpleDateFormat("yyyy-MM-dd").toPattern());
-		deviceLastInstallationDateField.setDate(calendar.getTime());
+		deviceLastInstallationDateField.setEnabled(isEditable());
+		deviceLastInstallationDateField.setDateFormatString(controller.getDefaultDateFormat().toPattern());
+		deviceLastInstallationDateField.setDate(getController().getCalendarWithTodayDate().getTime());
 		deviceLastInstallationDateField.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceLastInstallationDateField, "cell 2 9,grow");
+		
+		deviceNotes = new JTextPane();
+		deviceNotes.setBorder(BorderFactory.createTitledBorder("Dodatkowe informacje"));
+		deviceNotes.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		
+		JScrollPane deviceNotesContainer = new JScrollPane(deviceNotes);
+		deviceNotesContainer.setBorder(null);
+		detailsPanel.add(deviceNotesContainer, "cell 1 11 6 1,grow");
 		
 		return detailsPanel;
 	}
 	
-	public void updateView(Device device) {
+	
+	private JPanel createFooterPanel() {
+		JPanel footerPanel = new JPanel();
+		footerPanel.setLayout(new BorderLayout(10, 10));
+		footerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+		buttonFooterPanel = new ButtonPanel(FlowLayout.TRAILING);
+		
+		buttonFooterPanel.addSaveButton(new JButton());
+		buttonFooterPanel.addCancelButton(new JButton());
+		
+		footerPanel.add(buttonFooterPanel, BorderLayout.CENTER);
+
+		return footerPanel;
+	}
+	
+	private void createEventListeners() {
+		if (buttonFooterPanel.getButtons().size() <= 0) return;
+		
+		JButton saveButton = buttonFooterPanel.getButtons().get(0);
+		saveButton.removeActionListener(saveButton.getActionListeners()[0]);
+		saveButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				System.out.println("Zapisywanie");
+				saveDeviceData();
+				dispose();
+			}
+		});
+		
+		JButton cancelButton = buttonFooterPanel.getButtons().get(1);
+		cancelButton.removeActionListener(cancelButton.getActionListeners()[0]);
+		cancelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				System.out.println("Anulowanie");
+				dispose();
+			}
+		});
 		
 	}
 	
+	public void addDeviceDataToView(Device device) {
+		
+		deviceNameField.setText(device.getDeviceName());                
+		deviceUniqueNumberField.setText(device.getDeviceUniqueNumber());
+		deviceInventoryNumberField.setText(device.getDeviceInventoryNumber());
+		deviceTypeNameField.setText("test");
+		deviceAssignedDepartmentField.setText("test");
+		deviceAssignedEmployeeField.setText("test");
+		deviceInvoiceNumberField.setText(device.getInvoiceNumber());
+		devicePurchaseDateField.setDate(getController().getCalendarWithCustomDate(device.getPurchaseDate(), getController().getDefaultDateFormat()).getTime());
+		deviceLastInstallationDateField.setDate(getController().getCalendarWithCustomDate(device.getLastInstallationDate(), getController().getDefaultDateFormat()).getTime());
+		
+	}
+	
+	public void saveDeviceData() {
+		
+		Device device = new Device();
+		
+		device.setDeviceName(deviceNameField.getText());
+		device.setDeviceUniqueNumber(deviceUniqueNumberField.getText());
+		device.setDeviceInventoryNumber(deviceInventoryNumberField.getText());
+		device.setDeviceTypeID(Integer.parseInt(deviceTypeNameField.getText()));
+		device.setAssignedDepartmentID(Integer.parseInt(deviceAssignedDepartmentField.getText()));
+		device.setAssignedEmployeeID(Integer.parseInt(deviceAssignedEmployeeField.getText()));
+		device.setInvoiceNumber(deviceInvoiceNumberField.getText());
+		device.setPurchaseDate(devicePurchaseDateField.getDateFormatString());
+		device.setLastInstallationDate(deviceLastInstallationDateField.getDateFormatString());
+		device.setNotes(deviceNotes.getText());
+		
+		getController().saveDeviceData(device);
+	}
 
+	private String getCorrectTitle() {
+		return (isEditable()) ? "Edycja urządzenia" : "Szczegóły urządzenia";
+	}
+
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
+
+	public Controller getController() {
+		return controller;
+	}
+	
+	
 }
