@@ -70,7 +70,7 @@ public class PMJComboBox<T> extends JPanel {
 				
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					dictionaryButton.setBackground(SystemColor.inactiveCaption);
+					dictionaryButton.setBackground(SystemColor.inactiveCaption );
 				}
 				
 				@Override

@@ -33,9 +33,9 @@ public class Main {
 //				DatabaseProvider databaseProvider = new DatabaseProvider("jdbc:sqlite:C:\\Users\\pmalek\\Documents\\DATABASE\\computers.db");
 				databaseProvider.connect();
 				Controller controller = new Controller(databaseProvider);
-//				MainFrame mainFrame = new MainFrame(controller);
-//				mainFrame.displayWindow();
-			new DeviceDetailsFrame(controller);
+				MainFrame mainFrame = new MainFrame(controller);
+				mainFrame.displayWindow();
+//			new DeviceDetailsFrame(controller);
 			}
 		});
 	}

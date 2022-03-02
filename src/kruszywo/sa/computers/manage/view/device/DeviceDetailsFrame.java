@@ -59,8 +59,8 @@ public class DeviceDetailsFrame extends JFrame {
 	public DeviceDetailsFrame(Controller controller) {
 		this.controller = controller;
 		this.controller.setDeviceDetailsFrame(this);
-		createVisuals();
-		createEventListeners();
+//		createVisuals();
+//		createEventListeners();
 	}
 	
 	public void showWindow() {
