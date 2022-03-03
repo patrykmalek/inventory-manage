@@ -6,8 +6,10 @@ import java.util.Calendar;
 import java.util.List;
 
 import kruszywo.sa.computers.manage.dao.DeviceDAO;
+import kruszywo.sa.computers.manage.exception.SystemOperationException;
 import kruszywo.sa.computers.manage.model.CommonFunctions;
 import kruszywo.sa.computers.manage.model.Device;
+import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.provider.DatabaseProvider;
 import kruszywo.sa.computers.manage.view.TabbedPanel;
 import kruszywo.sa.computers.manage.view.DepartmentDictionaryTablePanel;
@@ -168,6 +170,7 @@ public class Controller {
 	public void openDeviceWindowToAddNew() {
 		DeviceDetailsFrame deviceDetailsWindow = new DeviceDetailsFrame(this);
 		deviceDetailsWindow.setEditable(true);
+		deviceDetailsWindow.setOperationType(OperationType.INSERT);
 		deviceDetailsWindow.showWindow();
 	}
 	
@@ -176,6 +179,7 @@ public class Controller {
 		
 		DeviceDetailsFrame deviceDetailsWindow = new DeviceDetailsFrame(this);
 		deviceDetailsWindow.setEditable(false);
+		deviceDetailsWindow.setOperationType(OperationType.DISPLAY);
 		deviceDetailsWindow.showWindow();
 		deviceDetailsWindow.addDeviceDataToView(device);
 	}
@@ -184,6 +188,7 @@ public class Controller {
 		Device device = getDeviceDAO().get(deviceID);
 		DeviceDetailsFrame deviceDetailsWindow = new DeviceDetailsFrame(this);
 		deviceDetailsWindow.setEditable(true);
+		deviceDetailsWindow.setOperationType(OperationType.UPDATE);
 		deviceDetailsWindow.showWindow();
 		deviceDetailsWindow.addDeviceDataToView(device);
 	}
@@ -198,6 +203,20 @@ public class Controller {
 	
 	public void deleteDevice(Device device) {
 		getDeviceDAO().delete(device);
+	}
+
+	public void saveDeviceData(Device device, OperationType operationType) {
+		
+		if(operationType == OperationType.INSERT) {
+			insertDevice(device);
+		} else if (operationType == OperationType.UPDATE) {
+			updateDevice(device);
+		} else if (operationType == OperationType.DELETE) {
+			deleteDevice(device);
+		} else {
+			new SystemOperationException("Brak określonego typu operacji");
+		}
+		
 	}
 
 }

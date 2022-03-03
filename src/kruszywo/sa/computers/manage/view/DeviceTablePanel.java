@@ -55,9 +55,9 @@ public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 				java.lang.String.class,
 				java.lang.String.class,
 				java.lang.String.class,
-				java.lang.Integer.class,
-				java.lang.Integer.class,
-				java.lang.Integer.class,
+				java.lang.String.class,
+				java.lang.String.class,
+				java.lang.String.class,
 				java.lang.String.class,
 				java.lang.String.class,
 				java.lang.String.class
@@ -67,9 +67,9 @@ public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 				"Numer unikalny",
 				"Nazwa",
 				"Numer inwentarzowy",
-				"ID typu urządzenia",
-				"ID miejsca użytk.",
-				"ID pracownika",
+				"Typ urządzenia",
+				"Miejsce użytk.",
+				"Pracownik",
 				"Powiązana faktura",
 				"Data zakupu",
 				"Ostatnia instalacja"
@@ -157,7 +157,8 @@ public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 		for( Device device : devices){
 			((DefaultTableModel) table.getModel()).addRow(
 				new Object[] {device.getDeviceID(), device.getDeviceUniqueNumber(), device.getDeviceName(), device.getDeviceInventoryNumber(), 
-						device.getDeviceTypeID(), device.getAssignedDepartmentID(), device.getAssignedEmployeeID(), device.getInvoiceNumber(),
+						device.getDeviceType().getDeviceTypeName(), device.getAssignedDepartment().getDepartmentName(), 
+						device.getAssignedEmployee().getFirstName() + " " + device.getAssignedEmployee().getLastName(), device.getInvoiceNumber(),
 						device.getPurchaseDate(), device.getLastInstallationDate()});
 		}
 		

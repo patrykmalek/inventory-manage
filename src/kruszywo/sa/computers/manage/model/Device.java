@@ -12,9 +12,9 @@ public class Device {
 	private String lastInstallationDate;
 	private String notes;
 	
-	private int deviceTypeID;
-	private int assignedDepartmentID;
-	private int assignedEmployeeID;
+	private DeviceType deviceType;
+	private Department assignedDepartment;
+	private Employee assignedEmployee;
 	
 	public Device() {
 		
@@ -84,38 +84,28 @@ public class Device {
 		this.invoiceNumber = invoiceNumber;
 	}
 
-	public int getDeviceTypeID() {
-		return deviceTypeID;
+	public DeviceType getDeviceType() {
+		return deviceType;
 	}
 
-	public void setDeviceTypeID(int deviceTypeID) {
-		this.deviceTypeID = deviceTypeID;
+	public void setDeviceType(DeviceType deviceType) {
+		this.deviceType = deviceType;
 	}
 
-	public int getAssignedDepartmentID() {
-		return assignedDepartmentID;
+	public Department getAssignedDepartment() {
+		return assignedDepartment;
 	}
 
-	public void setAssignedDepartmentID(int assignedDepartmentID) {
-		this.assignedDepartmentID = assignedDepartmentID;
+	public void setAssignedDepartment(Department assignedDepartment) {
+		this.assignedDepartment = assignedDepartment;
 	}
 
-	public int getAssignedEmployeeID() {
-		return assignedEmployeeID;
+	public Employee getAssignedEmployee() {
+		return assignedEmployee;
 	}
 
-	public void setAssignedEmployeeID(int assignedEmployeeID) {
-		this.assignedEmployeeID = assignedEmployeeID;
+	public void setAssignedEmployee(Employee assignedEmployee) {
+		this.assignedEmployee = assignedEmployee;
 	}
-
-	@Override
-	public String toString() {
-		return "Device [deviceID=" + deviceID + ", deviceName=" + deviceName + ", deviceUniqueNumber="
-				+ deviceUniqueNumber + ", deviceInventoryNumber=" + deviceInventoryNumber + ", invoiceNumber="
-				+ invoiceNumber + ", purchaseDate=" + purchaseDate + ", lastInstallationDate=" + lastInstallationDate
-				+ ", notes=" + notes + ", deviceTypeID=" + deviceTypeID + ", assignedDepartmentID="
-				+ assignedDepartmentID + ", assignedEmployeeID=" + assignedEmployeeID + "]";
-	}
-
 
 }

@@ -5,9 +5,7 @@ public class DeviceType {
 	private int deviceTypeID;
 	private String deviceTypeName;
 	
-	public DeviceType() {
-		
-	}
+	public DeviceType() {}
 	
 	public DeviceType(int deviceTypeID, String deviceTypeName) {
 		this.deviceTypeID = deviceTypeID;

@@ -8,15 +8,18 @@ import java.util.List;
 
 import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.exception.SystemOperationException;
+import kruszywo.sa.computers.manage.model.Department;
 import kruszywo.sa.computers.manage.model.Device;
+import kruszywo.sa.computers.manage.model.DeviceType;
+import kruszywo.sa.computers.manage.model.Employee;
 
 public class DeviceDAO implements DAO<Device>{
 
 	private List<Device> devices;
 	private Controller controller;
 	
-	private static final String FIND_BY_ID = "SELECT * FROM DEVICES WHERE DEVICES.ID_DEVICE=?;";
-    private static final String FIND_ALL = "SELECT * FROM DEVICES;";
+	private static final String FIND_BY_ID = "SELECT * FROM DEVICES D LEFT JOIN DEVICE_TYPE DT ON (DT.ID_DEVICE_TYPE = D.ID_DEVICE_TYPE) LEFT JOIN DEPARTMENT DP ON (DP.ID_DEPARTMENT = D.ID_ASSIGNED_DEPARTMENT) LEFT JOIN EMPLOYEE E ON (E.ID_EMPLOYEE = D.ID_ASSIGNED_EMPLOYEE) WHERE D.ID_DEVICE=?;";
+    private static final String FIND_ALL = "SELECT * FROM DEVICES D LEFT JOIN DEVICE_TYPE DT ON (DT.ID_DEVICE_TYPE = D.ID_DEVICE_TYPE) LEFT JOIN DEPARTMENT DP ON (DP.ID_DEPARTMENT = D.ID_ASSIGNED_DEPARTMENT) LEFT JOIN EMPLOYEE E ON (E.ID_EMPLOYEE = D.ID_ASSIGNED_EMPLOYEE);";
     private static final String INSERT = "INSERT INTO devices (device_unique_number, device_name, device_inventory_number, id_device_type, id_assigned_department, id_assigned_employee, invoice_number, purchase_date, last_installation_date, notes) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     private static final String UPDATE = "UPDATE devices SET device_unique_number=?, device_name=?, device_inventory_number=?, id_device_type=?, id_assigned_department=?, id_assigned_employee=?, invoice_number=?, purchase_date=?, last_installation_date=?, notes=? WHERE id_device=?;";
  
@@ -29,27 +32,45 @@ public class DeviceDAO implements DAO<Device>{
 	@Override
 	public Device get(int deviceID) {
 		Device device = null;
+		DeviceType deviceType = null;
+		Department assignedDepartment = null;
+		Employee assignedEmployee = null;
      	try {
-     	 PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(FIND_BY_ID);
-     	 ps.setInt(1, deviceID);
-     	 
-   		 controller.getDatabaseProvider().executePreparedStatementWithResult(ps);
-   		 ResultSet resultSet = controller.getDatabaseProvider().getResultSet();
+	     	 PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(FIND_BY_ID);
+	     	 ps.setInt(1, deviceID);
+	     	 
+	   		 controller.getDatabaseProvider().executePreparedStatementWithResult(ps);
+	   		 ResultSet resultSet = controller.getDatabaseProvider().getResultSet();
    		 
 		 if(resultSet.next()) {
 				
 		 	device = new Device();
+		 	deviceType = new DeviceType();
+		 	assignedDepartment = new Department();
+		 	assignedEmployee = new Employee();
+		 	
 		 	device.setDeviceID(resultSet.getInt("id_device"));
 		 	device.setDeviceUniqueNumber(resultSet.getString("device_unique_number"));
 		 	device.setDeviceName(resultSet.getString("device_name"));
 		 	device.setDeviceInventoryNumber(resultSet.getString("device_inventory_number"));
-		 	device.setDeviceTypeID(resultSet.getInt("id_device_type"));
-		 	device.setAssignedDepartmentID(resultSet.getInt("id_assigned_department"));
-		 	device.setAssignedEmployeeID(resultSet.getInt("id_assigned_employee"));
 		 	device.setInvoiceNumber(resultSet.getString("invoice_number"));
 		 	device.setPurchaseDate(resultSet.getString("purchase_date"));
 		 	device.setLastInstallationDate(resultSet.getString("last_installation_date"));
 		 	device.setNotes(resultSet.getString("notes"));
+		 	
+		 	deviceType.setDeviceTypeID(resultSet.getInt("id_device_type"));
+		 	deviceType.setDeviceTypeName(resultSet.getString("device_type_name"));
+		 	
+		 	assignedDepartment.setDepartmentID(resultSet.getInt("id_assigned_department"));
+		 	assignedDepartment.setDepartmentName(resultSet.getString("department_name"));
+		 	
+		 	assignedEmployee.setEmployeeID(resultSet.getInt("id_assigned_employee"));
+		 	assignedEmployee.setFirstName(resultSet.getString("employee_first_name"));
+		 	assignedEmployee.setLastName(resultSet.getString("employee_last_name"));
+		 	
+		 	device.setDeviceType(deviceType);
+		 	device.setAssignedDepartment(assignedDepartment);
+		 	device.setAssignedEmployee(assignedEmployee);
 			 
 		 }
 		  ps.close();
@@ -65,24 +86,42 @@ public class DeviceDAO implements DAO<Device>{
 		 devices = new ArrayList<Device>();
 	 
          	try {
-       		 PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(FIND_ALL);
-       		 controller.getDatabaseProvider().executePreparedStatementWithResult(ps);
-       		 ResultSet resultSet = controller.getDatabaseProvider().getResultSet();
-       		 Device device = null;
+				PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(FIND_ALL);
+				controller.getDatabaseProvider().executePreparedStatementWithResult(ps);
+				ResultSet resultSet = controller.getDatabaseProvider().getResultSet();
+				Device device = null;
+				DeviceType deviceType = null;
+				Department assignedDepartment = null;
+				Employee assignedEmployee = null;
 			 while (resultSet.next()) {
 					
-			 	device = new Device();
-			 	device.setDeviceID(resultSet.getInt("id_device"));
-			 	device.setDeviceUniqueNumber(resultSet.getString("device_unique_number"));
-			 	device.setDeviceName(resultSet.getString("device_name"));
-			 	device.setDeviceInventoryNumber(resultSet.getString("device_inventory_number"));
-			 	device.setDeviceTypeID(resultSet.getInt("id_device_type"));
-			 	device.setAssignedDepartmentID(resultSet.getInt("id_assigned_department"));
-			 	device.setAssignedEmployeeID(resultSet.getInt("id_assigned_employee"));
-			 	device.setInvoiceNumber(resultSet.getString("invoice_number"));
-			 	device.setPurchaseDate(resultSet.getString("purchase_date"));
-			 	device.setLastInstallationDate(resultSet.getString("last_installation_date"));
-			 	device.setNotes(resultSet.getString("notes"));
+				 	device = new Device();
+				 	deviceType = new DeviceType();
+				 	assignedDepartment = new Department();
+				 	assignedEmployee = new Employee();
+				 	
+				 	device.setDeviceID(resultSet.getInt("id_device"));
+				 	device.setDeviceUniqueNumber(resultSet.getString("device_unique_number"));
+				 	device.setDeviceName(resultSet.getString("device_name"));
+				 	device.setDeviceInventoryNumber(resultSet.getString("device_inventory_number"));
+				 	device.setInvoiceNumber(resultSet.getString("invoice_number"));
+				 	device.setPurchaseDate(resultSet.getString("purchase_date"));
+				 	device.setLastInstallationDate(resultSet.getString("last_installation_date"));
+				 	device.setNotes(resultSet.getString("notes"));
+				 	
+				 	deviceType.setDeviceTypeID(resultSet.getInt("id_device_type"));
+				 	deviceType.setDeviceTypeName(resultSet.getString("device_type_name"));
+				 	
+				 	assignedDepartment.setDepartmentID(resultSet.getInt("id_assigned_department"));
+				 	assignedDepartment.setDepartmentName(resultSet.getString("department_name"));
+				 	
+				 	assignedEmployee.setEmployeeID(resultSet.getInt("id_assigned_employee"));
+				 	assignedEmployee.setFirstName(resultSet.getString("employee_first_name"));
+				 	assignedEmployee.setLastName(resultSet.getString("employee_last_name"));
+				 	
+				 	device.setDeviceType(deviceType);
+				 	device.setAssignedDepartment(assignedDepartment);
+				 	device.setAssignedEmployee(assignedEmployee);
 				 	
 				 devices.add(device);
 				}
@@ -102,9 +141,9 @@ public class DeviceDAO implements DAO<Device>{
 	            ps.setString(1, device.getDeviceUniqueNumber());
 	            ps.setString(2, device.getDeviceName());
 	            ps.setString(3,  device.getDeviceInventoryNumber());
-	            ps.setInt(4, device.getDeviceTypeID());
-	            ps.setInt(5, device.getAssignedDepartmentID());
-	            ps.setInt(6, device.getAssignedEmployeeID());
+	            ps.setInt(4, device.getDeviceType().getDeviceTypeID());
+	            ps.setInt(5, device.getAssignedDepartment().getDepartmentID());
+	            ps.setInt(6, device.getAssignedEmployee().getEmployeeID());
 				ps.setString(7, device.getInvoiceNumber());
 	            ps.setString(8, device.getPurchaseDate());
 	            ps.setString(9, device.getLastInstallationDate());
@@ -126,9 +165,9 @@ public class DeviceDAO implements DAO<Device>{
             ps.setString(1, device.getDeviceUniqueNumber());
             ps.setString(2, device.getDeviceName());
             ps.setString(3,  device.getDeviceInventoryNumber());
-            ps.setInt(4, device.getDeviceTypeID());
-            ps.setInt(5, device.getAssignedDepartmentID());
-            ps.setInt(6, device.getAssignedEmployeeID());
+            ps.setInt(4, device.getDeviceType().getDeviceTypeID());
+            ps.setInt(5, device.getAssignedDepartment().getDepartmentID());
+            ps.setInt(6, device.getAssignedEmployee().getEmployeeID());
 			ps.setString(7, device.getInvoiceNumber());
             ps.setString(8, device.getPurchaseDate());
             ps.setString(9, device.getLastInstallationDate());

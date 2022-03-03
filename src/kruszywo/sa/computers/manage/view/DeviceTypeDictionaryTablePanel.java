@@ -52,9 +52,9 @@ public class DeviceTypeDictionaryTablePanel extends JPanel implements TablePanel
 				java.lang.String.class,
 				java.lang.String.class,
 				java.lang.String.class,
-				java.lang.Integer.class,
-				java.lang.Integer.class,
-				java.lang.Integer.class,
+				java.lang.String.class,
+				java.lang.String.class,
+				java.lang.String.class,
 				java.lang.String.class,
 				java.lang.String.class,
 				java.lang.String.class
@@ -142,7 +142,8 @@ public class DeviceTypeDictionaryTablePanel extends JPanel implements TablePanel
 		for( Device device : devices){
 			((DefaultTableModel) table.getModel()).addRow(
 				new Object[] {device.getDeviceID(), device.getDeviceUniqueNumber(), device.getDeviceName(), device.getDeviceInventoryNumber(), 
-						device.getDeviceTypeID(), device.getAssignedDepartmentID(), device.getAssignedEmployeeID(), device.getInvoiceNumber(),
+						device.getDeviceType().getDeviceTypeName(), device.getAssignedDepartment().getDepartmentName(), 
+						device.getAssignedEmployee().getFirstName() + " " + device.getAssignedEmployee().getLastName(), device.getInvoiceNumber(),
 						device.getPurchaseDate(), device.getLastInstallationDate()});
 		}
 		

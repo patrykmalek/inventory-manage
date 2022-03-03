@@ -9,6 +9,7 @@ import com.toedter.calendar.JDateChooser;
 import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.dao.TypeDAO;
 import kruszywo.sa.computers.manage.model.Device;
+import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
 import kruszywo.sa.computers.manage.view.util.PMJComboBox;
 import kruszywo.sa.computers.manage.view.util.PMJTextField;
@@ -53,6 +54,8 @@ public class DeviceDetailsFrame extends JFrame {
 	
 	private boolean editable;
 	
+	private OperationType operationType;
+	
 	private Controller controller;
 	
 	
@@ -88,9 +91,9 @@ public class DeviceDetailsFrame extends JFrame {
 		headerPanel.setLayout(new BorderLayout(25, 25));
 		headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 25));
 		
-		JLabel iconLabel = new JLabel(new ImageIcon("C:\\Users\\Patryk\\Documents\\EclipseWorkspace\\Java\\ComputersManage\\resources\\icon\\desktop-solid-header.png"));
+//		JLabel iconLabel = new JLabel(new ImageIcon("C:\\Users\\Patryk\\Documents\\EclipseWorkspace\\Java\\ComputersManage\\resources\\icon\\desktop-solid-header.png"));
 //		JLabel iconLabel = new JLabel(new ImageIcon("C:\\Users\\pmalek\\eclipse\\Java\\ComputersManage\\resources\\icon\\desktop-solid-75.png"));
-//		JLabel iconLabel = new JLabel(new ImageIcon(getClass().getResource("/desktop-solid-75.png")));
+		JLabel iconLabel = new JLabel(new ImageIcon(getClass().getResource("/desktop-solid-75.png")));
 		headerPanel.add(iconLabel, BorderLayout.LINE_START);
 		
 		
@@ -191,8 +194,8 @@ public class DeviceDetailsFrame extends JFrame {
 		devicePurchaseDateField.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(devicePurchaseDateField, "cell 2 8,grow");
 		
-		PMJComboBox comboBox = new PMJComboBox<Device>(true);
-		detailsPanel.add(comboBox, "cell 4 8,growx");
+//		PMJComboBox comboBox = new PMJComboBox<Device>(true);
+//		detailsPanel.add(comboBox, "cell 4 8,growx");
 		
 		JLabel deviceLastInstallationDateLabel = new JLabel("Data ostatniej instalacji:");
 		deviceLastInstallationDateLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -268,9 +271,9 @@ public class DeviceDetailsFrame extends JFrame {
 		deviceNameField.setText(device.getDeviceName());                
 		deviceUniqueNumberField.setText(device.getDeviceUniqueNumber());
 		deviceInventoryNumberField.setText(device.getDeviceInventoryNumber());
-		deviceTypeNameField.setText("test");
-		deviceAssignedDepartmentField.setText("test");
-		deviceAssignedEmployeeField.setText("test");
+		deviceTypeNameField.setText(device.getDeviceType().getDeviceTypeName());
+		deviceAssignedDepartmentField.setText(device.getAssignedDepartment().getDepartmentName());
+		deviceAssignedEmployeeField.setText(device.getAssignedEmployee().getFirstName() + " " + device.getAssignedEmployee().getLastName());
 		deviceInvoiceNumberField.setText(device.getInvoiceNumber());
 		devicePurchaseDateField.setDate(getController().getCalendarWithCustomDate(device.getPurchaseDate(), getController().getDefaultDateFormat()).getTime());
 		deviceLastInstallationDateField.setDate(getController().getCalendarWithCustomDate(device.getLastInstallationDate(), getController().getDefaultDateFormat()).getTime());
@@ -284,16 +287,16 @@ public class DeviceDetailsFrame extends JFrame {
 		device.setDeviceName(deviceNameField.getText());
 		device.setDeviceUniqueNumber(deviceUniqueNumberField.getText());
 		device.setDeviceInventoryNumber(deviceInventoryNumberField.getText());
-		device.setDeviceTypeID(Integer.parseInt(deviceTypeNameField.getText()));
-		device.setAssignedDepartmentID(Integer.parseInt(deviceAssignedDepartmentField.getText()));
-		device.setAssignedEmployeeID(Integer.parseInt(deviceAssignedEmployeeField.getText()));
+//		device.setDeviceTypeID(Integer.parseInt(deviceTypeNameField.getText()));
+//		device.setAssignedDepartmentID(Integer.parseInt(deviceAssignedDepartmentField.getText()));
+//		device.setAssignedEmployeeID(Integer.parseInt(deviceAssignedEmployeeField.getText()));
 		device.setInvoiceNumber(deviceInvoiceNumberField.getText());
 		device.setPurchaseDate(devicePurchaseDateField.getDateFormatString());
 		device.setLastInstallationDate(deviceLastInstallationDateField.getDateFormatString());
 		device.setNotes(deviceNotes.getText());
 		
 		
-		getController().insertDevice(device);
+		getController().saveDeviceData(device, getOperationType());
 	}
 
 	private String getCorrectTitle() {
@@ -305,13 +308,20 @@ public class DeviceDetailsFrame extends JFrame {
 	}
 
 	public void setEditable(boolean editable) {
-		System.out.println("test: " + editable);
 		this.editable = editable;
 	}
 
 	public Controller getController() {
 		return controller;
 	}
-	
+
+	public OperationType getOperationType() {
+		return operationType;
+	}
+
+	public void setOperationType(OperationType operationType) {
+		this.operationType = operationType;
+	}
+
 	
 }
