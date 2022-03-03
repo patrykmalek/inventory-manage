@@ -1,4 +1,4 @@
-package kruszywo.sa.computers.manage.test;
+package kruszywo.sa.computers.manage.view.util;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -17,13 +17,10 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.BoxLayout;
@@ -32,15 +29,16 @@ public class PMCustomTextFieldWithJList extends JPanel {
 
 
 	private static final long serialVersionUID = -1190813197642099916L;
-
+	private int DEFAULT_FONT_SIZE = 13;
+	
+	private JPanel inputPanel;
+	
 	private JButton dictionaryButton;
 	private ImageIcon dictionaryButtonIcon;
 	private ImageIcon dictionaryButtonIconActive;
 	
 	private JTextField customTextField;
 	private Border customTextFieldBorder;
-	
-	private int DEFAULT_FONT_SIZE = 13;
 	
 	private final Color customTextFieldColor = SystemColor.white;
 	private final Color customTextFieldColorActive = SystemColor.inactiveCaption;
@@ -50,45 +48,8 @@ public class PMCustomTextFieldWithJList extends JPanel {
 	private final Color customBorderColorActive = new Color(0, 10, 110);
 	private final Color customBorderColorHover = new Color(0, 60, 110);
 	
-	
-	
-	
-	public static void main(String[] args) {
-		
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			Insets insets = UIManager.getInsets("TabbedPane.contentBorderInsets");
-			insets.top = -1;
-			UIManager.put("TabbedPane.contentBorderInsets", insets);
-		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
-			return;
-		} 
-		
-		PMCustomTextFieldWithJList textField = new PMCustomTextFieldWithJList();
-		
-//		textField.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
-		
-		
-		JPanel panel = new JPanel();
-		
-//		panel.setLayout(new BorderLayout());
-		panel.setBackground(Color.green);
-		
-		panel.add(textField);
-		
-		JFrame frame = new JFrame();
-		frame.setTitle("Testowe okno");
-		frame.setIconImage(new ImageIcon("C:\\Users\\pmalek\\eclipse\\Java\\ComputersManage\\resources\\icon\\industry-solid-25.png").getImage());
-		frame.setSize(300, 500);
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.getContentPane().add(textField);
-		
-		frame.setVisible(true);
-	}
-	
+	private final BorderLayout layoutPanel = new BorderLayout();
+
 	public PMCustomTextFieldWithJList() {
 		createVisuals();
 	}
@@ -101,10 +62,10 @@ public class PMCustomTextFieldWithJList extends JPanel {
 		
 		setCustomTextField(createCustomTextField());
 		setCustomTextFieldBorder(createCustomBorderForTextField(getCustomBorderColor()));
+		setInputPanel(createInputPanel());
+		setLayout(getLayoutPanel());
 
-		JPanel inputPanel = createInputPanel();
-
-		add(inputPanel, BorderLayout.CENTER);
+		add(getInputPanel());
 	}
 	
 	private JPanel createInputPanel() {
@@ -124,9 +85,9 @@ public class PMCustomTextFieldWithJList extends JPanel {
 		textField.setFont(new Font("Tahoma", Font.PLAIN, getFontSize()));
 		textField.setBorder(createCustomBorderForTextField(customBorderColor));
 		textField.setBackground(SystemColor.white);
-		textField.setPreferredSize(new Dimension(200, 20));
-		textField.setMinimumSize(new Dimension(100, 20));
-		textField.setMaximumSize(new Dimension(600, 20));
+		textField.setPreferredSize(new Dimension(200, 25));
+		textField.setMinimumSize(new Dimension(100, 25));
+		textField.setMaximumSize(new Dimension(700, 25));
 		
 		
 		textField.addMouseListener(new MouseAdapter() {
@@ -171,11 +132,11 @@ public class PMCustomTextFieldWithJList extends JPanel {
 	}
 	
 	private ImageIcon createDictionaryButtonIcon() {
-		return new ImageIcon(getClass().getResource("/bars-solid-default-20.png"));
+		return new ImageIcon(getClass().getResource("/align.png"));
 	}
 	
 	private ImageIcon createDictionaryButtonIconActive() {
-		return new ImageIcon(getClass().getResource("/bars-solid-hover-20.png"));
+		return new ImageIcon(getClass().getResource("/bars-solid-hover-25.png"));
 	}
 	
 	private JButton createDictionaryButton() {
@@ -201,12 +162,16 @@ public class PMCustomTextFieldWithJList extends JPanel {
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				dictionaryButton.setIcon(getDictionaryButtonIconActive());
+				if(getDictionaryButton().isEnabled()) {
+					dictionaryButton.setIcon(getDictionaryButtonIconActive());
+				}
 			}
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
-				dictionaryButton.setIcon(getDictionaryButtonIcon());
+				if(getDictionaryButton().isEnabled()) {
+					dictionaryButton.setIcon(getDictionaryButtonIcon());
+				}
 			}
 		});
 		
@@ -229,6 +194,17 @@ public class PMCustomTextFieldWithJList extends JPanel {
 	private void setTextFieldActive() {
 		getCustomTextField().setBackground(getCustomTextFieldColorActive());
 		getCustomTextField().setBorder(createCustomBorderForTextField(getCustomBorderColorActive()));
+	}
+	
+
+	public void setText(String text) {
+		getCustomTextField().setText(text);
+	}
+	
+	
+	public void setEditable(boolean editable) {
+		getCustomTextField().setEnabled(editable);
+		getDictionaryButton().setEnabled(editable);
 	}
 	
 	
@@ -320,5 +296,21 @@ public class PMCustomTextFieldWithJList extends JPanel {
 	public Color getCustomTextFieldColorHover() {
 		return customTextFieldColorHover;
 	}
+
+
+	public JPanel getInputPanel() {
+		return inputPanel;
+	}
+
+
+	public void setInputPanel(JPanel inputPanel) {
+		this.inputPanel = inputPanel;
+	}
+
+
+	public BorderLayout getLayoutPanel() {
+		return layoutPanel;
+	}
+
 	
 }

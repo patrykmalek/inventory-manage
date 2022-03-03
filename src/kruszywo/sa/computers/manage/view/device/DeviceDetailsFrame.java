@@ -4,14 +4,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
-import com.toedter.calendar.JDateChooser;
-
 import kruszywo.sa.computers.manage.controller.Controller;
-import kruszywo.sa.computers.manage.dao.TypeDAO;
 import kruszywo.sa.computers.manage.model.Device;
 import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
-import kruszywo.sa.computers.manage.view.util.PMJComboBox;
+import kruszywo.sa.computers.manage.view.util.PMCustomTextFieldWithJList;
+import kruszywo.sa.computers.manage.view.util.PMJDateChooser;
 import kruszywo.sa.computers.manage.view.util.PMJTextField;
 
 import java.awt.BorderLayout;
@@ -29,21 +27,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JTextPane;
-import java.awt.Choice;
-import javax.swing.JComboBox;
 
 public class DeviceDetailsFrame extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
+	private JLabel additionalTitleHeaderLabel;
 	private PMJTextField deviceNameField;
 	private PMJTextField deviceUniqueNumberField;
 	private PMJTextField deviceInventoryNumberField;
-	private PMJTextField deviceTypeNameField;
-	private PMJTextField deviceAssignedDepartmentField;
-	private PMJTextField deviceAssignedEmployeeField;
+	private PMCustomTextFieldWithJList deviceTypeField;
+	private PMCustomTextFieldWithJList deviceAssignedDepartmentField;
+	private PMCustomTextFieldWithJList deviceAssignedEmployeeField;
 	private PMJTextField deviceInvoiceNumberField;
-	private JDateChooser devicePurchaseDateField;
-	private JDateChooser deviceLastInstallationDateField;
+	private PMJDateChooser devicePurchaseDateField;
+	private PMJDateChooser deviceLastInstallationDateField;
 	private JTextPane deviceNotes;
 	
 	private JPanel headerPanel;
@@ -62,8 +59,6 @@ public class DeviceDetailsFrame extends JFrame {
 	public DeviceDetailsFrame(Controller controller) {
 		this.controller = controller;
 		this.controller.setDeviceDetailsFrame(this);
-//		createVisuals();
-//		createEventListeners();
 	}
 	
 	public void showWindow() {
@@ -107,7 +102,7 @@ public class DeviceDetailsFrame extends JFrame {
 		titleHeaderLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		titlePanel.add(titleHeaderLabel, "cell 0 0,alignx left,growy");
 		
-		JLabel additionalTitleHeaderLabel = new JLabel("Komputer, Patryk Małek, Dział IT");
+		additionalTitleHeaderLabel = new JLabel("Komputer, Patryk Małek, Dział IT");
 		additionalTitleHeaderLabel.setForeground(SystemColor.textInactiveText);
 		additionalTitleHeaderLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		titlePanel.add(additionalTitleHeaderLabel, "cell 0 1,grow");
@@ -151,27 +146,24 @@ public class DeviceDetailsFrame extends JFrame {
 		deviceTypeNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceTypeNameLabel, "cell 1 4,alignx left");
 		
-		deviceTypeNameField = new PMJTextField(true, 13);
-		deviceTypeNameField.setEditable(isEditable());
-		deviceTypeNameField.setColumns(10);
-		detailsPanel.add(deviceTypeNameField, "cell 2 4 4 1,grow");
+		deviceTypeField = new PMCustomTextFieldWithJList();
+		deviceTypeField.setEditable(isEditable());
+		detailsPanel.add(deviceTypeField, "cell 2 4 4 1, grow");
 		
 		JLabel deviceAssignedDepartmentLabel = new JLabel("Miejsce użycia:");
 		deviceAssignedDepartmentLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceAssignedDepartmentLabel, "cell 1 5,alignx left");
 		
-		deviceAssignedDepartmentField = new PMJTextField(true, 13);
+		deviceAssignedDepartmentField = new PMCustomTextFieldWithJList();
 		deviceAssignedDepartmentField.setEditable(isEditable());
-		deviceAssignedDepartmentField.setColumns(10);
 		detailsPanel.add(deviceAssignedDepartmentField, "cell 2 5 4 1,grow");
 		
 		JLabel deviceAssignedEmployeeLabel = new JLabel("Przypisany pracownik:");
 		deviceAssignedEmployeeLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceAssignedEmployeeLabel, "cell 1 6,alignx left");
 		
-		deviceAssignedEmployeeField = new PMJTextField(true, 13);
+		deviceAssignedEmployeeField = new PMCustomTextFieldWithJList();
 		deviceAssignedEmployeeField.setEditable(isEditable());
-		deviceAssignedEmployeeField.setColumns(10);
 		detailsPanel.add(deviceAssignedEmployeeField, "cell 2 6 4 1,grow");
 		
 		JLabel deviceInvoiceNumberLabel = new JLabel("Powiązana faktura:");
@@ -187,25 +179,20 @@ public class DeviceDetailsFrame extends JFrame {
 		devicePurchaseDateLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(devicePurchaseDateLabel, "cell 1 8,alignx left");
 		
-		devicePurchaseDateField = new JDateChooser();
+		devicePurchaseDateField = new PMJDateChooser();
 		devicePurchaseDateField.setEnabled(isEditable());
 		devicePurchaseDateField.setDateFormatString(controller.getDefaultDateFormat().toPattern());
 		devicePurchaseDateField.setDate(getController().getCalendarWithTodayDate().getTime());
-		devicePurchaseDateField.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(devicePurchaseDateField, "cell 2 8,grow");
-		
-//		PMJComboBox comboBox = new PMJComboBox<Device>(true);
-//		detailsPanel.add(comboBox, "cell 4 8,growx");
 		
 		JLabel deviceLastInstallationDateLabel = new JLabel("Data ostatniej instalacji:");
 		deviceLastInstallationDateLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceLastInstallationDateLabel, "cell 1 9,alignx left");
 		
-		deviceLastInstallationDateField = new JDateChooser();
+		deviceLastInstallationDateField = new PMJDateChooser();
 		deviceLastInstallationDateField.setEnabled(isEditable());
 		deviceLastInstallationDateField.setDateFormatString(controller.getDefaultDateFormat().toPattern());
 		deviceLastInstallationDateField.setDate(getController().getCalendarWithTodayDate().getTime());
-		deviceLastInstallationDateField.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceLastInstallationDateField, "cell 2 9,grow");
 		
 		deviceNotes = new JTextPane();
@@ -268,10 +255,15 @@ public class DeviceDetailsFrame extends JFrame {
 		
 		if(device == null) return;
 
+		additionalTitleHeaderLabel.setText(device.getDeviceType().getDeviceTypeName() + ", " + 
+											device.getAssignedEmployee().getFirstName() + " " + 
+											device.getAssignedEmployee().getLastName() +", " + 
+											device.getAssignedDepartment().getDepartmentName());
+		
 		deviceNameField.setText(device.getDeviceName());                
 		deviceUniqueNumberField.setText(device.getDeviceUniqueNumber());
 		deviceInventoryNumberField.setText(device.getDeviceInventoryNumber());
-		deviceTypeNameField.setText(device.getDeviceType().getDeviceTypeName());
+		deviceTypeField.setText(device.getDeviceType().getDeviceTypeName());
 		deviceAssignedDepartmentField.setText(device.getAssignedDepartment().getDepartmentName());
 		deviceAssignedEmployeeField.setText(device.getAssignedEmployee().getFirstName() + " " + device.getAssignedEmployee().getLastName());
 		deviceInvoiceNumberField.setText(device.getInvoiceNumber());
