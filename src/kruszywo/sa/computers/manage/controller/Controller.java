@@ -55,6 +55,7 @@ public class Controller {
 	
 	public void addDepartmentDictionaryPanel() {
 		this.getTabbedPanel().addTabbedPanel(TabbedPanel.DEPARTMENT_DICTIONARY_PANEL, new DepartmentDictionaryTablePanel(this));
+		this.getDepartmentDictionaryTable().updateTable(getManagerDAO().getDepartmentDAO().getAll());
 	}
 
 	public DatabaseProvider getDatabaseProvider() {

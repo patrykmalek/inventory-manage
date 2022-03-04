@@ -4,33 +4,77 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.util.Date;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
 
-public class PMJTable extends JTable{
+public class PMJTable extends JTable {
 
 
 	private static final long serialVersionUID = 7352425134966455629L;
 	
+	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 5, 0, 5);
 	private DefaultTableModel tableModel;
 	private TableRowSorter<DefaultTableModel> tableSorter;
 	private boolean isEditable;
 
 
-	public PMJTable (Boolean isEditable) {
+	public PMJTable (boolean isEditable) {
 		super();
 		this.isEditable = isEditable;
 		this.setEditable(this.isEditable);
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.setTableRenderer();
 	}
 	
+	public void setTableRenderer() {
+		TableCellRenderer tableHeadaerRenderer = this.getTableHeader().getDefaultRenderer();
+		this.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
+	            @Override
+	            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+	                JLabel headerLabel = (JLabel) tableHeadaerRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+	                if(table.getColumnClass(column) == Date.class) {
+	                	headerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+	                } else {
+	                	headerLabel.setHorizontalAlignment(SwingConstants.LEFT);
+	                }
+	                return headerLabel;
+	            }
+	        });
+		DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+		leftRenderer.setHorizontalAlignment( JLabel.LEFT );
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+
+		this.setDefaultRenderer(String.class, leftRenderer);
+		this.setDefaultRenderer(Integer.class, leftRenderer);
+		this.setDefaultRenderer(Double.class, leftRenderer);
+		this.setDefaultRenderer(Date.class, centerRenderer);
+	}
+	
+
+	@Override
+	public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+        Component comp = super.prepareRenderer(renderer, row, column);
+			        if (JComponent.class.isInstance(comp) && getColumnClass(column) != java.util.Date.class){
+			            ((JComponent)comp).setBorder(paddingBorder);
+			        }
+					return comp;
+	}
 	
 	public void resizeColumnWidth() {
 	    final TableColumnModel columnModel = this.getColumnModel();

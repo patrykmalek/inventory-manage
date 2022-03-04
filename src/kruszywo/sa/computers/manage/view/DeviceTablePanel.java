@@ -4,6 +4,7 @@ package kruszywo.sa.computers.manage.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -49,6 +50,7 @@ public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 		this.setLayout(new BorderLayout());
 		
 		this.table = new PMJTable(false);
+
 		this.table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		
 		this.tableContainer = new JScrollPane(table);
@@ -121,8 +123,8 @@ public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 				java.lang.String.class,
 				java.lang.String.class,
 				java.lang.String.class,
-				java.lang.String.class,
-				java.lang.String.class
+				java.util.Date.class,
+				java.util.Date.class
 		});
 		this.setTableColumnNames(new String[] { 
 				"ID urządzenia",

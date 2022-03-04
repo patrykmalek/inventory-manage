@@ -4,19 +4,28 @@ package kruszywo.sa.computers.manage.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import kruszywo.sa.computers.manage.exception.SystemOperationException;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
@@ -50,11 +59,21 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 		this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		
 		this.table = new PMJTable(false);
-		this.table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);		
+			
 		
+		DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+		leftRenderer.setHorizontalAlignment( JLabel.LEFT );
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+		
+		this.table.setDefaultRenderer(String.class, leftRenderer);
+		this.table.setDefaultRenderer(Integer.class, leftRenderer);
+		this.table.setDefaultRenderer(Double.class, leftRenderer);
+		this.table.setDefaultRenderer(Date.class, centerRenderer);
+		this.table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);	
 		
 		this.tableContainer = new JScrollPane(table);
-		
+	
 		this.buttonPanel = new ButtonPanel(FlowLayout.LEADING);
 		this.buttonPanel.addInsertButton(new JButton());
 		this.buttonPanel.addEditButton(new JButton());
