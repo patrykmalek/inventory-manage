@@ -9,10 +9,12 @@ import kruszywo.sa.computers.manage.model.CommonFunctions;
 import kruszywo.sa.computers.manage.model.Department;
 import kruszywo.sa.computers.manage.model.Device;
 import kruszywo.sa.computers.manage.model.DeviceType;
+import kruszywo.sa.computers.manage.model.Employee;
 import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.view.DepartmentDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.DeviceTypeDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.DictionaryFrame;
+import kruszywo.sa.computers.manage.view.EmployeeDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.device.DeviceDetailsFrame;
 
 public class DeviceServiceDAO {
@@ -92,6 +94,10 @@ public class DeviceServiceDAO {
 		deviceTypeDictionaryTablePanel.updateTable(getManagerDAO().getDeviceTypeDAO().getAll());
 		DictionaryFrame<DeviceType> dictionaryFrame = new DictionaryFrame<>(getController(), deviceTypeDictionaryTablePanel);
 		dictionaryFrame.showWindow();
+		
+		int choosenID = deviceTypeDictionaryTablePanel.getChoosenID();
+		DeviceType deviceType = getManagerDAO().getDeviceTypeDAO().get(choosenID);
+		getController().getDeviceDetailsFrame().getDeviceTypeField().addItem(deviceType);
 	}
 	
 	public void openDepartmentDictionaryWindow() {	
@@ -99,8 +105,22 @@ public class DeviceServiceDAO {
 		departmentDictionaryTablePanel.updateTable(getManagerDAO().getDepartmentDAO().getAll());
 		DictionaryFrame<Department> dictionaryFrame = new DictionaryFrame<>(getController(), departmentDictionaryTablePanel);
 		dictionaryFrame.showWindow();
+		
+		int choosenID = departmentDictionaryTablePanel.getChoosenID();
+		Department department = getManagerDAO().getDepartmentDAO().get(choosenID);
+		getController().getDeviceDetailsFrame().getDeviceAssignedDepartmentField().addItem(department);
 	}
 	
+	public void openEmployeeDictionaryWindow() {	
+		EmployeeDictionaryTablePanel employeeDictionaryTablePanel = new EmployeeDictionaryTablePanel(getController());
+		employeeDictionaryTablePanel.updateTable(getManagerDAO().getEmployeeDAO().getAll());
+		DictionaryFrame<Employee> dictionaryFrame = new DictionaryFrame<>(getController(), employeeDictionaryTablePanel);
+		dictionaryFrame.showWindow();
+		
+		int choosenID = employeeDictionaryTablePanel.getChoosenID();
+		Employee employee = getManagerDAO().getEmployeeDAO().get(choosenID);
+		getController().getDeviceDetailsFrame().getDeviceAssignedEmployeeField().addItem(employee);
+	}
 
 	public void insertDevice(Device device) {
 		getManagerDAO().getDeviceDAO().insert(device);

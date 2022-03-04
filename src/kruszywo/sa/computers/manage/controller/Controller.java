@@ -11,6 +11,7 @@ import kruszywo.sa.computers.manage.view.TabbedPanel;
 import kruszywo.sa.computers.manage.view.DepartmentDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.DeviceTablePanel;
 import kruszywo.sa.computers.manage.view.DeviceTypeDictionaryTablePanel;
+import kruszywo.sa.computers.manage.view.EmployeeDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.MainFrame;
 import kruszywo.sa.computers.manage.view.WaitWindow;
 import kruszywo.sa.computers.manage.view.device.DeviceDetailsFrame;
@@ -24,6 +25,7 @@ public class Controller {
 	private DeviceTablePanel deviceTablePanel;
 	private DeviceTypeDictionaryTablePanel deviceTypeDictionaryTable;
 	private DepartmentDictionaryTablePanel departmentDictionaryTable;
+	private EmployeeDictionaryTablePanel employeeDictionaryTable;
 	
 	private DeviceDetailsFrame deviceDetailsFrame;
 	
@@ -49,13 +51,18 @@ public class Controller {
 	}
 	
 	public void addDevicesTypeDictionaryPanel() {
-		this.getTabbedPanel().addTabbedPanel(TabbedPanel.DEVICES_TYPE_DICTIONARY_PANEL, new DeviceTypeDictionaryTablePanel(this));
+		this.getTabbedPanel().addTabbedPanel(TabbedPanel.DEVICES_TYPE_DICTIONARY_PANEL, new DeviceTypeDictionaryTablePanel(this));	
 		this.getDeviceTypeDictionaryTable().updateTable(getManagerDAO().getDeviceTypeDAO().getAll());
 	}
 	
 	public void addDepartmentDictionaryPanel() {
 		this.getTabbedPanel().addTabbedPanel(TabbedPanel.DEPARTMENT_DICTIONARY_PANEL, new DepartmentDictionaryTablePanel(this));
 		this.getDepartmentDictionaryTable().updateTable(getManagerDAO().getDepartmentDAO().getAll());
+	}
+	
+	public void addEmployeeDictionaryPanel() {
+		this.getTabbedPanel().addTabbedPanel(TabbedPanel.EMPLOYEE_DICTIONARY_PANEL, new EmployeeDictionaryTablePanel(this));
+		this.getEmployeeDictionaryTable().updateTable(getManagerDAO().getEmployeeDAO().getAll());
 	}
 
 	public DatabaseProvider getDatabaseProvider() {
@@ -112,6 +119,14 @@ public class Controller {
 
 	public void setDepartmentDictionaryTable(DepartmentDictionaryTablePanel departmentDictionaryTable) {
 		this.departmentDictionaryTable = departmentDictionaryTable;
+	}
+
+	public EmployeeDictionaryTablePanel getEmployeeDictionaryTable() {
+		return employeeDictionaryTable;
+	}
+
+	public void setEmployeeDictionaryTable(EmployeeDictionaryTablePanel employeeDictionaryTable) {
+		this.employeeDictionaryTable = employeeDictionaryTable;
 	}
 
 	public SimpleDateFormat getDefaultDateFormat() {

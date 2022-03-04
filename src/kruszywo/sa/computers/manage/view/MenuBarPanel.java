@@ -20,6 +20,7 @@ public class MenuBarPanel extends JMenuBar {
 	private JMenuItem deviceDictionaryItem;
 	private JMenuItem deviceTypeDictionaryItem;
 	private JMenuItem departmentDictionaryItem;
+	private JMenuItem employeeDictionaryItem;
 
 	private Controller controller;
 
@@ -33,13 +34,15 @@ public class MenuBarPanel extends JMenuBar {
 		this.setBackground(Color.BLUE);
 		
 		dictionaryMenu = new JMenu("Słowniki");
-		deviceDictionaryItem = createMenuItem("Urządzenia", "laptop-solid.png");
-		deviceTypeDictionaryItem = createMenuItem("Typy urządzeń", "keyboard-solid.png");
-		departmentDictionaryItem = createMenuItem("Miejsce użytkowania", "laptop-house-solid.png");
+		deviceDictionaryItem = createMenuItem(TabbedPanel.DEVICES_PANEL, "laptop-solid.png");
+		deviceTypeDictionaryItem = createMenuItem(TabbedPanel.DEVICES_TYPE_DICTIONARY_PANEL, "keyboard-solid.png");
+		departmentDictionaryItem = createMenuItem(TabbedPanel.DEPARTMENT_DICTIONARY_PANEL, "laptop-house-solid.png");
+		employeeDictionaryItem = createMenuItem(TabbedPanel.EMPLOYEE_DICTIONARY_PANEL, "employees.png");
 		
 		dictionaryMenu.add(deviceDictionaryItem);
 		dictionaryMenu.add(deviceTypeDictionaryItem);
 		dictionaryMenu.add(departmentDictionaryItem);
+		dictionaryMenu.add(employeeDictionaryItem);
 		
 		this.add(dictionaryMenu);
 	}
@@ -61,6 +64,12 @@ public class MenuBarPanel extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				controller.addDepartmentDictionaryPanel();
+			}
+		});
+		employeeDictionaryItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.addEmployeeDictionaryPanel();
 			}
 		});
 	}

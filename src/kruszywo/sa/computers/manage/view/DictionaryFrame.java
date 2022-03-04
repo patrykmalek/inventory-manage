@@ -21,6 +21,7 @@ public class DictionaryFrame<T> extends JDialog {
 		setController(controller);
 		setMainPanel(mainPanel);
 		createVisuals();
+		this.mainPanel.setParentWindow(this);
 	}
 	
 	public void showWindow() {

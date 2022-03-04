@@ -275,7 +275,7 @@ public class DeviceDetailsFrame extends JDialog {
 		deviceAssignedEmployeeField.getDictionaryButton().removeActionListener(deviceAssignedEmployeeField.getDictionaryButton().getActionListeners()[0]);
 		deviceAssignedEmployeeField.getDictionaryButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				getController().getManagerDAO().getDeviceServiceDAO().openEmployeeDictionaryWindow();
 			}
 		});
 		
@@ -357,6 +357,18 @@ public class DeviceDetailsFrame extends JDialog {
 
 	public void setDeviceID(int deviceID) {
 		this.deviceID = deviceID;
+	}
+
+	public PMCustomTextFieldWithJList<DeviceType> getDeviceTypeField() {
+		return deviceTypeField;
+	}
+
+	public PMCustomTextFieldWithJList<Department> getDeviceAssignedDepartmentField() {
+		return deviceAssignedDepartmentField;
+	}
+
+	public PMCustomTextFieldWithJList<Employee> getDeviceAssignedEmployeeField() {
+		return deviceAssignedEmployeeField;
 	}
 
 	

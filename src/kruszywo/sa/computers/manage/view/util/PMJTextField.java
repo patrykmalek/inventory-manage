@@ -8,6 +8,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -118,13 +119,37 @@ public class PMJTextField extends JTextField{
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_F && hasFocus()) {
-					setText("");
-					table.requestFocus();
-					table.getTableSorter().setRowFilter(null);
-				}
+				 if (e.isControlDown()) { 
+					 if (e.getKeyCode() == KeyEvent.VK_F && hasFocus()) {
+							setText("");
+							table.requestFocus();
+							table.getTableSorter().setRowFilter(null);
+					 }
+				 }
+			}
+		});
+		
+		table.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
 			}
 			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.isControlDown()) {
+					if (e.getKeyCode() == KeyEvent.VK_F && !hasFocus()) {
+						requestFocus();
+					}
+				}
+			}
 		});
 	}
 	

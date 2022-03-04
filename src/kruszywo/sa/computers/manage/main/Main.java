@@ -28,16 +28,12 @@ public class Main {
 		
 		javax.swing.SwingUtilities.invokeLater(new Runnable()  {
 			public void run() {
-//				DatabaseProvider databaseProvider = new DatabaseProvider("jdbc:sqlite:C:\\Users\\Patryk\\Documents\\EclipseWorkspace\\Java\\ComputersManage\\database\\computers.db");
-				DatabaseProvider databaseProvider = new DatabaseProvider("jdbc:sqlite:C:\\Users\\pmalek\\Documents\\DATABASE\\computers.db");
+				DatabaseProvider databaseProvider = new DatabaseProvider("jdbc:sqlite:C:\\Users\\Patryk\\Documents\\EclipseWorkspace\\Java\\ComputersManage\\database\\computers.db");
+//				DatabaseProvider databaseProvider = new DatabaseProvider("jdbc:sqlite:C:\\Users\\pmalek\\Documents\\DATABASE\\computers.db");
 				databaseProvider.connect();
 				Controller controller = new Controller(databaseProvider);
 				MainFrame mainFrame = new MainFrame(controller);
 				mainFrame.displayWindow();
-//				DeviceDetailsFrame deviceDetailsWindow = new DeviceDetailsFrame(controller);
-//				deviceDetailsWindow.setEditable(true);
-//				deviceDetailsWindow.setOperationType(OperationType.INSERT);
-//				deviceDetailsWindow.showWindow();
 			}
 		});
 	}

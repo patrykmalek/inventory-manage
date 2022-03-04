@@ -6,41 +6,43 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import kruszywo.sa.computers.manage.controller.Controller;
-import kruszywo.sa.computers.manage.model.DeviceType;
+import kruszywo.sa.computers.manage.model.Employee;
 
 
-public class DeviceTypeDictionaryTablePanel extends DictionaryTablePanel<DeviceType> {
+public class EmployeeDictionaryTablePanel extends DictionaryTablePanel<Employee> {
 
 	private static final long serialVersionUID = 1698570024703870348L;
 	private Controller controller;
 
-	public DeviceTypeDictionaryTablePanel(Controller controller) {
+	public EmployeeDictionaryTablePanel(Controller controller) {
 		super();
 		this.controller = controller;
-		this.controller.setDeviceTypeDictionaryTable(this);
+		this.controller.setEmployeeDictionaryTable(this);
 		this.createTable();
 		this.setButtonEventListeners();
-		setPanelTitle("Słownik typów urządzeń");
+		setPanelTitle("Słownik pracowników");
 	}
 	
 	@Override
 	public void createTable() {
 		this.setTableModelAndSorter(new Class[] { 
 				java.lang.Integer.class,
+				java.lang.String.class,
 				java.lang.String.class
 		});
 		this.setTableColumnNames(new String[] { 
-				"ID typu urządzenia",
-				"Nazwa typu urządzenia"
+				"ID pracownika",
+				"Imię pracownika",
+				"Nazwisko pracownika"
 		});
 	}
 
 	@Override
-	public void updateTable(List<DeviceType> devicesType) {
+	public void updateTable(List<Employee> employees) {
 		clearTable();
-		if(isEmptyData(devicesType)) return;
-		for( DeviceType deviceType : devicesType){
-			addRowToTable(new Object[] {deviceType.getDeviceTypeID(), deviceType.getDeviceTypeName()});
+		if(isEmptyData(employees)) return;
+		for( Employee employee : employees){
+			addRowToTable(new Object[] {employee.getEmployeeID(), employee.getFirstName(), employee.getLastName()});
 		}
 		resizeTable();
 	}

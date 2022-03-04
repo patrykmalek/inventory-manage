@@ -20,6 +20,7 @@ public class TabbedPanel extends JPanel{
 	public static final String DEVICES_PANEL = "Urządzenia";
 	public static final String DEVICES_TYPE_DICTIONARY_PANEL = "Typy urządzeń";
 	public static final String DEPARTMENT_DICTIONARY_PANEL = "Miejsca użytkowania";
+	public static final String EMPLOYEE_DICTIONARY_PANEL = "Pracownicy";
 	
 	private JTabbedPane tabbedPane;
 
@@ -74,9 +75,10 @@ public class TabbedPanel extends JPanel{
 	
 	public void addTabbedPanel(String title, Component component) {
 		if (tabbedPanelExist(title)) return;
-		
 		tabbedPane.add(title, component);
-		tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, new ButtonTabComponent(tabbedPane));
+		int nextIndex = tabbedPane.getTabCount() - 1;
+		tabbedPane.setTabComponentAt(nextIndex, new ButtonTabComponent(tabbedPane));
+		tabbedPane.setSelectedIndex(nextIndex);
 	}
 
 	public boolean tabbedPanelExist(String title)  

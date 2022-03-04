@@ -4,28 +4,22 @@ package kruszywo.sa.computers.manage.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
 
 import kruszywo.sa.computers.manage.exception.SystemOperationException;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
@@ -35,6 +29,9 @@ import kruszywo.sa.computers.manage.view.util.PMJTable;
 public abstract class DictionaryTablePanel<T> extends JPanel implements TablePanel<T> {
 
 	private static final long serialVersionUID = 1698570024703870348L;
+	
+	private JDialog parentWindow;
+	
 	private JScrollPane tableContainer;
 	private PMJTable table;
 	private JPanel centerPanel;
@@ -46,6 +43,8 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 	private JButton deleteButton;
 	
 	private String panelTitle = "Słownik";
+	
+	private int choosenID = -1;
 	
 	public DictionaryTablePanel() {
 		this.createVisuals();
@@ -60,16 +59,6 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 		
 		this.table = new PMJTable(false);
 			
-		
-		DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
-		leftRenderer.setHorizontalAlignment( JLabel.LEFT );
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment( JLabel.CENTER );
-		
-		this.table.setDefaultRenderer(String.class, leftRenderer);
-		this.table.setDefaultRenderer(Integer.class, leftRenderer);
-		this.table.setDefaultRenderer(Double.class, leftRenderer);
-		this.table.setDefaultRenderer(Date.class, centerRenderer);
 		this.table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);	
 		
 		this.tableContainer = new JScrollPane(table);
@@ -117,6 +106,43 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				JOptionPane.showMessageDialog(new JFrame(), "Przycisk jeszcze nie ma podpiętej akcji.", "Informacja", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		
+		this.table.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					int modelRow = getTable().convertRowIndexToModel(getTable().getSelectedRow());
+					int choosenID = (int) getTable().getModel().getValueAt(modelRow, 0);
+					setChoosenID(choosenID);
+					closeParentWindow();
+				}
 			}
 		});
 		
@@ -178,6 +204,10 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 			return true;
 		}
 		return false;
+	}
+	
+	private void closeParentWindow() {
+		if(getParentWindow() != null) getParentWindow().dispose();
 	}
 
 	public PMJTable getTable() {
@@ -246,6 +276,22 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 
 	public void setPanelTitle(String panelTitle) {
 		this.panelTitle = panelTitle;
+	}
+
+	public int getChoosenID() {
+		return choosenID;
+	}
+
+	public void setChoosenID(int choosenID) {
+		this.choosenID = choosenID;
+	}
+
+	public JDialog getParentWindow() {
+		return parentWindow;
+	}
+
+	public void setParentWindow(JDialog parentWindow) {
+		this.parentWindow = parentWindow;
 	}
 
 }
