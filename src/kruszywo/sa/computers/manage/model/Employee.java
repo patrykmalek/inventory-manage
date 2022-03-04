@@ -47,4 +47,10 @@ public class Employee {
 		this.uniqueNumber = Integer.parseInt(uniqueNumber);
 	}
 
+	@Override
+	public String toString() {
+		return firstName + " " + lastName;
+	}
+
+	
 }

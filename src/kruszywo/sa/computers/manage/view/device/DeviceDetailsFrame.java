@@ -5,7 +5,11 @@ import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
 import kruszywo.sa.computers.manage.controller.Controller;
+import kruszywo.sa.computers.manage.model.CommonFunctions;
+import kruszywo.sa.computers.manage.model.Department;
 import kruszywo.sa.computers.manage.model.Device;
+import kruszywo.sa.computers.manage.model.DeviceType;
+import kruszywo.sa.computers.manage.model.Employee;
 import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
 import kruszywo.sa.computers.manage.view.util.PMCustomTextFieldWithJList;
@@ -19,7 +23,7 @@ import java.awt.Font;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import net.miginfocom.swing.MigLayout;
 import java.awt.SystemColor;
@@ -28,16 +32,17 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JTextPane;
 
-public class DeviceDetailsFrame extends JFrame {
+public class DeviceDetailsFrame extends JDialog {
 	
 	private static final long serialVersionUID = 1L;
 	private JLabel additionalTitleHeaderLabel;
+	private int deviceID;
 	private PMJTextField deviceNameField;
 	private PMJTextField deviceUniqueNumberField;
 	private PMJTextField deviceInventoryNumberField;
-	private PMCustomTextFieldWithJList deviceTypeField;
-	private PMCustomTextFieldWithJList deviceAssignedDepartmentField;
-	private PMCustomTextFieldWithJList deviceAssignedEmployeeField;
+	private PMCustomTextFieldWithJList<DeviceType> deviceTypeField;
+	private PMCustomTextFieldWithJList<Department> deviceAssignedDepartmentField;
+	private PMCustomTextFieldWithJList<Employee> deviceAssignedEmployeeField;
 	private PMJTextField deviceInvoiceNumberField;
 	private PMJDateChooser devicePurchaseDateField;
 	private PMJDateChooser deviceLastInstallationDateField;
@@ -57,28 +62,32 @@ public class DeviceDetailsFrame extends JFrame {
 	
 	
 	public DeviceDetailsFrame(Controller controller) {
+		super(controller.getMainFrame(), "Panel", true);
 		this.controller = controller;
 		this.controller.setDeviceDetailsFrame(this);
 	}
 	
-	public void showWindow() {
+	public void createWindow() {
 		createVisuals();
 		createEventListeners();
 	}
+	
+	public void showWindow() {
+		setVisible(true);
+	}
 
 	private void createVisuals() {
-		this.setTitle(getCorrectTitle());
-		this.setIconImage(new ImageIcon(getClass().getResource("/edit-solid-dark-blue-15.png")).getImage());
-		this.setSize(800, 650);
-		this.headerPanel = createHeaderPanel();
-		this.detailsPanel = createDetailsPanel();
-		this.footerPanel = createFooterPanel();
-		this.getContentPane().add(this.headerPanel, BorderLayout.NORTH);
-		this.getContentPane().add(this.detailsPanel, BorderLayout.CENTER);
-		this.getContentPane().add(this.footerPanel, BorderLayout.SOUTH);
-		this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		this.setLocationRelativeTo(null);
-		this.setVisible(true);
+		setTitle(getCorrectTitle());
+		setIconImage(new ImageIcon(getClass().getResource("/edit-solid-dark-blue-15.png")).getImage());
+		setSize(800, 650);
+		headerPanel = createHeaderPanel();
+		detailsPanel = createDetailsPanel();
+		footerPanel = createFooterPanel();
+		getContentPane().add(this.headerPanel, BorderLayout.NORTH);
+		getContentPane().add(this.detailsPanel, BorderLayout.CENTER);
+		getContentPane().add(this.footerPanel, BorderLayout.SOUTH);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		setLocationRelativeTo(null);
 	}
 
 	private JPanel createHeaderPanel() {
@@ -146,7 +155,7 @@ public class DeviceDetailsFrame extends JFrame {
 		deviceTypeNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceTypeNameLabel, "cell 1 4,alignx left");
 		
-		deviceTypeField = new PMCustomTextFieldWithJList();
+		deviceTypeField = new PMCustomTextFieldWithJList<DeviceType>();
 		deviceTypeField.setEditable(isEditable());
 		detailsPanel.add(deviceTypeField, "cell 2 4 4 1, grow");
 		
@@ -154,7 +163,7 @@ public class DeviceDetailsFrame extends JFrame {
 		deviceAssignedDepartmentLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceAssignedDepartmentLabel, "cell 1 5,alignx left");
 		
-		deviceAssignedDepartmentField = new PMCustomTextFieldWithJList();
+		deviceAssignedDepartmentField = new PMCustomTextFieldWithJList<Department>();
 		deviceAssignedDepartmentField.setEditable(isEditable());
 		detailsPanel.add(deviceAssignedDepartmentField, "cell 2 5 4 1,grow");
 		
@@ -162,7 +171,7 @@ public class DeviceDetailsFrame extends JFrame {
 		deviceAssignedEmployeeLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceAssignedEmployeeLabel, "cell 1 6,alignx left");
 		
-		deviceAssignedEmployeeField = new PMCustomTextFieldWithJList();
+		deviceAssignedEmployeeField = new PMCustomTextFieldWithJList<Employee>();
 		deviceAssignedEmployeeField.setEditable(isEditable());
 		detailsPanel.add(deviceAssignedEmployeeField, "cell 2 6 4 1,grow");
 		
@@ -251,10 +260,11 @@ public class DeviceDetailsFrame extends JFrame {
 		
 	}
 	
-	public void addDeviceDataToView(Device device) {
+	public boolean addDeviceDataToView(Device device) {
 		
-		if(device == null) return;
-
+		if(device == null) return false;
+		setDeviceID(device.getDeviceID());
+		
 		additionalTitleHeaderLabel.setText(device.getDeviceType().getDeviceTypeName() + ", " + 
 											device.getAssignedEmployee().getFirstName() + " " + 
 											device.getAssignedEmployee().getLastName() +", " + 
@@ -263,32 +273,36 @@ public class DeviceDetailsFrame extends JFrame {
 		deviceNameField.setText(device.getDeviceName());                
 		deviceUniqueNumberField.setText(device.getDeviceUniqueNumber());
 		deviceInventoryNumberField.setText(device.getDeviceInventoryNumber());
-		deviceTypeField.setText(device.getDeviceType().getDeviceTypeName());
-		deviceAssignedDepartmentField.setText(device.getAssignedDepartment().getDepartmentName());
-		deviceAssignedEmployeeField.setText(device.getAssignedEmployee().getFirstName() + " " + device.getAssignedEmployee().getLastName());
+		
+		deviceTypeField.addItem(device.getDeviceType());
+		deviceAssignedDepartmentField.addItem(device.getAssignedDepartment());
+		deviceAssignedEmployeeField.addItem(device.getAssignedEmployee());
+		
 		deviceInvoiceNumberField.setText(device.getInvoiceNumber());
 		devicePurchaseDateField.setDate(getController().getCalendarWithCustomDate(device.getPurchaseDate(), getController().getDefaultDateFormat()).getTime());
 		deviceLastInstallationDateField.setDate(getController().getCalendarWithCustomDate(device.getLastInstallationDate(), getController().getDefaultDateFormat()).getTime());
+		deviceNotes.setText(device.getNotes());
 		
+		return true;
 	}
 	
 	public void saveDeviceData() {
 		
 		Device device = new Device();
 		
+		device.setDeviceID(getDeviceID());
 		device.setDeviceName(deviceNameField.getText());
 		device.setDeviceUniqueNumber(deviceUniqueNumberField.getText());
 		device.setDeviceInventoryNumber(deviceInventoryNumberField.getText());
-//		device.setDeviceTypeID(Integer.parseInt(deviceTypeNameField.getText()));
-//		device.setAssignedDepartmentID(Integer.parseInt(deviceAssignedDepartmentField.getText()));
-//		device.setAssignedEmployeeID(Integer.parseInt(deviceAssignedEmployeeField.getText()));
+		device.setDeviceType(deviceTypeField.getItem());
+		device.setAssignedDepartment(deviceAssignedDepartmentField.getItem());
+		device.setAssignedEmployee(deviceAssignedEmployeeField.getItem());
 		device.setInvoiceNumber(deviceInvoiceNumberField.getText());
-		device.setPurchaseDate(devicePurchaseDateField.getDateFormatString());
-		device.setLastInstallationDate(deviceLastInstallationDateField.getDateFormatString());
+		device.setPurchaseDate(CommonFunctions.formatDate(devicePurchaseDateField.getDate(), devicePurchaseDateField.getDateFormatString()));
+		device.setLastInstallationDate(CommonFunctions.formatDate(deviceLastInstallationDateField.getDate(), deviceLastInstallationDateField.getDateFormatString()));
 		device.setNotes(deviceNotes.getText());
 		
-		
-		getController().saveDeviceData(device, getOperationType());
+		getController().getManagerDAO().getDeviceServiceDAO().saveData(device, getOperationType());
 	}
 
 	private String getCorrectTitle() {
@@ -312,7 +326,16 @@ public class DeviceDetailsFrame extends JFrame {
 	}
 
 	public void setOperationType(OperationType operationType) {
+		setEditable(operationType.isWindowEditable());
 		this.operationType = operationType;
+	}
+
+	public int getDeviceID() {
+		return deviceID;
+	}
+
+	public void setDeviceID(int deviceID) {
+		this.deviceID = deviceID;
 	}
 
 	

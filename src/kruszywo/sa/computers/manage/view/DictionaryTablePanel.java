@@ -7,39 +7,36 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.exception.SystemOperationException;
-import kruszywo.sa.computers.manage.model.Device;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
 import kruszywo.sa.computers.manage.view.util.ClipboardKeyAdapter;
 import kruszywo.sa.computers.manage.view.util.PMJTable;
 
-public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
+public abstract class DictionaryTablePanel<T> extends JPanel implements TablePanel<T> {
 
-	private static final long serialVersionUID = -3463179337882985534L;
-	private Controller controller;
+	private static final long serialVersionUID = 1698570024703870348L;
 	private JScrollPane tableContainer;
 	private PMJTable table;
 	private JPanel centerPanel;
 	private JPanel northPanel;
 	private ButtonPanel buttonPanel;
 	
-	public DeviceTablePanel(Controller controller) {
-		this.controller = controller;
-		this.controller.setDeviceTablePanel(this);
+	private JButton insertButton;
+	private JButton updateButton;
+	private JButton deleteButton;
+	
+	public DictionaryTablePanel() {
 		this.createVisuals();
-		this.createTable();
 		this.createEventListeners();
 	}
 	
@@ -49,7 +46,8 @@ public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 		this.setLayout(new BorderLayout());
 		
 		this.table = new PMJTable(false);
-		this.table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		this.table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);		
+		
 		
 		this.tableContainer = new JScrollPane(table);
 		
@@ -75,68 +73,33 @@ public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 	public void createEventListeners() {
 		if (buttonPanel.getButtons().size() <= 0) return;
 		
-		JButton insertButton = buttonPanel.getButtons().get(0);
+		insertButton = buttonPanel.getButtons().get(0);
 		insertButton.removeActionListener(insertButton.getActionListeners()[0]);
 		insertButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				getController().getManagerDAO().getDeviceServiceDAO().openDeviceWindowToAddNew();
+				JOptionPane.showMessageDialog(new JFrame(), "Przycisk jeszcze nie ma podpiętej akcji.", "Informacja", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		
-		JButton editButton = buttonPanel.getButtons().get(1);
-		editButton.removeActionListener(editButton.getActionListeners()[0]);
-		editButton.addActionListener(new ActionListener() {
+		updateButton = buttonPanel.getButtons().get(1);
+		updateButton.removeActionListener(updateButton.getActionListeners()[0]);
+		updateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				getController().getManagerDAO().getDeviceServiceDAO().openDeviceWindowToUpdate(getID());
+				JOptionPane.showMessageDialog(new JFrame(), "Przycisk jeszcze nie ma podpiętej akcji.", "Informacja", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		
-		JButton deleteButton = buttonPanel.getButtons().get(2);
+		deleteButton = buttonPanel.getButtons().get(2);
 		deleteButton.removeActionListener(deleteButton.getActionListeners()[0]);
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				getController().getManagerDAO().getDeviceServiceDAO().deleteDeviceWithPrompt(getID());
-			}
-		});
-		
-		this.table.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-					if (e.getClickCount() == 2) {
-						getController().getManagerDAO().getDeviceServiceDAO().openDeviceWindowToOnlyShowDetails(getID());
-				}
+				JOptionPane.showMessageDialog(new JFrame(), "Przycisk jeszcze nie ma podpiętej akcji.", "Informacja", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		
 		this.table.addKeyListener(new ClipboardKeyAdapter(this.table));
 	}
 	
-	@Override
-	public void createTable() {
-		this.setTableModelAndSorter(new Class[] { 
-				java.lang.Integer.class,
-				java.lang.String.class,
-				java.lang.String.class,
-				java.lang.String.class,
-				java.lang.String.class,
-				java.lang.String.class,
-				java.lang.String.class,
-				java.lang.String.class,
-				java.lang.String.class,
-				java.lang.String.class
-		});
-		this.setTableColumnNames(new String[] { 
-				"ID urządzenia",
-				"Numer unikalny",
-				"Nazwa",
-				"Numer inwentarzowy",
-				"Typ urządzenia",
-				"Miejsce użytk.",
-				"Pracownik",
-				"Powiązana faktura",
-				"Data zakupu",
-				"Ostatnia instalacja"
-		});
-	}
 
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -145,26 +108,19 @@ public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 		this.table.setTableSorter(this.table.getDefaultTableModel());
 		this.table.setRowSorter(this.table.getTableSorter());
 	}
-	
+
 	@Override
 	public void setTableColumnNames(String[] columnNames) {
 		this.table.getDefaultTableModel().setColumnIdentifiers(columnNames);
 	}
 	
 	@Override
-	public void updateTable(List<Device> devices) {
-		clearTable();
-		if(isEmptyData(devices)) return;
-		
-		for( Device device : devices){
-			((DefaultTableModel) table.getModel()).addRow(
-				new Object[] {device.getDeviceID(), device.getDeviceUniqueNumber(), device.getDeviceName(), device.getDeviceInventoryNumber(), 
-						device.getDeviceType().getDeviceTypeName(), device.getAssignedDepartment().getDepartmentName(), 
-						device.getAssignedEmployee().getFirstName() + " " + device.getAssignedEmployee().getLastName(), device.getInvoiceNumber(),
-						device.getPurchaseDate(), device.getLastInstallationDate()});
-		}
-		resizeTable();
-	}
+	public abstract void createTable();
+	
+	@Override
+	public abstract void updateTable(List<T> devices);
+	
+	public abstract void setButtonEventListeners();
 
 	@Override
 	public JScrollPane getTableContainer() {
@@ -175,49 +131,92 @@ public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 	public void clearTable() {
 		((DefaultTableModel) table.getModel()).setRowCount(0);
 	}
-
-	public Controller getController() {
-		return controller;
-	}
-
-	public void setController(Controller controller) {
-		this.controller = controller;
-	}
-
-	public int getID() {
-		int rowID;
-		if(table.getSelectedRow() < 0 ) {
-			rowID = table.getSelectedRow();
-		} else {
-			int modelRow = table.convertRowIndexToModel(table.getSelectedRow());
-			rowID = (int) table.getModel().getValueAt(modelRow, 0);
-		}
-		
-		return rowID;
-	}
-
-	@Override
-	public void resizeTable() {
-		 this.table.resizeColumnWidth();
-	}
-
+	
 	@Override
 	public void addRowToTable(Object[] rowData) {
 		((DefaultTableModel) table.getModel()).addRow(rowData);
 	}
+	
+	@Override
+	public void resizeTable() {
+		this.table.resizeColumnWidth();
+	}
+	
 
 	@Override
-	public boolean isEmptyData(List<Device> data) {
+	public boolean isEmptyData(List<T> data) {
 		if (data == null) {
 			new SystemOperationException("Brak danych.", new NullPointerException().getCause());
 			return true;
 		}
 		
 		if (data.isEmpty()) {
-			JOptionPane.showMessageDialog(controller.getMainFrame(), "Brak danych do załadowania");
+			JOptionPane.showMessageDialog(new JFrame(), "Brak danych do załadowania");
 			return true;
 		}
 		return false;
 	}
+
+	public PMJTable getTable() {
+		return table;
+	}
+
+	public void setTable(PMJTable table) {
+		this.table = table;
+	}
+
+	public JPanel getCenterPanel() {
+		return centerPanel;
+	}
+
+	public void setCenterPanel(JPanel centerPanel) {
+		this.centerPanel = centerPanel;
+	}
+
+	public JPanel getNorthPanel() {
+		return northPanel;
+	}
+
+	public void setNorthPanel(JPanel northPanel) {
+		this.northPanel = northPanel;
+	}
+
+	public ButtonPanel getButtonPanel() {
+		return buttonPanel;
+	}
+
+	public void setButtonPanel(ButtonPanel buttonPanel) {
+		this.buttonPanel = buttonPanel;
+	}
+
+	public JButton getInsertButton() {
+		return insertButton;
+	}
+
+	public void setInsertButton(JButton insertButton) {
+		this.insertButton = insertButton;
+	}
+
+	public JButton getUpdateButton() {
+		return updateButton;
+	}
+
+	public void setUpdateButton(JButton updateButton) {
+		this.updateButton = updateButton;
+	}
+
+	public JButton getDeleteButton() {
+		return deleteButton;
+	}
+
+	public void setDeleteButton(JButton deleteButton) {
+		this.deleteButton = deleteButton;
+	}
+
+	public void setTableContainer(JScrollPane tableContainer) {
+		this.tableContainer = tableContainer;
+	}
+	
+	
 
 }

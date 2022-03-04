@@ -7,6 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 public class CommonFunctions {
 
 	
@@ -65,6 +68,11 @@ public class CommonFunctions {
 	     }
 	  }
 	
+	public static String formatDate(Date date, String stringPattern) {
+		 SimpleDateFormat simpleDateFormat = new SimpleDateFormat(stringPattern);
+	     return simpleDateFormat.format(date);
+	  }
+	
 	public static Date parseDate(int year, int month, int day) {
 		String date = String.valueOf(year) + "-" + String.valueOf(month) + "-" + String.valueOf(day);
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -90,5 +98,14 @@ public class CommonFunctions {
 	    if (days == 0)      res = String.format("%02d:%02d:%02d.%04d", hours, minutes, seconds, millis);
 	    else                res = String.format("%dd %02d:%02d:%02d.%04d", days, hours, minutes, seconds, millis);
 	    return res;
+	}
+	
+	public static boolean validateID(int ID) {
+		if(ID < 0) {
+			JOptionPane.showMessageDialog(new JFrame(), "Nie zaznaczono wiersza!", "Ostrzeżenie", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+		
+		return true;
 	}
 }

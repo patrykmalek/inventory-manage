@@ -107,5 +107,7 @@ public class Device {
 	public void setAssignedEmployee(Employee assignedEmployee) {
 		this.assignedEmployee = assignedEmployee;
 	}
+	
+	
 
 }

@@ -25,7 +25,7 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.BoxLayout;
 
-public class PMCustomTextFieldWithJList extends JPanel {
+public class PMCustomTextFieldWithJList<T> extends JPanel {
 
 
 	private static final long serialVersionUID = -1190813197642099916L;
@@ -49,6 +49,8 @@ public class PMCustomTextFieldWithJList extends JPanel {
 	private final Color customBorderColorHover = new Color(0, 60, 110);
 	
 	private final BorderLayout layoutPanel = new BorderLayout();
+	
+	private T item;
 
 	public PMCustomTextFieldWithJList() {
 		createVisuals();
@@ -203,7 +205,7 @@ public class PMCustomTextFieldWithJList extends JPanel {
 	
 	
 	public void setEditable(boolean editable) {
-		getCustomTextField().setEnabled(editable);
+		getCustomTextField().setEditable(editable);
 		getDictionaryButton().setEnabled(editable);
 	}
 	
@@ -310,6 +312,17 @@ public class PMCustomTextFieldWithJList extends JPanel {
 
 	public BorderLayout getLayoutPanel() {
 		return layoutPanel;
+	}
+
+
+	public T getItem() {
+		return item;
+	}
+
+
+	public void addItem(T item) {
+		this.item = item;
+		getCustomTextField().setText(item.toString());
 	}
 
 	

@@ -4,12 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-
-import kruszywo.sa.computers.manage.dao.DeviceDAO;
-import kruszywo.sa.computers.manage.exception.SystemOperationException;
+import kruszywo.sa.computers.manage.dao.ManagerDAO;
 import kruszywo.sa.computers.manage.model.CommonFunctions;
-import kruszywo.sa.computers.manage.model.Device;
-import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.provider.DatabaseProvider;
 import kruszywo.sa.computers.manage.view.TabbedPanel;
 import kruszywo.sa.computers.manage.view.DepartmentDictionaryTablePanel;
@@ -33,7 +29,7 @@ public class Controller {
 	
 	public static WaitWindow waitWindow;
 	
-	private DeviceDAO deviceDAO;
+	private ManagerDAO managerDAO;
 	
 	private static List<String> errors = new ArrayList<String>();
 	
@@ -41,23 +37,24 @@ public class Controller {
 
 	private Calendar calendar;
 	
-	
-//	public void doSomething() {
-//		WaitWindow waitWindow = new WaitWindow(this);
-//		Thread th = new Thread(new Runnable() {
-//			@Override
-//			public void run() {
-//				waitWindow.done();
-//			}
-//		});
-//		th.start();
-//		waitWindow.showWindow();
-//	}
-	
 	public Controller(DatabaseProvider databaseProvider) {
-		this.setDatabaseProvider(databaseProvider);
-		this.deviceDAO = new DeviceDAO(this);
-		this.calendar = Calendar.getInstance();
+		setDatabaseProvider(databaseProvider);
+		setCalendar(Calendar.getInstance());
+		setManagerDAO(new ManagerDAO(this));
+	}
+	
+	public void addDevicesPanel() {
+		this.getTabbedPanel().addTabbedPanel(TabbedPanel.DEVICES_PANEL, new DeviceTablePanel(this));
+		this.getDeviceTablePanel().updateTable(getManagerDAO().getDeviceDAO().getAll());
+	}
+	
+	public void addDevicesTypeDictionaryPanel() {
+		this.getTabbedPanel().addTabbedPanel(TabbedPanel.DEVICES_TYPE_DICTIONARY_PANEL, new DeviceTypeDictionaryTablePanel(this));
+		this.getDeviceTypeDictionaryTable().updateTable(getManagerDAO().getDeviceTypeDAO().getAll());
+	}
+	
+	public void addDepartmentDictionaryPanel() {
+		this.getTabbedPanel().addTabbedPanel(TabbedPanel.DEPARTMENT_DICTIONARY_PANEL, new DepartmentDictionaryTablePanel(this));
 	}
 
 	public DatabaseProvider getDatabaseProvider() {
@@ -115,27 +112,6 @@ public class Controller {
 	public void setDepartmentDictionaryTable(DepartmentDictionaryTablePanel departmentDictionaryTable) {
 		this.departmentDictionaryTable = departmentDictionaryTable;
 	}
-	
-	public void addDevicesPanel() {
-		this.getTabbedPanel().addTabbedPanel(TabbedPanel.DEVICES_PANEL, new DeviceTablePanel(this));
-		this.getDeviceTablePanel().updateTable(getDeviceDAO().getAll());
-	}
-	
-	public void addDevicesTypeDictionaryPanel() {
-		this.getTabbedPanel().addTabbedPanel(TabbedPanel.DEVICES_TYPE_DICTIONARY_PANEL, new DeviceTypeDictionaryTablePanel(this));
-	}
-	
-	public void addDepartmentDictionaryPanel() {
-		this.getTabbedPanel().addTabbedPanel(TabbedPanel.DEPARTMENT_DICTIONARY_PANEL, new DepartmentDictionaryTablePanel(this));
-	}
-
-	public DeviceDAO getDeviceDAO() {
-		return deviceDAO;
-	}
-
-	public void setDeviceDAO(DeviceDAO deviceDAO) {
-		this.deviceDAO = deviceDAO;
-	}
 
 	public SimpleDateFormat getDefaultDateFormat() {
 		return defaultDateFormat;
@@ -167,56 +143,17 @@ public class Controller {
 		return calendar;
 	}
 	
-	public void openDeviceWindowToAddNew() {
-		DeviceDetailsFrame deviceDetailsWindow = new DeviceDetailsFrame(this);
-		deviceDetailsWindow.setEditable(true);
-		deviceDetailsWindow.setOperationType(OperationType.INSERT);
-		deviceDetailsWindow.showWindow();
-	}
-	
-	public void openDeviceWindowToOnlyShowDetails(int deviceID) {
-		Device device = getDeviceDAO().get(deviceID);
-		
-		DeviceDetailsFrame deviceDetailsWindow = new DeviceDetailsFrame(this);
-		deviceDetailsWindow.setEditable(false);
-		deviceDetailsWindow.setOperationType(OperationType.DISPLAY);
-		deviceDetailsWindow.showWindow();
-		deviceDetailsWindow.addDeviceDataToView(device);
-	}
-	
-	public void openDeviceWindowToUpdate(int deviceID) {	
-		Device device = getDeviceDAO().get(deviceID);
-		DeviceDetailsFrame deviceDetailsWindow = new DeviceDetailsFrame(this);
-		deviceDetailsWindow.setEditable(true);
-		deviceDetailsWindow.setOperationType(OperationType.UPDATE);
-		deviceDetailsWindow.showWindow();
-		deviceDetailsWindow.addDeviceDataToView(device);
+	public void setCalendar(Calendar calendar) {
+		this.calendar = calendar;
 	}
 
-	public void insertDevice(Device device) {
-		getDeviceDAO().insert(device);
+	public ManagerDAO getManagerDAO() {
+		return managerDAO;
 	}
 
-	public void updateDevice(Device device) {
-		getDeviceDAO().update(device);
-	}
-	
-	public void deleteDevice(Device device) {
-		getDeviceDAO().delete(device);
+	public void setManagerDAO(ManagerDAO managerDAO) {
+		this.managerDAO = managerDAO;
 	}
 
-	public void saveDeviceData(Device device, OperationType operationType) {
-		
-		if(operationType == OperationType.INSERT) {
-			insertDevice(device);
-		} else if (operationType == OperationType.UPDATE) {
-			updateDevice(device);
-		} else if (operationType == OperationType.DELETE) {
-			deleteDevice(device);
-		} else {
-			new SystemOperationException("Brak określonego typu operacji");
-		}
-		
-	}
 
 }

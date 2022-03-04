@@ -27,5 +27,10 @@ public class DeviceType {
 	public void setDeviceTypeName(String deviceTypeName) {
 		this.deviceTypeName = deviceTypeName;
 	}
+
+	@Override
+	public String toString() {
+		return deviceTypeName;
+	}
 	
 }

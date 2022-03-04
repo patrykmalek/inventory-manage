@@ -22,11 +22,11 @@ public class DeviceDAO implements DAO<Device>{
     private static final String FIND_ALL = "SELECT * FROM DEVICES D LEFT JOIN DEVICE_TYPE DT ON (DT.ID_DEVICE_TYPE = D.ID_DEVICE_TYPE) LEFT JOIN DEPARTMENT DP ON (DP.ID_DEPARTMENT = D.ID_ASSIGNED_DEPARTMENT) LEFT JOIN EMPLOYEE E ON (E.ID_EMPLOYEE = D.ID_ASSIGNED_EMPLOYEE);";
     private static final String INSERT = "INSERT INTO devices (device_unique_number, device_name, device_inventory_number, id_device_type, id_assigned_department, id_assigned_employee, invoice_number, purchase_date, last_installation_date, notes) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
     private static final String UPDATE = "UPDATE devices SET device_unique_number=?, device_name=?, device_inventory_number=?, id_device_type=?, id_assigned_department=?, id_assigned_employee=?, invoice_number=?, purchase_date=?, last_installation_date=?, notes=? WHERE id_device=?;";
- 
+    private static final String DELETE = "DELETE FROM DEVICES WHERE ID_DEVICE=?;";
 	
 	public DeviceDAO(Controller controller) {
 		this.controller = controller;
-		this.controller.setDeviceDAO(this);
+		this.controller.getManagerDAO().setDeviceDAO(this);
 	}
 	
 	@Override
@@ -174,6 +174,7 @@ public class DeviceDAO implements DAO<Device>{
             ps.setString(10, device.getNotes());
             ps.setInt(11, device.getDeviceID());
             
+            
 			controller.getDatabaseProvider().executePreparedStatement(ps);
 			
             System.out.println("Device with id " + device.getDeviceID() + " was updated in DB with following details: " + device.toString());
@@ -185,7 +186,7 @@ public class DeviceDAO implements DAO<Device>{
 	@Override
 	public void delete(Device device) {
 		try {
-			PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(UPDATE);
+			PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(DELETE);
 			 
             ps.setInt(1, device.getDeviceID());
             
