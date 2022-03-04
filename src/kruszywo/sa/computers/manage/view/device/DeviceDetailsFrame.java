@@ -258,6 +258,27 @@ public class DeviceDetailsFrame extends JDialog {
 			}
 		});
 		
+		deviceTypeField.getDictionaryButton().removeActionListener(deviceTypeField.getDictionaryButton().getActionListeners()[0]);
+		deviceTypeField.getDictionaryButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				getController().getManagerDAO().getDeviceServiceDAO().openDeviceTypeDictionaryWindow();
+			}
+		});
+		
+		deviceAssignedDepartmentField.getDictionaryButton().removeActionListener(deviceAssignedDepartmentField.getDictionaryButton().getActionListeners()[0]);
+		deviceAssignedDepartmentField.getDictionaryButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				getController().getManagerDAO().getDeviceServiceDAO().openDepartmentDictionaryWindow();
+			}
+		});
+		
+		deviceAssignedEmployeeField.getDictionaryButton().removeActionListener(deviceAssignedEmployeeField.getDictionaryButton().getActionListeners()[0]);
+		deviceAssignedEmployeeField.getDictionaryButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+			}
+		});
+		
 	}
 	
 	public boolean addDeviceDataToView(Device device) {

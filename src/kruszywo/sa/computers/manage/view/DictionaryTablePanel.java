@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -35,6 +36,8 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 	private JButton updateButton;
 	private JButton deleteButton;
 	
+	private String panelTitle = "Słownik";
+	
 	public DictionaryTablePanel() {
 		this.createVisuals();
 		this.createEventListeners();
@@ -44,6 +47,7 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 	public void createVisuals() {
 		this.setBackground(new Color(245, 245, 245));
 		this.setLayout(new BorderLayout());
+		this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		
 		this.table = new PMJTable(false);
 		this.table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);		
@@ -216,7 +220,13 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 	public void setTableContainer(JScrollPane tableContainer) {
 		this.tableContainer = tableContainer;
 	}
-	
-	
+
+	public String getPanelTitle() {
+		return panelTitle;
+	}
+
+	public void setPanelTitle(String panelTitle) {
+		this.panelTitle = panelTitle;
+	}
 
 }

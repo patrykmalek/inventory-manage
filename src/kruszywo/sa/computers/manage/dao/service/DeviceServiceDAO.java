@@ -1,12 +1,18 @@
-package kruszywo.sa.computers.manage.dao;
+package kruszywo.sa.computers.manage.dao.service;
 
 import javax.swing.JOptionPane;
 
 import kruszywo.sa.computers.manage.controller.Controller;
+import kruszywo.sa.computers.manage.dao.ManagerDAO;
 import kruszywo.sa.computers.manage.exception.SystemOperationException;
 import kruszywo.sa.computers.manage.model.CommonFunctions;
+import kruszywo.sa.computers.manage.model.Department;
 import kruszywo.sa.computers.manage.model.Device;
+import kruszywo.sa.computers.manage.model.DeviceType;
 import kruszywo.sa.computers.manage.model.OperationType;
+import kruszywo.sa.computers.manage.view.DepartmentDictionaryTablePanel;
+import kruszywo.sa.computers.manage.view.DeviceTypeDictionaryTablePanel;
+import kruszywo.sa.computers.manage.view.DictionaryFrame;
 import kruszywo.sa.computers.manage.view.device.DeviceDetailsFrame;
 
 public class DeviceServiceDAO {
@@ -79,6 +85,20 @@ public class DeviceServiceDAO {
 		deviceDetailsWindow.createWindow();
 		deviceDetailsWindow.addDeviceDataToView(device);
 		deviceDetailsWindow.showWindow();
+	}
+	
+	public void openDeviceTypeDictionaryWindow() {	
+		DeviceTypeDictionaryTablePanel deviceTypeDictionaryTablePanel = new DeviceTypeDictionaryTablePanel(getController());
+		deviceTypeDictionaryTablePanel.updateTable(getManagerDAO().getDeviceTypeDAO().getAll());
+		DictionaryFrame<DeviceType> dictionaryFrame = new DictionaryFrame<>(getController(), deviceTypeDictionaryTablePanel);
+		dictionaryFrame.showWindow();
+	}
+	
+	public void openDepartmentDictionaryWindow() {	
+		DepartmentDictionaryTablePanel departmentDictionaryTablePanel = new DepartmentDictionaryTablePanel(getController());
+		departmentDictionaryTablePanel.updateTable(getManagerDAO().getDepartmentDAO().getAll());
+		DictionaryFrame<Department> dictionaryFrame = new DictionaryFrame<>(getController(), departmentDictionaryTablePanel);
+		dictionaryFrame.showWindow();
 	}
 	
 

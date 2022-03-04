@@ -20,6 +20,7 @@ public class DeviceTypeDictionaryTablePanel extends DictionaryTablePanel<DeviceT
 		this.controller.setDeviceTypeDictionaryTable(this);
 		this.createTable();
 		this.setButtonEventListeners();
+		setPanelTitle("Słownik typów urządzeń");
 	}
 	
 	@Override

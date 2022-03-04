@@ -1,6 +1,7 @@
 package kruszywo.sa.computers.manage.dao;
 
 import kruszywo.sa.computers.manage.controller.Controller;
+import kruszywo.sa.computers.manage.dao.service.DeviceServiceDAO;
 
 public class ManagerDAO {
 
@@ -11,6 +12,7 @@ public class ManagerDAO {
 	
 	private DeviceDAO deviceDAO;
 	private DeviceTypeDAO deviceTypeDAO;
+	private DepartmentDAO departmentDAO;
 	
 	public ManagerDAO(Controller controller) {
 		this.controller = controller;
@@ -18,6 +20,8 @@ public class ManagerDAO {
 		
 		this.setDeviceDAO(new DeviceDAO(controller));
 		this.setDeviceTypeDAO(new DeviceTypeDAO(controller));
+		this.setDepartmentDAO(new DepartmentDAO(controller));
+		
 		this.setDeviceServiceDAO(new DeviceServiceDAO(controller, this));
 	}
 
@@ -43,5 +47,13 @@ public class ManagerDAO {
 
 	public void setDeviceServiceDAO(DeviceServiceDAO deviceServiceDAO) {
 		this.deviceServiceDAO = deviceServiceDAO;
+	}
+
+	public DepartmentDAO getDepartmentDAO() {
+		return departmentDAO;
+	}
+
+	public void setDepartmentDAO(DepartmentDAO departmentDAO) {
+		this.departmentDAO = departmentDAO;
 	}
 }

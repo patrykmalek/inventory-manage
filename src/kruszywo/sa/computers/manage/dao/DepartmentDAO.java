@@ -8,117 +8,110 @@ import java.util.List;
 
 import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.exception.SystemOperationException;
-import kruszywo.sa.computers.manage.model.DeviceType;
+import kruszywo.sa.computers.manage.model.Department;
 
-public class DeviceTypeDAO implements DAO<DeviceType>{
+public class DepartmentDAO implements DAO<Department>{
 
-	private List<DeviceType> deviceTypes;
+	private List<Department> departments;
 	private Controller controller;
 	
-	private static final String FIND_BY_ID = "SELECT * FROM DEVICE_TYPE WHERE ID_DEVICE_TYPE=?;";
-    private static final String FIND_ALL = "SELECT * FROM DEVICE_TYPE;";
-    private static final String INSERT = "INSERT INTO DEVICE_TYPE (DEVICE_TYPE_NAME) VALUES(?);";
-    private static final String UPDATE = "UPDATE DEVICE_TYPE SET DEVICE_TYPE_NAME=? WHERE ID_DEVICE_TYPE=?;";
-    private static final String DELETE = "DELETE FROM DEVICE_TYPE WHERE ID_DEVICE_TYPE=?;";
+	private static final String FIND_BY_ID = "SELECT * FROM DEPARTMENT WHERE ID_DEPARTMENT=?;";
+    private static final String FIND_ALL = "SELECT * FROM DEPARTMENT;";
+    private static final String INSERT = "INSERT INTO DEPARTMENT (DEPARTMENT_NAME) VALUES(?);";
+    private static final String UPDATE = "UPDATE DEPARTMENT SET DEPARTMENT_NAME=? WHERE ID_DEPARTMENT=?;";
+    private static final String DELETE = "DELETE FROM DEPARTMENT WHERE ID_DEPARTMENT=?;";
 	
-	public DeviceTypeDAO(Controller controller) {
+	public DepartmentDAO(Controller controller) {
 		this.controller = controller;
-		this.controller.getManagerDAO().setDeviceTypeDAO(this);
+		this.controller.getManagerDAO().setDepartmentDAO(this);
 	}
 	
 	@Override
-	public DeviceType get(int deviceTypeID) {
-		DeviceType deviceType = null;
+	public Department get(int departmentID) {
+		Department department = null;
      	try {
 	     	 PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(FIND_BY_ID);
-	     	 ps.setInt(1, deviceTypeID);
+	     	 ps.setInt(1, departmentID);
 	     	 
 	   		 controller.getDatabaseProvider().executePreparedStatementWithResult(ps);
 	   		 ResultSet resultSet = controller.getDatabaseProvider().getResultSet();
    		 
 			 if(resultSet.next()) {
-					
-			 	deviceType = new DeviceType();
-	
-			 	deviceType.setDeviceTypeID(resultSet.getInt("id_device_type"));
-			 	deviceType.setDeviceTypeName(resultSet.getString("device_type_name"));
-	
+				 department = new Department();
+				 department.setDepartmentID(resultSet.getInt("id_department"));
+				 department.setDepartmentName(resultSet.getString("department_name"));
 			 }
-		  ps.close();
-		  resultSet.close();
+		    ps.close();
+		    resultSet.close();
 		} catch (SQLException e) {
 			new SystemOperationException("Błąd podczas odczytu wszystkich urządzeń z bazy", e);
 		}
-      return deviceType;
+      return department;
 	}
 
 	@Override
-	public List<DeviceType> getAll() {
-		 deviceTypes = new ArrayList<DeviceType>();
+	public List<Department> getAll() {
+		departments = new ArrayList<Department>();
 	 
          	try {
 				PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(FIND_ALL);
 				controller.getDatabaseProvider().executePreparedStatementWithResult(ps);
 				ResultSet resultSet = controller.getDatabaseProvider().getResultSet();
-				DeviceType deviceType = null;
+				Department department = null;
 			 while (resultSet.next()) {
-					
-				 	deviceType = new DeviceType();
-				 	
-				 	deviceType.setDeviceTypeID(resultSet.getInt("id_device_type"));
-				 	deviceType.setDeviceTypeName(resultSet.getString("device_type_name"));
-
-				 	deviceTypes.add(deviceType);
+					 department = new Department();
+					 department.setDepartmentID(resultSet.getInt("id_department"));
+					 department.setDepartmentName(resultSet.getString("department_name"));
+				 	departments.add(department);
 				}
 			  ps.close();
 			  resultSet.close();
 			} catch (SQLException e) {
 				new SystemOperationException("Błąd podczas odczytu wszystkich urządzeń z bazy", e);
 			}
-	      return deviceTypes;
+	      return departments;
 	}
 
 	@Override
-	public void insert(DeviceType deviceType) {
+	public void insert(Department department) {
 			try {
 				PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(INSERT);
 				 
-	            ps.setString(1, deviceType.getDeviceTypeName());
-	            
+	            ps.setString(1, department.getDepartmentName());
 				controller.getDatabaseProvider().executePreparedStatement(ps);
 				
-	            System.out.println("Device Type with following details was saved in DB: " + deviceType.toString());
+	            System.out.println("Department with following details was saved in DB: " + department.toString());
 			} catch (SQLException e) {
 				new SystemOperationException("Błąd podczas zapisywania danych urządzenia do bazy.", e);
 			}
 	}
 
 	@Override
-	public void update(DeviceType deviceType) {
+	public void update(Department department) {
 		try {
 			PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(UPDATE);
 			 
-            ps.setString(1, deviceType.getDeviceTypeName());
-            ps.setInt(2, deviceType.getDeviceTypeID());
+            ps.setString(1, department.getDepartmentName());
+            ps.setInt(2, department.getDepartmentID());
 
 			controller.getDatabaseProvider().executePreparedStatement(ps);
 			
-            System.out.println("Device Type with id " + deviceType.getDeviceTypeID() + " was updated in DB with following details: " + deviceType.toString());
+            System.out.println("Department with id " + department.getDepartmentID() + " was updated in DB with following details: " + department.toString());
 		} catch (SQLException e) {
 			new SystemOperationException("Błąd podczas aktualizacji danych urządzenia do bazy.", e);
 		}
 	}
 
 	@Override
-	public void delete(DeviceType deviceType) {
+	public void delete(Department department) {
 		try {
 			PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(DELETE);
 			 
-            ps.setInt(1, deviceType.getDeviceTypeID());
+            ps.setInt(1, department.getDepartmentID());
             
 			controller.getDatabaseProvider().executePreparedStatement(ps);
 			
-			System.out.println("Device Type with id: " +  deviceType.getDeviceTypeID() + " was sucesfully deleted from DB.");
+			System.out.println("Department with id: " +  department.getDepartmentID() + " was sucesfully deleted from DB.");
 		} catch (SQLException e) {
 			new SystemOperationException("Błąd podczas aktualizacji danych urządzenia do bazy.", e);
 		}
