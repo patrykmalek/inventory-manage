@@ -23,6 +23,8 @@ public interface TablePanel<T> {
 
 	void createVisuals();
 	
+	int getIdFromTable();
+	
 	void createTable();
 
 	JScrollPane getTableContainer();

@@ -29,7 +29,7 @@ import javax.swing.WindowConstants;
 import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.model.Device;
 import kruszywo.sa.computers.manage.provider.DatabaseProvider;
-import kruszywo.sa.computers.manage.view.device.DeviceDetailsFrame;
+import kruszywo.sa.computers.manage.view.details.window.DeviceDetailsFrame;
 import kruszywo.sa.computers.manage.view.util.PMJComboBox;
 import kruszywo.sa.computers.manage.view.util.PMJTextField;
 import net.miginfocom.swing.MigLayout;

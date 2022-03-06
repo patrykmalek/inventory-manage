@@ -6,6 +6,8 @@ public interface DAO<T> {
     
     T get(int id);
     
+    T get(String name);
+    
     List<T> getAll();
     
     void insert(T t);

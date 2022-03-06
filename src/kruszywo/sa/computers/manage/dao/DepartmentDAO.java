@@ -16,9 +16,10 @@ public class DepartmentDAO implements DAO<Department>{
 	private Controller controller;
 	
 	private static final String FIND_BY_ID = "SELECT * FROM DEPARTMENT WHERE ID_DEPARTMENT=?;";
+	private static final String FIND_BY_NAME = "SELECT * FROM DEPARTMENT WHERE DEPARTMENT_NAME LIKE ? LIMIT 1;";
     private static final String FIND_ALL = "SELECT * FROM DEPARTMENT;";
-    private static final String INSERT = "INSERT INTO DEPARTMENT (DEPARTMENT_NAME) VALUES(?);";
-    private static final String UPDATE = "UPDATE DEPARTMENT SET DEPARTMENT_NAME=? WHERE ID_DEPARTMENT=?;";
+    private static final String INSERT = "INSERT INTO DEPARTMENT (DEPARTMENT_CODE, DEPARTMENT_NAME) VALUES(?,?);";
+    private static final String UPDATE = "UPDATE DEPARTMENT SET DEPARTMENT_CODE=?, DEPARTMENT_NAME=? WHERE ID_DEPARTMENT=?;";
     private static final String DELETE = "DELETE FROM DEPARTMENT WHERE ID_DEPARTMENT=?;";
 	
 	public DepartmentDAO(Controller controller) {
@@ -39,6 +40,31 @@ public class DepartmentDAO implements DAO<Department>{
 			 if(resultSet.next()) {
 				 department = new Department();
 				 department.setDepartmentID(resultSet.getInt("id_department"));
+				 department.setDepartmentCode(resultSet.getString("department_code"));
+				 department.setDepartmentName(resultSet.getString("department_name"));
+			 }
+		    ps.close();
+		    resultSet.close();
+		} catch (SQLException e) {
+			new SystemOperationException("Błąd podczas odczytu wszystkich urządzeń z bazy", e);
+		}
+      return department;
+	}
+	
+	@Override
+	public Department get(String departmentName) {
+		Department department = null;
+     	try {
+	     	 PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(FIND_BY_NAME);
+	     	 ps.setString(1, "%" + departmentName + "%");
+	     	 
+	   		 controller.getDatabaseProvider().executePreparedStatementWithResult(ps);
+	   		 ResultSet resultSet = controller.getDatabaseProvider().getResultSet();
+   		 
+			 if(resultSet.next()) {
+				 department = new Department();
+				 department.setDepartmentID(resultSet.getInt("id_department"));
+				 department.setDepartmentCode(resultSet.getString("department_code"));
 				 department.setDepartmentName(resultSet.getString("department_name"));
 			 }
 		    ps.close();
@@ -61,6 +87,7 @@ public class DepartmentDAO implements DAO<Department>{
 			 while (resultSet.next()) {
 					 department = new Department();
 					 department.setDepartmentID(resultSet.getInt("id_department"));
+					 department.setDepartmentCode(resultSet.getString("department_code"));
 					 department.setDepartmentName(resultSet.getString("department_name"));
 				 	departments.add(department);
 				}
@@ -77,7 +104,8 @@ public class DepartmentDAO implements DAO<Department>{
 			try {
 				PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(INSERT);
 				 
-	            ps.setString(1, department.getDepartmentName());
+	            ps.setString(1, department.getDepartmentCode());
+	            ps.setString(2, department.getDepartmentName());
 				controller.getDatabaseProvider().executePreparedStatement(ps);
 				
 	            System.out.println("Department with following details was saved in DB: " + department.toString());
@@ -91,8 +119,9 @@ public class DepartmentDAO implements DAO<Department>{
 		try {
 			PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(UPDATE);
 			 
-            ps.setString(1, department.getDepartmentName());
-            ps.setInt(2, department.getDepartmentID());
+			ps.setString(1, department.getDepartmentCode());
+            ps.setString(2, department.getDepartmentName());
+            ps.setInt(3, department.getDepartmentID());
 
 			controller.getDatabaseProvider().executePreparedStatement(ps);
 			

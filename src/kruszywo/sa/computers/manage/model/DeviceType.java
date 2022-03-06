@@ -4,6 +4,7 @@ public class DeviceType {
 
 	private int deviceTypeID;
 	private String deviceTypeName;
+	private String deviceTypeNotes;
 	
 	public DeviceType() {}
 	
@@ -31,6 +32,14 @@ public class DeviceType {
 	@Override
 	public String toString() {
 		return deviceTypeName;
+	}
+
+	public String getDeviceTypeNotes() {
+		return deviceTypeNotes;
+	}
+
+	public void setDeviceTypeNotes(String deviceTypeNotes) {
+		this.deviceTypeNotes = deviceTypeNotes;
 	}
 	
 }

@@ -1,7 +1,10 @@
 package kruszywo.sa.computers.manage.dao;
 
 import kruszywo.sa.computers.manage.controller.Controller;
+import kruszywo.sa.computers.manage.dao.service.DepartmentServiceDAO;
 import kruszywo.sa.computers.manage.dao.service.DeviceServiceDAO;
+import kruszywo.sa.computers.manage.dao.service.DeviceTypeServiceDAO;
+import kruszywo.sa.computers.manage.dao.service.EmployeeServiceDAO;
 
 public class ManagerDAO {
 
@@ -9,11 +12,16 @@ public class ManagerDAO {
 	private Controller controller;
 	
 	private DeviceServiceDAO deviceServiceDAO;
+	private DeviceTypeServiceDAO deviceTypeServiceDAO;
+	private DepartmentServiceDAO departmentServiceDAO;
+	private EmployeeServiceDAO employeeServiceDAO;
 	
 	private DeviceDAO deviceDAO;
 	private DeviceTypeDAO deviceTypeDAO;
 	private DepartmentDAO departmentDAO;
 	private EmployeeDAO employeeDAO;
+	private SoftwareDAO softwareDAO;
+	private LicenseDAO licenseDAO;
 	
 	public ManagerDAO(Controller controller) {
 		this.controller = controller;
@@ -25,6 +33,9 @@ public class ManagerDAO {
 		this.setEmployeeDAO(new EmployeeDAO(controller));
 		
 		this.setDeviceServiceDAO(new DeviceServiceDAO(controller, this));
+		this.setDeviceTypeServiceDAO(new DeviceTypeServiceDAO(controller, this));
+		this.setDepartmentServiceDAO(new DepartmentServiceDAO(controller, this));
+		this.setEmployeeServiceDAO(new EmployeeServiceDAO(controller, this));
 	}
 
 	public DeviceDAO getDeviceDAO() {
@@ -65,5 +76,45 @@ public class ManagerDAO {
 
 	public void setEmployeeDAO(EmployeeDAO employeeDAO) {
 		this.employeeDAO = employeeDAO;
+	}
+
+	public DeviceTypeServiceDAO getDeviceTypeServiceDAO() {
+		return deviceTypeServiceDAO;
+	}
+
+	public void setDeviceTypeServiceDAO(DeviceTypeServiceDAO deviceTypeServiceDAO) {
+		this.deviceTypeServiceDAO = deviceTypeServiceDAO;
+	}
+
+	public DepartmentServiceDAO getDepartmentServiceDAO() {
+		return departmentServiceDAO;
+	}
+
+	public void setDepartmentServiceDAO(DepartmentServiceDAO departmentServiceDAO) {
+		this.departmentServiceDAO = departmentServiceDAO;
+	}
+
+	public EmployeeServiceDAO getEmployeeServiceDAO() {
+		return employeeServiceDAO;
+	}
+
+	public void setEmployeeServiceDAO(EmployeeServiceDAO employeeServiceDAO) {
+		this.employeeServiceDAO = employeeServiceDAO;
+	}
+
+	public SoftwareDAO getSoftwareDAO() {
+		return softwareDAO;
+	}
+
+	public void setSoftwareDAO(SoftwareDAO softwareDAO) {
+		this.softwareDAO = softwareDAO;
+	}
+
+	public LicenseDAO getLicenseDAO() {
+		return licenseDAO;
+	}
+
+	public void setLicenseDAO(LicenseDAO licenseDAO) {
+		this.licenseDAO = licenseDAO;
 	}
 }

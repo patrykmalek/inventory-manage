@@ -1,4 +1,4 @@
-package kruszywo.sa.computers.manage.view;
+package kruszywo.sa.computers.manage.view.dictionary.table.panel;
 
 import java.awt.BorderLayout;
 

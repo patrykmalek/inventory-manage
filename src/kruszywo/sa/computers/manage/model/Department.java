@@ -3,15 +3,18 @@ package kruszywo.sa.computers.manage.model;
 public class Department {
 	
 	private int departmentID;
+	private String departmentCode;
 	private String departmentName;
 	
 	public Department() {}
-	
-	public Department(int departmentID, String departmentName) {
+
+	public Department(int departmentID, String departmentCode, String departmentName) {
+		super();
 		this.departmentID = departmentID;
+		this.departmentCode = departmentCode;
 		this.departmentName = departmentName;
 	}
-	
+
 	public int getDepartmentID() {
 		return departmentID;
 	}
@@ -28,10 +31,17 @@ public class Department {
 		this.departmentName = departmentName;
 	}
 
+	public String getDepartmentCode() {
+		return departmentCode;
+	}
+
+	public void setDepartmentCode(String departmentCode) {
+		this.departmentCode = departmentCode;
+	}
+
 	@Override
 	public String toString() {
-		return departmentName;
+		return "("+ getDepartmentCode() +") " + getDepartmentName();
 	}
-	
 	
 }

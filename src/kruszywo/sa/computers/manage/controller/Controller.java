@@ -8,13 +8,16 @@ import kruszywo.sa.computers.manage.dao.ManagerDAO;
 import kruszywo.sa.computers.manage.model.CommonFunctions;
 import kruszywo.sa.computers.manage.provider.DatabaseProvider;
 import kruszywo.sa.computers.manage.view.TabbedPanel;
-import kruszywo.sa.computers.manage.view.DepartmentDictionaryTablePanel;
-import kruszywo.sa.computers.manage.view.DeviceTablePanel;
-import kruszywo.sa.computers.manage.view.DeviceTypeDictionaryTablePanel;
-import kruszywo.sa.computers.manage.view.EmployeeDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.MainFrame;
 import kruszywo.sa.computers.manage.view.WaitWindow;
-import kruszywo.sa.computers.manage.view.device.DeviceDetailsFrame;
+import kruszywo.sa.computers.manage.view.details.window.DepartmentDetailsFrame;
+import kruszywo.sa.computers.manage.view.details.window.DeviceDetailsFrame;
+import kruszywo.sa.computers.manage.view.details.window.DeviceTypeDetailsFrame;
+import kruszywo.sa.computers.manage.view.details.window.EmployeeDetailsFrame;
+import kruszywo.sa.computers.manage.view.dictionary.table.panel.DepartmentDictionaryTablePanel;
+import kruszywo.sa.computers.manage.view.dictionary.table.panel.DeviceTablePanel;
+import kruszywo.sa.computers.manage.view.dictionary.table.panel.DeviceTypeDictionaryTablePanel;
+import kruszywo.sa.computers.manage.view.dictionary.table.panel.EmployeeDictionaryTablePanel;
 
 public class Controller {
 
@@ -28,6 +31,9 @@ public class Controller {
 	private EmployeeDictionaryTablePanel employeeDictionaryTable;
 	
 	private DeviceDetailsFrame deviceDetailsFrame;
+	private DeviceTypeDetailsFrame deviceTypeDetailsFrame;
+	private DepartmentDetailsFrame departmentDetailsFrame;
+	private EmployeeDetailsFrame employeeDetailsFrame;
 	
 	public static WaitWindow waitWindow;
 	
@@ -169,6 +175,30 @@ public class Controller {
 
 	public void setManagerDAO(ManagerDAO managerDAO) {
 		this.managerDAO = managerDAO;
+	}
+
+	public DeviceTypeDetailsFrame getDeviceTypeDetailsFrame() {
+		return deviceTypeDetailsFrame;
+	}
+
+	public void setDeviceTypeDetailsFrame(DeviceTypeDetailsFrame deviceTypeDetailsFrame) {
+		this.deviceTypeDetailsFrame = deviceTypeDetailsFrame;
+	}
+
+	public DepartmentDetailsFrame getDepartmentDetailsFrame() {
+		return departmentDetailsFrame;
+	}
+
+	public void setDepartmentDetailsFrame(DepartmentDetailsFrame departmentDetailsFrame) {
+		this.departmentDetailsFrame = departmentDetailsFrame;
+	}
+
+	public EmployeeDetailsFrame getEmployeeDetailsFrame() {
+		return employeeDetailsFrame;
+	}
+
+	public void setEmployeeDetailsFrame(EmployeeDetailsFrame employeeDetailsFrame) {
+		this.employeeDetailsFrame = employeeDetailsFrame;
 	}
 
 

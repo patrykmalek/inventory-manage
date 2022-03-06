@@ -1,4 +1,4 @@
-package kruszywo.sa.computers.manage.view;
+package kruszywo.sa.computers.manage.view.dictionary.table.panel;
 
 
 
@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.exception.SystemOperationException;
 import kruszywo.sa.computers.manage.model.Device;
+import kruszywo.sa.computers.manage.view.TablePanel;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
 import kruszywo.sa.computers.manage.view.util.ClipboardKeyAdapter;
 import kruszywo.sa.computers.manage.view.util.PMJTable;
@@ -88,7 +89,7 @@ public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 		editButton.removeActionListener(editButton.getActionListeners()[0]);
 		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				getController().getManagerDAO().getDeviceServiceDAO().openDeviceWindowToUpdate(getID());
+				getController().getManagerDAO().getDeviceServiceDAO().openDeviceWindowToUpdate(getIdFromTable());
 			}
 		});
 		
@@ -96,14 +97,14 @@ public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 		deleteButton.removeActionListener(deleteButton.getActionListeners()[0]);
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				getController().getManagerDAO().getDeviceServiceDAO().deleteDeviceWithPrompt(getID());
+				getController().getManagerDAO().getDeviceServiceDAO().deleteDeviceWithPrompt(getIdFromTable());
 			}
 		});
 		
 		this.table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 					if (e.getClickCount() == 2) {
-						getController().getManagerDAO().getDeviceServiceDAO().openDeviceWindowToOnlyShowDetails(getID());
+						getController().getManagerDAO().getDeviceServiceDAO().openDeviceWindowToOnlyShowDetails(getIdFromTable());
 				}
 			}
 		});
@@ -184,8 +185,9 @@ public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 	public void setController(Controller controller) {
 		this.controller = controller;
 	}
-
-	public int getID() {
+	
+	@Override
+	public int getIdFromTable() {
 		int rowID;
 		if(table.getSelectedRow() < 0 ) {
 			rowID = table.getSelectedRow();

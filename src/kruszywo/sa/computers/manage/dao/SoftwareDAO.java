@@ -8,42 +8,42 @@ import java.util.List;
 
 import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.exception.SystemOperationException;
-import kruszywo.sa.computers.manage.model.Employee;
+import kruszywo.sa.computers.manage.model.Software;
 
-public class EmployeeDAO implements DAO<Employee>{
+public class SoftwareDAO implements DAO<Software>{
 
-	private List<Employee> employees;
+	private List<Software> softwares;
 	private Controller controller;
 	
-	private static final String FIND_BY_ID = "SELECT * FROM EMPLOYEE WHERE ID_EMPLOYEE=?;";
-	private static final String FIND_BY_NAME = "SELECT * FROM EMPLOYEE WHERE EMPLOYEE_FIRST_NAME || EMPLOYEE_LAST_NAME LIKE ?";
-    private static final String FIND_ALL = "SELECT * FROM EMPLOYEE;";
-    private static final String INSERT = "INSERT INTO EMPLOYEE (EMPLOYEE_FIRST_NAME, EMPLOYEE_LAST_NAME) VALUES(?,?);";
-    private static final String UPDATE = "UPDATE EMPLOYEE SET EMPLOYEE_FIRST_NAME=?, EMPLOYEE_LAST_NAME=? WHERE ID_EMPLOYEE=?;";
-    private static final String DELETE = "DELETE FROM EMPLOYEE WHERE ID_EMPLOYEE=?;";
+	private static final String FIND_BY_ID = "SELECT * FROM SOFTWARE WHERE ID_SOFTWARE=?;";
+	private static final String FIND_BY_NAME = "SELECT * FROM SOFTWARE WHERE SOFTWARE_NAME LIKE ? LIMIT 1;";
+    private static final String FIND_ALL = "SELECT * FROM SOFTWARE;";
+    private static final String INSERT = "INSERT INTO SOFTWARE (SOFTWARE_NAME, SOFTWARE_NOTES) VALUES(?,?);";
+    private static final String UPDATE = "UPDATE SOFTWARE SET SOFTWARE_NAME=?, SOFTWARE_NOTES=? WHERE ID_SOFTWARE=?;";
+    private static final String DELETE = "DELETE FROM SOFTWARE WHERE ID_SOFTWARE=?;";
 	
-	public EmployeeDAO(Controller controller) {
+	public SoftwareDAO(Controller controller) {
 		this.controller = controller;
-		this.controller.getManagerDAO().setEmployeeDAO(this);
+		this.controller.getManagerDAO().setSoftwareDAO(this);
 	}
 	
 	@Override
-	public Employee get(int employeeID) {
-		Employee employee = null;
+	public Software get(int softwareID) {
+		Software software = null;
      	try {
 	     	 PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(FIND_BY_ID);
-	     	 ps.setInt(1, employeeID);
+	     	 ps.setInt(1, softwareID);
 	     	 
 	   		 controller.getDatabaseProvider().executePreparedStatementWithResult(ps);
 	   		 ResultSet resultSet = controller.getDatabaseProvider().getResultSet();
    		 
 			 if(resultSet.next()) {
 					
-				 employee = new Employee();
+			 	software = new Software();
 	
-				 employee.setEmployeeID(resultSet.getInt("id_employee"));
-				 employee.setFirstName(resultSet.getString("employee_first_name"));
-				 employee.setLastName(resultSet.getString("employee_last_name"));
+			 	software.setSoftwareID(resultSet.getInt("id_software"));
+			 	software.setSoftwareName(resultSet.getString("software_name"));
+			 	software.setSoftwareNotes(resultSet.getString("software_notes"));
 	
 			 }
 		  ps.close();
@@ -51,106 +51,105 @@ public class EmployeeDAO implements DAO<Employee>{
 		} catch (SQLException e) {
 			new SystemOperationException("Błąd podczas odczytu wszystkich urządzeń z bazy", e);
 		}
-      return employee;
+      return software;
 	}
 	
-	@Override
-	public Employee get(String employeeTextToFind) {
-		Employee employee = null;
+	public Software get(String softwareName) {
+		Software software = null;
      	try {
 	     	 PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(FIND_BY_NAME);
-	     	 ps.setString(1, "%" + employeeTextToFind + "%");
-	     	 
+	     	 ps.setString(1, "%" + softwareName + "%");
 	   		 controller.getDatabaseProvider().executePreparedStatementWithResult(ps);
 	   		 ResultSet resultSet = controller.getDatabaseProvider().getResultSet();
    		 
 			 if(resultSet.next()) {
 					
-				 employee = new Employee();
+			 	software = new Software();
 	
-				 employee.setEmployeeID(resultSet.getInt("id_employee"));
-				 employee.setFirstName(resultSet.getString("employee_first_name"));
-				 employee.setLastName(resultSet.getString("employee_last_name"));
-	
+			 	software.setSoftwareID(resultSet.getInt("id_software"));
+			 	software.setSoftwareName(resultSet.getString("software_name"));
+			 	software.setSoftwareNotes(resultSet.getString("software_notes"));
+			 	
 			 }
 		  ps.close();
 		  resultSet.close();
 		} catch (SQLException e) {
 			new SystemOperationException("Błąd podczas odczytu wszystkich urządzeń z bazy", e);
 		}
-      return employee;
+      return software;
 	}
 
 	@Override
-	public List<Employee> getAll() {
-		 employees = new ArrayList<Employee>();
+	public List<Software> getAll() {
+		 softwares = new ArrayList<Software>();
 	 
          	try {
 				PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(FIND_ALL);
 				controller.getDatabaseProvider().executePreparedStatementWithResult(ps);
 				ResultSet resultSet = controller.getDatabaseProvider().getResultSet();
-				Employee employee = null;
+				Software software = null;
 			 while (resultSet.next()) {
 					
-				 	employee = new Employee();
+				 	software = new Software();
 				 	
-				 	employee.setEmployeeID(resultSet.getInt("id_employee"));
-					employee.setFirstName(resultSet.getString("employee_first_name"));
-					employee.setLastName(resultSet.getString("employee_last_name"));
-					 
-					employees.add(employee);
+				 	software.setSoftwareID(resultSet.getInt("id_software"));
+				 	software.setSoftwareName(resultSet.getString("software_name"));
+				 	software.setSoftwareNotes(resultSet.getString("software_notes"));
+
+				 	softwares.add(software);
 				}
 			  ps.close();
 			  resultSet.close();
 			} catch (SQLException e) {
 				new SystemOperationException("Błąd podczas odczytu wszystkich urządzeń z bazy", e);
 			}
-	      return employees;
+	      return softwares;
 	}
 
 	@Override
-	public void insert(Employee employee) {
+	public void insert(Software software) {
 			try {
 				PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(INSERT);
 				 
-	            ps.setString(1, employee.getFirstName());
-	            ps.setString(2, employee.getLastName());
+	            ps.setString(1, software.getSoftwareName());
+	            ps.setString(2, software.getSoftwareNotes());
 	            
 				controller.getDatabaseProvider().executePreparedStatement(ps);
 				
-	            System.out.println("Employee Type with following details was saved in DB: " + employee.toString());
+	            System.out.println("Software with following details was saved in DB: " + software.toString());
 			} catch (SQLException e) {
 				new SystemOperationException("Błąd podczas zapisywania danych urządzenia do bazy.", e);
 			}
 	}
 
 	@Override
-	public void update(Employee employee) {
+	public void update(Software software) {
 		try {
 			PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(UPDATE);
 			 
-			ps.setString(1, employee.getFirstName());
-            ps.setString(2, employee.getLastName());
-            ps.setInt(3, employee.getEmployeeID());
+            ps.setString(1, software.getSoftwareName());
+            ps.setString(2, software.getSoftwareNotes());
+            ps.setInt(3, software.getSoftwareID());
+           
 
 			controller.getDatabaseProvider().executePreparedStatement(ps);
 			
-            System.out.println("Employee Type with id " + employee.getEmployeeID() + " was updated in DB with following details: " + employee.toString());
+            System.out.println("Software with id " + software.getSoftwareID() + " was updated in DB with following details: " + software.toString());
 		} catch (SQLException e) {
 			new SystemOperationException("Błąd podczas aktualizacji danych urządzenia do bazy.", e);
 		}
 	}
 
 	@Override
-	public void delete(Employee employee) {
+	public void delete(Software software) {
 		try {
 			PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(DELETE);
 			 
-            ps.setInt(1, employee.getEmployeeID());
+            ps.setInt(1, software.getSoftwareID());
             
 			controller.getDatabaseProvider().executePreparedStatement(ps);
 			
-			System.out.println("Employee Type with id: " +  employee.getEmployeeID() + " was sucesfully deleted from DB.");
+			System.out.println("Software with id: " +  software.getSoftwareID() + " was sucesfully deleted from DB.");
 		} catch (SQLException e) {
 			new SystemOperationException("Błąd podczas aktualizacji danych urządzenia do bazy.", e);
 		}

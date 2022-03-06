@@ -25,7 +25,7 @@ import javax.swing.border.LineBorder;
 
 import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.provider.DatabaseProvider;
-import kruszywo.sa.computers.manage.view.device.DeviceDetailsFrame;
+import kruszywo.sa.computers.manage.view.details.window.DeviceDetailsFrame;
 
 
 public class PMJComboBox<T> extends JPanel {

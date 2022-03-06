@@ -1,4 +1,4 @@
-package kruszywo.sa.computers.manage.view;
+package kruszywo.sa.computers.manage.view.dictionary.table.panel;
 
 
 
@@ -22,6 +22,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 import kruszywo.sa.computers.manage.exception.SystemOperationException;
+import kruszywo.sa.computers.manage.view.TablePanel;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
 import kruszywo.sa.computers.manage.view.util.ClipboardKeyAdapter;
 import kruszywo.sa.computers.manage.view.util.PMJTable;
@@ -206,6 +207,19 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 		return false;
 	}
 	
+	@Override
+	public int getIdFromTable() {
+		int rowID;
+		if(table.getSelectedRow() < 0 ) {
+			rowID = table.getSelectedRow();
+		} else {
+			int modelRow = table.convertRowIndexToModel(table.getSelectedRow());
+			rowID = (int) table.getModel().getValueAt(modelRow, 0);
+		}
+		
+		return rowID;
+	}
+	
 	private void closeParentWindow() {
 		if(getParentWindow() != null) getParentWindow().dispose();
 	}
@@ -284,6 +298,10 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 
 	public void setChoosenID(int choosenID) {
 		this.choosenID = choosenID;
+	}
+	
+	public void resetChoosenID() {
+		this.choosenID = -1;
 	}
 
 	public JDialog getParentWindow() {

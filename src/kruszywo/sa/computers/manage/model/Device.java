@@ -107,6 +107,15 @@ public class Device {
 	public void setAssignedEmployee(Employee assignedEmployee) {
 		this.assignedEmployee = assignedEmployee;
 	}
+
+	@Override
+	public String toString() {
+		return "Device [deviceID=" + deviceID + ", deviceName=" + deviceName + ", deviceUniqueNumber="
+				+ deviceUniqueNumber + ", deviceInventoryNumber=" + deviceInventoryNumber + ", invoiceNumber="
+				+ invoiceNumber + ", purchaseDate=" + purchaseDate + ", lastInstallationDate=" + lastInstallationDate
+				+ ", notes=" + notes + ", deviceType=" + deviceType + ", assignedDepartment=" + assignedDepartment
+				+ ", assignedEmployee=" + assignedEmployee + "]";
+	}
 	
 	
 

@@ -1,8 +1,10 @@
-package kruszywo.sa.computers.manage.view;
+package kruszywo.sa.computers.manage.view.dictionary.table.panel;
 
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import kruszywo.sa.computers.manage.controller.Controller;
@@ -27,10 +29,12 @@ public class DepartmentDictionaryTablePanel extends DictionaryTablePanel<Departm
 	public void createTable() {
 		this.setTableModelAndSorter(new Class[] { 
 				java.lang.Integer.class,
+				java.lang.String.class,
 				java.lang.String.class
 		});
 		this.setTableColumnNames(new String[] { 
 				"ID oddziału",
+				"Kod oddziału",
 				"Nazwa oddziału"
 		});
 	}
@@ -40,7 +44,7 @@ public class DepartmentDictionaryTablePanel extends DictionaryTablePanel<Departm
 		clearTable();
 		if(isEmptyData(department)) return;
 		for( Department deviceType : department){
-			addRowToTable(new Object[] {deviceType.getDepartmentID(), deviceType.getDepartmentName()});
+			addRowToTable(new Object[] {deviceType.getDepartmentID(), deviceType.getDepartmentCode(), deviceType.getDepartmentName()});
 		}
 		resizeTable();
 	}
@@ -51,23 +55,38 @@ public class DepartmentDictionaryTablePanel extends DictionaryTablePanel<Departm
 		getInsertButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("test32132");
+				getController().getManagerDAO().getDepartmentServiceDAO().openDepartmentWindowToAddNew();
 			}
 		});
 		getUpdateButton().removeActionListener(getUpdateButton().getActionListeners()[0]);
 		getUpdateButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("test32132");
+				getController().getManagerDAO().getDepartmentServiceDAO().openDepartmentWindowToUpdate(getIdFromTable());
 			}
 		});
 		getDeleteButton().removeActionListener(getDeleteButton().getActionListeners()[0]);
 		getDeleteButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("test32132");
+				getController().getManagerDAO().getDepartmentServiceDAO().deleteDepartmentWithPrompt(getIdFromTable());
 			}
 		});
+		getTable().addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					if(getParentWindow() == null) getController().getManagerDAO().getDepartmentServiceDAO().openDepartmentWindowToOnlyShowDetails(getIdFromTable());
+				}
+			}
+		});
+	}
+
+	public Controller getController() {
+		return controller;
+	}
+
+	public void setController(Controller controller) {
+		this.controller = controller;
 	}
 
 

@@ -1,4 +1,4 @@
-package kruszywo.sa.computers.manage.view.device;
+package kruszywo.sa.computers.manage.view.details.window;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -12,7 +12,7 @@ import kruszywo.sa.computers.manage.model.DeviceType;
 import kruszywo.sa.computers.manage.model.Employee;
 import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
-import kruszywo.sa.computers.manage.view.util.PMCustomTextFieldWithJList;
+import kruszywo.sa.computers.manage.view.util.PMCustomTextFieldWithDictionary;
 import kruszywo.sa.computers.manage.view.util.PMJDateChooser;
 import kruszywo.sa.computers.manage.view.util.PMJTextField;
 
@@ -25,10 +25,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+
 import net.miginfocom.swing.MigLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JTextPane;
 
@@ -40,13 +43,13 @@ public class DeviceDetailsFrame extends JDialog {
 	private PMJTextField deviceNameField;
 	private PMJTextField deviceUniqueNumberField;
 	private PMJTextField deviceInventoryNumberField;
-	private PMCustomTextFieldWithJList<DeviceType> deviceTypeField;
-	private PMCustomTextFieldWithJList<Department> deviceAssignedDepartmentField;
-	private PMCustomTextFieldWithJList<Employee> deviceAssignedEmployeeField;
+	private PMCustomTextFieldWithDictionary<DeviceType> deviceTypeField;
+	private PMCustomTextFieldWithDictionary<Department> deviceAssignedDepartmentField;
+	private PMCustomTextFieldWithDictionary<Employee> deviceAssignedEmployeeField;
 	private PMJTextField deviceInvoiceNumberField;
 	private PMJDateChooser devicePurchaseDateField;
 	private PMJDateChooser deviceLastInstallationDateField;
-	private JTextPane deviceNotes;
+	private JTextPane deviceNotesField;
 	
 	private JPanel headerPanel;
 	private JPanel detailsPanel;
@@ -95,11 +98,8 @@ public class DeviceDetailsFrame extends JDialog {
 		headerPanel.setLayout(new BorderLayout(25, 25));
 		headerPanel.setBorder(BorderFactory.createEmptyBorder(10, 50, 10, 25));
 		
-//		JLabel iconLabel = new JLabel(new ImageIcon("C:\\Users\\Patryk\\Documents\\EclipseWorkspace\\Java\\ComputersManage\\resources\\icon\\desktop-solid-header.png"));
-//		JLabel iconLabel = new JLabel(new ImageIcon("C:\\Users\\pmalek\\eclipse\\Java\\ComputersManage\\resources\\icon\\desktop-solid-75.png"));
 		JLabel iconLabel = new JLabel(new ImageIcon(getClass().getResource("/desktop-solid-75.png")));
 		headerPanel.add(iconLabel, BorderLayout.LINE_START);
-		
 		
 		JPanel titlePanel = new JPanel();
 		titlePanel.setLayout(new MigLayout("", "[grow][grow]", "[][][]"));
@@ -155,7 +155,7 @@ public class DeviceDetailsFrame extends JDialog {
 		deviceTypeNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceTypeNameLabel, "cell 1 4,alignx left");
 		
-		deviceTypeField = new PMCustomTextFieldWithJList<DeviceType>();
+		deviceTypeField = new PMCustomTextFieldWithDictionary<DeviceType>();
 		deviceTypeField.setEditable(isEditable());
 		detailsPanel.add(deviceTypeField, "cell 2 4 4 1, grow");
 		
@@ -163,7 +163,7 @@ public class DeviceDetailsFrame extends JDialog {
 		deviceAssignedDepartmentLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceAssignedDepartmentLabel, "cell 1 5,alignx left");
 		
-		deviceAssignedDepartmentField = new PMCustomTextFieldWithJList<Department>();
+		deviceAssignedDepartmentField = new PMCustomTextFieldWithDictionary<Department>();
 		deviceAssignedDepartmentField.setEditable(isEditable());
 		detailsPanel.add(deviceAssignedDepartmentField, "cell 2 5 4 1,grow");
 		
@@ -171,7 +171,7 @@ public class DeviceDetailsFrame extends JDialog {
 		deviceAssignedEmployeeLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceAssignedEmployeeLabel, "cell 1 6,alignx left");
 		
-		deviceAssignedEmployeeField = new PMCustomTextFieldWithJList<Employee>();
+		deviceAssignedEmployeeField = new PMCustomTextFieldWithDictionary<Employee>();
 		deviceAssignedEmployeeField.setEditable(isEditable());
 		detailsPanel.add(deviceAssignedEmployeeField, "cell 2 6 4 1,grow");
 		
@@ -204,12 +204,12 @@ public class DeviceDetailsFrame extends JDialog {
 		deviceLastInstallationDateField.setDate(getController().getCalendarWithTodayDate().getTime());
 		detailsPanel.add(deviceLastInstallationDateField, "cell 2 9,grow");
 		
-		deviceNotes = new JTextPane();
-		deviceNotes.setEnabled(isEditable());
-		deviceNotes.setBorder(BorderFactory.createTitledBorder("Dodatkowe informacje"));
-		deviceNotes.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		deviceNotesField = new JTextPane();
+		deviceNotesField.setEnabled(isEditable());
+		deviceNotesField.setBorder(BorderFactory.createTitledBorder("Dodatkowe informacje"));
+		deviceNotesField.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		
-		JScrollPane deviceNotesContainer = new JScrollPane(deviceNotes);
+		JScrollPane deviceNotesContainer = new JScrollPane(deviceNotesField);
 		deviceNotesContainer.setBorder(null);
 		detailsPanel.add(deviceNotesContainer, "cell 1 11 6 1,grow");
 		
@@ -261,21 +261,87 @@ public class DeviceDetailsFrame extends JDialog {
 		deviceTypeField.getDictionaryButton().removeActionListener(deviceTypeField.getDictionaryButton().getActionListeners()[0]);
 		deviceTypeField.getDictionaryButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				getController().getManagerDAO().getDeviceServiceDAO().openDeviceTypeDictionaryWindow();
+				getController().getManagerDAO().getDeviceServiceDAO().openDeviceTypeDictionaryWindowAndAddItem();
+			}
+		});
+		
+		deviceTypeField.getCustomTextField().addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					getController().getManagerDAO().getDeviceServiceDAO().findDeviceTypeByTextAndAddItemToDeviceDetailsPanel();
+				}
 			}
 		});
 		
 		deviceAssignedDepartmentField.getDictionaryButton().removeActionListener(deviceAssignedDepartmentField.getDictionaryButton().getActionListeners()[0]);
 		deviceAssignedDepartmentField.getDictionaryButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				getController().getManagerDAO().getDeviceServiceDAO().openDepartmentDictionaryWindow();
+				getController().getManagerDAO().getDeviceServiceDAO().openDepartmentDictionaryWindowAndAddItem();
+			}
+		});
+		
+		deviceAssignedDepartmentField.getCustomTextField().addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					getController().getManagerDAO().getDeviceServiceDAO().findDepartmentByTextAndAddItemToDeviceDetailsPanel();
+				}
 			}
 		});
 		
 		deviceAssignedEmployeeField.getDictionaryButton().removeActionListener(deviceAssignedEmployeeField.getDictionaryButton().getActionListeners()[0]);
 		deviceAssignedEmployeeField.getDictionaryButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				getController().getManagerDAO().getDeviceServiceDAO().openEmployeeDictionaryWindow();
+				getController().getManagerDAO().getDeviceServiceDAO().openEmployeeDictionaryWindowAndAddItem();
+			}
+		});
+		
+		deviceAssignedEmployeeField.getCustomTextField().addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					getController().getManagerDAO().getDeviceServiceDAO().findEmployeeByTextAndAddItemToDeviceDetailsPanel();
+				}
 			}
 		});
 		
@@ -302,7 +368,7 @@ public class DeviceDetailsFrame extends JDialog {
 		deviceInvoiceNumberField.setText(device.getInvoiceNumber());
 		devicePurchaseDateField.setDate(getController().getCalendarWithCustomDate(device.getPurchaseDate(), getController().getDefaultDateFormat()).getTime());
 		deviceLastInstallationDateField.setDate(getController().getCalendarWithCustomDate(device.getLastInstallationDate(), getController().getDefaultDateFormat()).getTime());
-		deviceNotes.setText(device.getNotes());
+		deviceNotesField.setText(device.getNotes());
 		
 		return true;
 	}
@@ -321,7 +387,7 @@ public class DeviceDetailsFrame extends JDialog {
 		device.setInvoiceNumber(deviceInvoiceNumberField.getText());
 		device.setPurchaseDate(CommonFunctions.formatDate(devicePurchaseDateField.getDate(), devicePurchaseDateField.getDateFormatString()));
 		device.setLastInstallationDate(CommonFunctions.formatDate(deviceLastInstallationDateField.getDate(), deviceLastInstallationDateField.getDateFormatString()));
-		device.setNotes(deviceNotes.getText());
+		device.setNotes(deviceNotesField.getText());
 		
 		getController().getManagerDAO().getDeviceServiceDAO().saveData(device, getOperationType());
 	}
@@ -359,15 +425,15 @@ public class DeviceDetailsFrame extends JDialog {
 		this.deviceID = deviceID;
 	}
 
-	public PMCustomTextFieldWithJList<DeviceType> getDeviceTypeField() {
+	public PMCustomTextFieldWithDictionary<DeviceType> getDeviceTypeField() {
 		return deviceTypeField;
 	}
 
-	public PMCustomTextFieldWithJList<Department> getDeviceAssignedDepartmentField() {
+	public PMCustomTextFieldWithDictionary<Department> getDeviceAssignedDepartmentField() {
 		return deviceAssignedDepartmentField;
 	}
 
-	public PMCustomTextFieldWithJList<Employee> getDeviceAssignedEmployeeField() {
+	public PMCustomTextFieldWithDictionary<Employee> getDeviceAssignedEmployeeField() {
 		return deviceAssignedEmployeeField;
 	}
 
