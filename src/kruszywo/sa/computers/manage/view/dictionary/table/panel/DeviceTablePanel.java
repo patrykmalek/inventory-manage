@@ -161,8 +161,8 @@ public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 		for( Device device : devices){
 			((DefaultTableModel) table.getModel()).addRow(
 				new Object[] {device.getDeviceID(), device.getDeviceUniqueNumber(), device.getDeviceName(), device.getDeviceInventoryNumber(), 
-						device.getDeviceType().getDeviceTypeName(), device.getAssignedDepartment().getDepartmentName(), 
-						device.getAssignedEmployee().getFirstName() + " " + device.getAssignedEmployee().getLastName(), device.getInvoiceNumber(),
+						device.getDeviceType().getDeviceTypeName(), device.getAssignedDepartment().toString(), 
+						device.getAssignedEmployee().toString(), device.getInvoiceNumber(),
 						device.getPurchaseDate(), device.getLastInstallationDate()});
 		}
 		resizeTable();

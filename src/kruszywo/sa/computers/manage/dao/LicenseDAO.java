@@ -112,11 +112,23 @@ public class LicenseDAO implements DAO<License>{
 				controller.getDatabaseProvider().executePreparedStatementWithResult(ps);
 				ResultSet resultSet = controller.getDatabaseProvider().getResultSet();
 				License license = null;
+				Software software = null;
 			 while (resultSet.next()) {
 					
-				 	license = new License();
+					license = new License();
+				 	software = new Software();
+				 	
+				 	software.setSoftwareID(resultSet.getInt("id_assigned_software"));
+				 	software.setSoftwareName(resultSet.getString("software_name"));
+				 	software.setSoftwareNotes(resultSet.getString("software_notes"));
 				 	
 				 	license.setLicenseID(resultSet.getInt("id_license"));
+				 	license.setLicenseKey(resultSet.getString("license_key"));
+				 	license.setLicenseMainKey(resultSet.getString("license_main_key"));
+				 	license.setInvoiceNumber(resultSet.getString("invoice_number"));
+				 	license.setPurchaseDate(resultSet.getString("purchase_date"));
+				 	license.setLastInstallationDate(resultSet.getString("last_installation_date"));
+				 	license.setAssignedEmail(resultSet.getString("assigned_email"));
 				 	license.setLicenseNotes(resultSet.getString("license_notes"));
 
 				 	licenses.add(license);
@@ -134,11 +146,18 @@ public class LicenseDAO implements DAO<License>{
 			try {
 				PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(INSERT);
 				 
-	            ps.setString(2, license.getLicenseNotes());
+	            ps.setString(1, license.getLicenseKey());
+	            ps.setString(2, license.getLicenseMainKey());
+	            ps.setInt(3, license.getSoftware().getSoftwareID());
+	            ps.setString(4, license.getInvoiceNumber());
+	            ps.setString(5, license.getPurchaseDate());
+	            ps.setString(6, license.getLastInstallationDate());
+	            ps.setString(7, license.getLicenseNotes());
+	            ps.setString(8, license.getAssignedEmail());
 	            
 				controller.getDatabaseProvider().executePreparedStatement(ps);
 				
-	            System.out.println("Device Type with following details was saved in DB: " + license.toString());
+	            System.out.println("License with following details was saved in DB: " + license.toString());
 			} catch (SQLException e) {
 				new SystemOperationException("Błąd podczas zapisywania danych urządzenia do bazy.", e);
 			}
@@ -149,13 +168,20 @@ public class LicenseDAO implements DAO<License>{
 		try {
 			PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(UPDATE);
 			 
-            ps.setString(2, license.getLicenseNotes());
-            ps.setInt(3, license.getLicenseID());
+		 	ps.setString(1, license.getLicenseKey());
+            ps.setString(2, license.getLicenseMainKey());
+            ps.setInt(3, license.getSoftware().getSoftwareID());
+            ps.setString(4, license.getInvoiceNumber());
+            ps.setString(5, license.getPurchaseDate());
+            ps.setString(6, license.getLastInstallationDate());
+            ps.setString(7, license.getLicenseNotes());
+            ps.setString(8, license.getAssignedEmail());
+            ps.setInt(9, license.getLicenseID());
            
 
 			controller.getDatabaseProvider().executePreparedStatement(ps);
 			
-            System.out.println("Device Type with id " + license.getLicenseID() + " was updated in DB with following details: " + license.toString());
+            System.out.println("License with id " + license.getLicenseID() + " was updated in DB with following details: " + license.toString());
 		} catch (SQLException e) {
 			new SystemOperationException("Błąd podczas aktualizacji danych urządzenia do bazy.", e);
 		}
@@ -170,7 +196,7 @@ public class LicenseDAO implements DAO<License>{
             
 			controller.getDatabaseProvider().executePreparedStatement(ps);
 			
-			System.out.println("Device Type with id: " +  license.getLicenseID() + " was sucesfully deleted from DB.");
+			System.out.println("License with id: " +  license.getLicenseID() + " was sucesfully deleted from DB.");
 		} catch (SQLException e) {
 			new SystemOperationException("Błąd podczas aktualizacji danych urządzenia do bazy.", e);
 		}

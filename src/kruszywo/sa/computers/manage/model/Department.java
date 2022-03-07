@@ -41,7 +41,7 @@ public class Department {
 
 	@Override
 	public String toString() {
-		return "("+ getDepartmentCode() +") " + getDepartmentName();
+		return (departmentCode == null || departmentName == null) ? "" : "(" + departmentCode + ") " + departmentName;
 	}
 	
 }

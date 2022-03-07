@@ -3,11 +3,8 @@ package kruszywo.sa.computers.manage.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowStateListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -47,7 +44,6 @@ public class MainFrame extends JFrame {
 	private JPanel createMainPanel() {
 		JPanel mainContainerPanel = new JPanel();
 		
-//		JPanel northPanel = new JPanel();
 		JPanel centerPanel = new JPanel();
 		
 		JPanel headerPanel = new JPanel();
@@ -55,21 +51,10 @@ public class MainFrame extends JFrame {
 		JPanel footerPanel = new JPanel();
 		
 		MenuBarPanel menuBarPanel = new MenuBarPanel(this.getController());
-//		PropertiesPanel propertiesPanel = new PropertiesPanel(this.getController());
-//		PMChartPanel chartPanel = new PMChartPanel(this.getController());
 		TabbedPanel tabPanel = new TabbedPanel(this.getController());
 		
-//		propertiesPanel.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Color.LIGHT_GRAY));
-		
-		
-//		northPanel.setLayout(new BorderLayout(10, 10));
-//		northPanel.add(employeeDetailsPanel, BorderLayout.LINE_START);
-//		northPanel.add(propertiesPanel, BorderLayout.LINE_END);
-//		
 		centerPanel.setLayout(new BorderLayout());
-//		centerPanel.add(chartPanel, BorderLayout.LINE_START);
 		centerPanel.add(tabPanel, BorderLayout.CENTER);
-//		centerPanel.add(propertiesPanel, BorderLayout.LINE_END);
 			
 		headerPanel.setLayout(new BorderLayout());
 		headerPanel.setPreferredSize(new Dimension(100, 25));
@@ -77,7 +62,6 @@ public class MainFrame extends JFrame {
 
 		mainPanel.setLayout(new BorderLayout());
 		mainPanel.setBorder(BorderFactory.createEmptyBorder());
-//		mainPanel.add(northPanel, BorderLayout.NORTH);
 		mainPanel.add(centerPanel, BorderLayout.CENTER);
 		
 		footerPanel.setLayout(new BorderLayout(10, 10));
@@ -92,21 +76,7 @@ public class MainFrame extends JFrame {
 		return mainContainerPanel;
 	}
 	
-	private void createListeners() {
-		this.addComponentListener(new ComponentAdapter() {
-		    public void componentResized(ComponentEvent componentEvent) { 	
-//		    	controller.resizeWindowElements();
-		    }
-		});
-			
-		this.addWindowStateListener(new WindowStateListener() {
-			@Override
-			public void windowStateChanged(WindowEvent windowEvent) {
-//				controller.resizeWindowElements();
-				
-			}
-		});
-		
+	private void createListeners() {		
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {

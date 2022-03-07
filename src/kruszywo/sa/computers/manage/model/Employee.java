@@ -49,7 +49,7 @@ public class Employee {
 
 	@Override
 	public String toString() {
-		return firstName + " " + lastName;
+		return (firstName == null || lastName == null) ? "" : firstName + " " + lastName;
 	}
 
 	

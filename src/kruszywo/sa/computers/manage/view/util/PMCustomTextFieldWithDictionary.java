@@ -17,8 +17,10 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -37,8 +39,12 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 	private ImageIcon dictionaryButtonIcon;
 	private ImageIcon dictionaryButtonIconActive;
 	
+	private ImageIcon clearFieldButtonIcon;
+	
 	private JTextField customTextField;
 	private Border customTextFieldBorder;
+	
+	private JPopupMenu popupMenu;
 	
 	private final Color customTextFieldColor = SystemColor.white;
 	private final Color customTextFieldColorActive = SystemColor.inactiveCaption;
@@ -64,6 +70,10 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 		
 		setCustomTextField(createCustomTextField());
 		setCustomTextFieldBorder(createCustomBorderForTextField(getCustomBorderColor()));
+		
+		setClearFieldButtonIcon(createClearFieldButtonIcon());
+		setPopupMenu(createPopupMenuForCustomTextField());
+		
 		setInputPanel(createInputPanel());
 		setLayout(getLayoutPanel());
 
@@ -141,6 +151,10 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 		return new ImageIcon(getClass().getResource("/bars-solid-hover-25.png"));
 	}
 	
+	private ImageIcon createClearFieldButtonIcon() {
+		return new ImageIcon(getClass().getResource("/times-circle-regular.png"));
+	}
+	
 	private JButton createDictionaryButton() {
 		JButton dictionaryButton = new JButton();
 		
@@ -180,6 +194,37 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 		return dictionaryButton;
 	}
 	
+	private JPopupMenu createPopupMenuForCustomTextField() {
+		JPopupMenu popupMenu = new JPopupMenu();
+		
+		JMenuItem clearFieldButton = new JMenuItem("Wyczyść");
+		clearFieldButton.setIcon(getClearFieldButtonIcon());
+		clearFieldButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				removeItem();
+			}
+		});
+		popupMenu.add(clearFieldButton);
+		
+		getCustomTextField().addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popupMenu.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
+		
+		return popupMenu;
+	}
+	
 	
 	private void setTextFieldDefault() {
 		getCustomTextField().setBackground(getCustomTextFieldColor());
@@ -208,7 +253,6 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 		getCustomTextField().setEditable(editable);
 		getDictionaryButton().setEnabled(editable);
 	}
-	
 	
 	public JButton getDictionaryButton() {
 		return dictionaryButton;
@@ -326,6 +370,28 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 		if(getItem() != null) text = getItem().toString();
 		getCustomTextField().setText(text);
 	}
+	
+	public void removeItem() {
+		this.item = null;
+		getCustomTextField().setText("");
+	}
 
+	public JPopupMenu getPopupMenu() {
+		return popupMenu;
+	}
+
+
+	public void setPopupMenu(JPopupMenu popupMenu) {
+		this.popupMenu = popupMenu;
+	}
+
+	public ImageIcon getClearFieldButtonIcon() {
+		return clearFieldButtonIcon;
+	}
+
+
+	public void setClearFieldButtonIcon(ImageIcon clearFieldButtonIcon) {
+		this.clearFieldButtonIcon = clearFieldButtonIcon;
+	}
 	
 }

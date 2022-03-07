@@ -10,6 +10,8 @@ import javax.swing.ImageIcon;
 
 import com.toedter.calendar.JDateChooser;
 
+import kruszywo.sa.computers.manage.model.CommonFunctions;
+
 public class PMJDateChooser extends JDateChooser {
 
 	private static final long serialVersionUID = 1153173872592503229L;
@@ -115,6 +117,14 @@ public class PMJDateChooser extends JDateChooser {
 
 	public void setFontSize(int fontSize) {
 		this.DEFAULT_FONT_SIZE = fontSize;
+	}
+	
+	public String getCustomDate() {
+		String date = "";
+		if(this.getDate() != null) {
+			date = CommonFunctions.formatDate(this.getDate(), this.getDateFormatString());
+		}
+		return date;
 	}
 	
 

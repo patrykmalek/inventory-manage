@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import kruszywo.sa.computers.manage.dao.ManagerDAO;
+import kruszywo.sa.computers.manage.exception.SystemOperationException;
 import kruszywo.sa.computers.manage.model.CommonFunctions;
 import kruszywo.sa.computers.manage.provider.DatabaseProvider;
 import kruszywo.sa.computers.manage.view.TabbedPanel;
@@ -14,10 +15,13 @@ import kruszywo.sa.computers.manage.view.details.window.DepartmentDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.DeviceDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.DeviceTypeDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.EmployeeDetailsFrame;
+import kruszywo.sa.computers.manage.view.details.window.LicenseDetailsFrame;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.DepartmentDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.DeviceTablePanel;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.DeviceTypeDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.EmployeeDictionaryTablePanel;
+import kruszywo.sa.computers.manage.view.dictionary.table.panel.LicenseDictionaryTablePanel;
+import kruszywo.sa.computers.manage.view.dictionary.table.panel.SoftwareDictionaryTablePanel;
 
 public class Controller {
 
@@ -29,11 +33,14 @@ public class Controller {
 	private DeviceTypeDictionaryTablePanel deviceTypeDictionaryTable;
 	private DepartmentDictionaryTablePanel departmentDictionaryTable;
 	private EmployeeDictionaryTablePanel employeeDictionaryTable;
+	private	LicenseDictionaryTablePanel licenseDictionaryTablePanel;
+	private SoftwareDictionaryTablePanel softwareDictionaryTablePanel;
 	
 	private DeviceDetailsFrame deviceDetailsFrame;
 	private DeviceTypeDetailsFrame deviceTypeDetailsFrame;
 	private DepartmentDetailsFrame departmentDetailsFrame;
 	private EmployeeDetailsFrame employeeDetailsFrame;
+	private LicenseDetailsFrame licenseDetailsFrame;
 	
 	public static WaitWindow waitWindow;
 	
@@ -156,7 +163,12 @@ public class Controller {
 		return calendar;
 	}
 	
-	public Calendar getCalendarWithCustomDate(String date, SimpleDateFormat simpleDateFormat) {
+	public Calendar getCalendarWithCustomDate(String date, SimpleDateFormat simpleDateFormat, boolean showMessageIfDateIsNull) {
+		if(date == null || date.equals("")) {
+			if(showMessageIfDateIsNull) new SystemOperationException("Nie można zwrócić prawidłowo kalendarza ponieważ data przyjmuje wartość null. Kalendarz przyjmie wartość null");
+			Calendar calendar = null;
+			return calendar;
+		}
 		calendar.setTime(CommonFunctions.parseDate(date, simpleDateFormat));
 		return calendar;
 	}
@@ -199,6 +211,30 @@ public class Controller {
 
 	public void setEmployeeDetailsFrame(EmployeeDetailsFrame employeeDetailsFrame) {
 		this.employeeDetailsFrame = employeeDetailsFrame;
+	}
+
+	public LicenseDetailsFrame getLicenseDetailsFrame() {
+		return licenseDetailsFrame;
+	}
+
+	public void setLicenseDetailsFrame(LicenseDetailsFrame licenseDetailsFrame) {
+		this.licenseDetailsFrame = licenseDetailsFrame;
+	}
+
+	public LicenseDictionaryTablePanel getLicenseDictionaryTablePanel() {
+		return licenseDictionaryTablePanel;
+	}
+
+	public void setLicenseDictionaryTablePanel(LicenseDictionaryTablePanel licenseDictionaryTablePanel) {
+		this.licenseDictionaryTablePanel = licenseDictionaryTablePanel;
+	}
+
+	public SoftwareDictionaryTablePanel getSoftwareDictionaryTablePanel() {
+		return softwareDictionaryTablePanel;
+	}
+
+	public void setSoftwareDictionaryTablePanel(SoftwareDictionaryTablePanel softwareDictionaryTablePanel) {
+		this.softwareDictionaryTablePanel = softwareDictionaryTablePanel;
 	}
 
 

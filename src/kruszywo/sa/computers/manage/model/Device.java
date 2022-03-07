@@ -11,14 +11,13 @@ public class Device {
 	private String purchaseDate;
 	private String lastInstallationDate;
 	private String notes;
+	private String computerName;
 	
 	private DeviceType deviceType;
 	private Department assignedDepartment;
 	private Employee assignedEmployee;
 	
-	public Device() {
-		
-	}
+	public Device() {}
 
 	public int getDeviceID() {
 		return deviceID;
@@ -85,7 +84,7 @@ public class Device {
 	}
 
 	public DeviceType getDeviceType() {
-		return deviceType;
+		return (deviceType == null) ? new DeviceType() : deviceType;
 	}
 
 	public void setDeviceType(DeviceType deviceType) {
@@ -93,7 +92,7 @@ public class Device {
 	}
 
 	public Department getAssignedDepartment() {
-		return assignedDepartment;
+		return (assignedDepartment == null) ? new Department() : assignedDepartment;
 	}
 
 	public void setAssignedDepartment(Department assignedDepartment) {
@@ -101,7 +100,7 @@ public class Device {
 	}
 
 	public Employee getAssignedEmployee() {
-		return assignedEmployee;
+		return (assignedEmployee == null) ? new Employee() : assignedEmployee ;
 	}
 
 	public void setAssignedEmployee(Employee assignedEmployee) {
@@ -115,6 +114,14 @@ public class Device {
 				+ invoiceNumber + ", purchaseDate=" + purchaseDate + ", lastInstallationDate=" + lastInstallationDate
 				+ ", notes=" + notes + ", deviceType=" + deviceType + ", assignedDepartment=" + assignedDepartment
 				+ ", assignedEmployee=" + assignedEmployee + "]";
+	}
+
+	public String getComputerName() {
+		return computerName;
+	}
+
+	public void setComputerName(String computerName) {
+		this.computerName = computerName;
 	}
 	
 	

@@ -82,5 +82,4 @@ public class MenuBarPanel extends JMenuBar {
 		return new JMenuItem(menuItemName, new ImageIcon(getClass().getResource("/" + menuItemIcon)));
 	}
 	
-	
 }

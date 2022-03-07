@@ -30,7 +30,6 @@ import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.model.Device;
 import kruszywo.sa.computers.manage.provider.DatabaseProvider;
 import kruszywo.sa.computers.manage.view.details.window.DeviceDetailsFrame;
-import kruszywo.sa.computers.manage.view.util.PMJComboBox;
 import kruszywo.sa.computers.manage.view.util.PMJTextField;
 import net.miginfocom.swing.MigLayout;
 import java.awt.Color;
@@ -44,6 +43,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.JScrollBar;
+import javax.swing.JMenuItem;
 
 public class Test extends JFrame {
 
@@ -67,7 +67,7 @@ public class Test extends JFrame {
 	private void addPanel() {
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setLayout(new MigLayout("", "[grow][grow][grow][grow][grow][grow]", "[][][][][][][grow][]"));
+		panel.setLayout(new MigLayout("", "[grow][grow][grow][grow][grow][grow]", "[][][][][][grow][]"));
 		
 		
 		JPanel inputPanel = new JPanel();
@@ -141,6 +141,16 @@ public class Test extends JFrame {
 		dictionaryButton.setPreferredSize(new Dimension(20, customTextField_1.getHeight()));
 		
 		test.add(customTextField_1, BorderLayout.CENTER);
+		
+		JPopupMenu popupMenu = new JPopupMenu();
+		addPopup(customTextField_1, popupMenu);
+		
+		JMenuItem mntmNewMenuItem = new JMenuItem("New menu item");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		popupMenu.add(mntmNewMenuItem);
 		test.add(dictionaryButton, BorderLayout.EAST);
 		
 		
@@ -235,4 +245,21 @@ public class Test extends JFrame {
 		});
 	}
 	
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
+	}
 }

@@ -98,6 +98,12 @@ public class DeviceServiceDAO {
 		if(choosenID < 0) return;
 		DeviceType deviceType = getManagerDAO().getDeviceTypeDAO().get(choosenID);
 		getController().getDeviceDetailsFrame().getDeviceTypeField().addItem(deviceType);
+		getController().getDeviceDetailsFrame().setComputer(deviceType.getDeviceTypeID() == 1001);
+		if(getController().getDeviceDetailsFrame().isComputer()) {
+			getController().getDeviceDetailsFrame().showComputerNameField();
+		} else {
+			getController().getDeviceDetailsFrame().removeComputerNameField();
+		}
 		deviceTypeDictionaryTablePanel.resetChoosenID();
 	}
 	
