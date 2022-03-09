@@ -49,6 +49,7 @@ public class LicenseDAO implements DAO<License>{
 			 	software.setSoftwareName(resultSet.getString("software_name"));
 			 	software.setSoftwareNotes(resultSet.getString("software_notes"));
 			 	
+			 	license.setSoftware(software);
 			 	license.setLicenseID(resultSet.getInt("id_license"));
 			 	license.setLicenseKey(resultSet.getString("license_key"));
 			 	license.setLicenseMainKey(resultSet.getString("license_main_key"));
@@ -85,6 +86,7 @@ public class LicenseDAO implements DAO<License>{
 			 	software.setSoftwareName(resultSet.getString("software_name"));
 			 	software.setSoftwareNotes(resultSet.getString("software_notes"));
 			 	
+			 	license.setSoftware(software);
 			 	license.setLicenseID(resultSet.getInt("id_license"));
 			 	license.setLicenseKey(resultSet.getString("license_key"));
 			 	license.setLicenseMainKey(resultSet.getString("license_main_key"));
@@ -117,11 +119,12 @@ public class LicenseDAO implements DAO<License>{
 					
 					license = new License();
 				 	software = new Software();
-				 	
+				 
 				 	software.setSoftwareID(resultSet.getInt("id_assigned_software"));
 				 	software.setSoftwareName(resultSet.getString("software_name"));
 				 	software.setSoftwareNotes(resultSet.getString("software_notes"));
 				 	
+				 	license.setSoftware(software);
 				 	license.setLicenseID(resultSet.getInt("id_license"));
 				 	license.setLicenseKey(resultSet.getString("license_key"));
 				 	license.setLicenseMainKey(resultSet.getString("license_main_key"));

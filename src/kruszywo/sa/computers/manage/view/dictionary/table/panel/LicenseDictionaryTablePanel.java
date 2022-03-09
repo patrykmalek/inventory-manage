@@ -53,6 +53,7 @@ public class LicenseDictionaryTablePanel extends DictionaryTablePanel<License> {
 	public void updateTable(List<License> licenses) {
 		clearTable();
 		if(isEmptyData(licenses)) return;
+		
 		for( License license : licenses){
 			addRowToTable(new Object[] {license.getLicenseID(), license.getSoftware().toString(), license.getLicenseMainKey(),
 					license.getLicenseKey(), license.getAssignedEmail(), license.getInvoiceNumber(), 

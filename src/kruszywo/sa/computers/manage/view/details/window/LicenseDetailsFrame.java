@@ -134,11 +134,15 @@ public class LicenseDetailsFrame extends JDialog {
 		licenseSoftwareLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(licenseSoftwareLabel, "cell 1 1,alignx left");
 		
+		licenseSoftwareField = new PMCustomTextFieldWithDictionary<Software>();
+		licenseSoftwareField.setEditable(isEditable());
+		detailsPanel.add(licenseSoftwareField, "cell 2 1 4 1,grow");
+		
 		licenseMainKeyLabel = new JLabel("Główny klucz licencji:");
 		licenseMainKeyLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(licenseMainKeyLabel, "cell 1 2,alignx left");
 		
-		licenseMainKeyField = new PMJTextField(true, 13);
+		licenseMainKeyField = new PMJTextField(true, 12);
 		licenseMainKeyField.setEditable(isEditable());
 		licenseMainKeyField.setColumns(10);
 		detailsPanel.add(licenseMainKeyField, "cell 2 2 4 1,grow");
@@ -164,10 +168,6 @@ public class LicenseDetailsFrame extends JDialog {
 		licenseInvoiceNumberLabel = new JLabel("Powiązana faktura:");
 		licenseInvoiceNumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(licenseInvoiceNumberLabel, "cell 1 5,alignx left");
-		
-		licenseSoftwareField = new PMCustomTextFieldWithDictionary<Software>();
-		licenseSoftwareField.setEditable(isEditable());
-		detailsPanel.add(licenseSoftwareField, "cell 2 1 4 1,grow");
 		
 		licenseInvoiceNumberField = new PMJTextField(true, 13);
 		licenseInvoiceNumberField.setEditable(isEditable());
@@ -267,7 +267,7 @@ public class LicenseDetailsFrame extends JDialog {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					getController().getManagerDAO().getLicenseServiceDAO().openSoftwareDictionaryWindowAndAddItem();
+					getController().getManagerDAO().getLicenseServiceDAO().findSoftwareByTextAndAddItemToLicenseDetailsPanel();
 				}
 			}
 		});
@@ -307,7 +307,7 @@ public class LicenseDetailsFrame extends JDialog {
 		license.setLicenseID(getLicenseID());
 		license.setSoftware(licenseSoftwareField.getItem());
 		license.setLicenseKey(licenseKeyField.getText());
-		license.setLicenseMainKey(licenseMainKeyLabel.getText());
+		license.setLicenseMainKey(licenseMainKeyField.getText());
 		license.setAssignedEmail(licenseAssignedEmailField.getText());
 		license.setInvoiceNumber(licenseInvoiceNumberField.getText());
 		license.setPurchaseDate(licensePurchaseDateField.getCustomDate());
@@ -328,10 +328,9 @@ public class LicenseDetailsFrame extends JDialog {
 		
 		return !errors.contains(true);
 	}
-	
 
 	private String getCorrectTitle() {
-		return (isEditable()) ? "Edycja urządzenia" : "Szczegóły urządzenia";
+		return (isEditable()) ? "Edycja licencji" : "Szczegóły licencji";
 	}
 
 	public boolean isEditable() {

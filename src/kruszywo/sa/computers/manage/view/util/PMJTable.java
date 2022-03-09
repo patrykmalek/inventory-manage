@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.SystemColor;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -27,8 +29,19 @@ public class PMJTable extends JTable {
 	private static final long serialVersionUID = 7352425134966455629L;
 	
 	private Border paddingBorder = BorderFactory.createEmptyBorder(0, 5, 0, 5);
+	
 	private DefaultTableModel tableModel;
 	private TableRowSorter<DefaultTableModel> tableSorter;
+	
+	private Color evenRowBackgroundColor = SystemColor.inactiveCaptionBorder;
+	private Color oddRowBackgroundColor = SystemColor.white;
+	private Color selectedRowBackgroundColor = SystemColor.activeCaption;
+	private Color selectedRowForegroundColor = SystemColor.black;
+	
+	private Color searchFieldBackgroundColor = SystemColor.white;
+	
+	private static int DEFAULT_FONT_SIZE = 12;
+	
 	private boolean isEditable;
 
 
@@ -36,8 +49,19 @@ public class PMJTable extends JTable {
 		super();
 		this.isEditable = isEditable;
 		this.setEditable(this.isEditable);
-		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.createVisuals();
 		this.setTableRenderer();
+	}
+	
+	private void createVisuals() {
+		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		this.setRowHeight(20);
+		this.setFont(new Font("Tahoma", Font.PLAIN, DEFAULT_FONT_SIZE));
+		this.getTableHeader().setFont(new Font("Tahoma", Font.PLAIN, DEFAULT_FONT_SIZE));
+		this.setShowGrid(false);
+		this.setIntercellSpacing(new Dimension(0, 0));
+		this.setSelectionBackground(selectedRowBackgroundColor);
+		this.setSelectionForeground(selectedRowForegroundColor);
 	}
 	
 	public void setTableRenderer() {
@@ -73,6 +97,10 @@ public class PMJTable extends JTable {
 			        if (JComponent.class.isInstance(comp) && getColumnClass(column) != java.util.Date.class){
 			            ((JComponent)comp).setBorder(paddingBorder);
 			        }
+			        Color c = (row % 2 == 0 ? evenRowBackgroundColor : oddRowBackgroundColor);
+					if(!comp.getBackground().equals(getSelectionBackground())) {
+						comp.setBackground(c);
+					}	
 					return comp;
 	}
 	
@@ -119,10 +147,11 @@ public class PMJTable extends JTable {
 	
 	public JPanel getSearchTablePanel() {
 		JPanel searchPanel = new JPanel();
-		searchPanel.setBackground(new Color(245,245,245));
+		searchPanel.setBackground(searchFieldBackgroundColor);
 		searchPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		
 		PMJTextField searchTableField = new PMJTextField("Wyszukaj");
+		searchTableField.setFont(new Font("Tahoma", Font.PLAIN, DEFAULT_FONT_SIZE));
 		searchTableField.setPreferredSize(new Dimension(125, 25));
 		searchTableField.setSearchField(this);
 		

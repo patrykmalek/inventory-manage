@@ -11,7 +11,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -56,7 +55,6 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 	public void createVisuals() {
 		this.setBackground(new Color(245, 245, 245));
 		this.setLayout(new BorderLayout());
-		this.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		
 		this.table = new PMJTable(false);
 			

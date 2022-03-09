@@ -49,10 +49,12 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 	private final Color customTextFieldColor = SystemColor.white;
 	private final Color customTextFieldColorActive = SystemColor.inactiveCaption;
 	private final Color customTextFieldColorHover = SystemColor.inactiveCaptionBorder;
+	private final Color customTextFieldColorEmpty = new Color(255, 214, 214);
 	
 	private final Color customBorderColor = UIManager.getColor("Button.shadow");
 	private final Color customBorderColorActive = new Color(0, 10, 110);
 	private final Color customBorderColorHover = new Color(0, 60, 110);
+	private final Color customBorderColorEmpty = new Color(204, 51, 0);
 	
 	private final BorderLayout layoutPanel = new BorderLayout();
 	
@@ -140,14 +142,6 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 	
 	private Border getCustomBorderForTextField(Color color) {
 		Border matteBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, color);
-        Border emptyBorder = BorderFactory.createEmptyBorder(0, 5, 0, 0);
-        
-        return new CompoundBorder(matteBorder, emptyBorder);
-	}
-	
-	
-	private Border getCustomFieldBorderWhenEmpty() {
-		Border matteBorder = BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(204, 51, 0));
         Border emptyBorder = BorderFactory.createEmptyBorder(0, 5, 0, 0);
         
         return new CompoundBorder(matteBorder, emptyBorder);
@@ -254,6 +248,11 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 		getCustomTextField().setBorder(getCustomBorderForTextField(getCustomBorderColorActive()));
 	}
 	
+	private void setTextFieldEmpty() {
+		getCustomTextField().setBackground(getCustomTextFieldColorEmpty());
+		getCustomTextField().setBorder(getCustomBorderForTextField(getCustomBorderColorEmpty()));
+	}
+	
 
 	public void setText(String text) {
 		getCustomTextField().setText(text);
@@ -277,15 +276,13 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 	
 
 	private void setEmptyWarning() {
-		setBorder(getCustomFieldBorderWhenEmpty());
-		setBackground(new Color(255, 214, 214));
+		setTextFieldEmpty();
 		setEmptyAfterCheck(true);
 	}
 	
 	private void deleteEmptyWarning() {
 		if(isEmptyAfterCheck()) {
-			setBackground(SystemColor.white);
-			setBorder(getCustomBorderForTextField(UIManager.getColor("Button.shadow")));
+			setTextFieldDefault();
 		}
 		setEmptyAfterCheck(false);
 	}
@@ -438,6 +435,16 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 
 	public void setEmptyAfterCheck(boolean emptyAfterCheck) {
 		this.emptyAfterCheck = emptyAfterCheck;
+	}
+
+
+	public Color getCustomTextFieldColorEmpty() {
+		return customTextFieldColorEmpty;
+	}
+
+
+	public Color getCustomBorderColorEmpty() {
+		return customBorderColorEmpty;
 	}
 	
 }

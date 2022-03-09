@@ -25,7 +25,6 @@ public class Main {
 			e.printStackTrace();
 			return;
 		} 
-
 		
 		javax.swing.SwingUtilities.invokeLater(new Runnable()  {
 			public void run() {
