@@ -16,6 +16,7 @@ import kruszywo.sa.computers.manage.view.details.window.DeviceDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.DeviceTypeDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.EmployeeDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.LicenseDetailsFrame;
+import kruszywo.sa.computers.manage.view.details.window.SoftwareDetailsFrame;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.DepartmentDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.DeviceTablePanel;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.DeviceTypeDictionaryTablePanel;
@@ -33,14 +34,15 @@ public class Controller {
 	private DeviceTypeDictionaryTablePanel deviceTypeDictionaryTable;
 	private DepartmentDictionaryTablePanel departmentDictionaryTable;
 	private EmployeeDictionaryTablePanel employeeDictionaryTable;
-	private	LicenseDictionaryTablePanel licenseDictionaryTablePanel;
-	private SoftwareDictionaryTablePanel softwareDictionaryTablePanel;
+	private	LicenseDictionaryTablePanel licenseDictionaryTable;
+	private SoftwareDictionaryTablePanel softwareDictionaryTable;
 	
 	private DeviceDetailsFrame deviceDetailsFrame;
 	private DeviceTypeDetailsFrame deviceTypeDetailsFrame;
 	private DepartmentDetailsFrame departmentDetailsFrame;
 	private EmployeeDetailsFrame employeeDetailsFrame;
 	private LicenseDetailsFrame licenseDetailsFrame;
+	private SoftwareDetailsFrame softwareDetailsFrame;
 	
 	public static WaitWindow waitWindow;
 	
@@ -76,6 +78,16 @@ public class Controller {
 	public void addEmployeeDictionaryPanel() {
 		this.getTabbedPanel().addTabbedPanel(TabbedPanel.EMPLOYEE_DICTIONARY_PANEL, new EmployeeDictionaryTablePanel(this));
 		this.getEmployeeDictionaryTable().updateTable(getManagerDAO().getEmployeeDAO().getAll());
+	}
+	
+	public void addLicensesDictionaryPanel() {
+		this.getTabbedPanel().addTabbedPanel(TabbedPanel.LICENSES_DICTIONARY_PANEL, new LicenseDictionaryTablePanel(this));
+		this.getLicenseDictionaryTable().updateTable(getManagerDAO().getLicenseDAO().getAll());
+	}
+	
+	public void addSoftwareDictionaryPanel() {
+		this.getTabbedPanel().addTabbedPanel(TabbedPanel.SOFTWARE_DICTIONARY_PANEL, new SoftwareDictionaryTablePanel(this));
+		this.getSoftwareDictionaryTable().updateTable(getManagerDAO().getSoftwareDAO().getAll());
 	}
 
 	public DatabaseProvider getDatabaseProvider() {
@@ -221,20 +233,28 @@ public class Controller {
 		this.licenseDetailsFrame = licenseDetailsFrame;
 	}
 
-	public LicenseDictionaryTablePanel getLicenseDictionaryTablePanel() {
-		return licenseDictionaryTablePanel;
+	public LicenseDictionaryTablePanel getLicenseDictionaryTable() {
+		return licenseDictionaryTable;
 	}
 
-	public void setLicenseDictionaryTablePanel(LicenseDictionaryTablePanel licenseDictionaryTablePanel) {
-		this.licenseDictionaryTablePanel = licenseDictionaryTablePanel;
+	public void setLicenseDictionaryTable(LicenseDictionaryTablePanel licenseDictionaryTable) {
+		this.licenseDictionaryTable = licenseDictionaryTable;
 	}
 
-	public SoftwareDictionaryTablePanel getSoftwareDictionaryTablePanel() {
-		return softwareDictionaryTablePanel;
+	public SoftwareDictionaryTablePanel getSoftwareDictionaryTable() {
+		return softwareDictionaryTable;
 	}
 
-	public void setSoftwareDictionaryTablePanel(SoftwareDictionaryTablePanel softwareDictionaryTablePanel) {
-		this.softwareDictionaryTablePanel = softwareDictionaryTablePanel;
+	public void setSoftwareDictionaryTable(SoftwareDictionaryTablePanel softwareDictionaryTable) {
+		this.softwareDictionaryTable = softwareDictionaryTable;
+	}
+
+	public SoftwareDetailsFrame getSoftwareDetailsFrame() {
+		return softwareDetailsFrame;
+	}
+
+	public void setSoftwareDetailsFrame(SoftwareDetailsFrame softwareDetailsFrame) {
+		this.softwareDetailsFrame = softwareDetailsFrame;
 	}
 
 

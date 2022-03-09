@@ -7,6 +7,7 @@ import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.model.Employee;
 import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
+import kruszywo.sa.computers.manage.view.util.PMJScrollPane;
 import kruszywo.sa.computers.manage.view.util.PMJTextField;
 
 import java.awt.BorderLayout;
@@ -23,6 +24,8 @@ import net.miginfocom.swing.MigLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class EmployeeDetailsFrame extends JDialog {
@@ -70,7 +73,7 @@ public class EmployeeDetailsFrame extends JDialog {
 		detailsPanel = createDetailsPanel();
 		footerPanel = createFooterPanel();
 		getContentPane().add(this.headerPanel, BorderLayout.NORTH);
-		getContentPane().add(this.detailsPanel, BorderLayout.CENTER);
+		getContentPane().add(new PMJScrollPane(this.detailsPanel), BorderLayout.CENTER);
 		getContentPane().add(this.footerPanel, BorderLayout.SOUTH);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -126,7 +129,6 @@ public class EmployeeDetailsFrame extends JDialog {
 		employeeLastNameField.setColumns(10);
 		detailsPanel.add(employeeLastNameField, "cell 2 2 4 1,grow");
 		
-		
 		return detailsPanel;
 	}
 	
@@ -159,8 +161,10 @@ public class EmployeeDetailsFrame extends JDialog {
 		saveButton.removeActionListener(saveButton.getActionListeners()[0]);
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				saveEmployeeData();
-				dispose();
+				if(validateFields()) {
+					saveEmployeeData();
+					dispose();
+				}
 			}
 		});
 		
@@ -197,9 +201,19 @@ public class EmployeeDetailsFrame extends JDialog {
 		
 		getController().getManagerDAO().getEmployeeServiceDAO().saveData(employee, getOperationType());
 	}
+	
+	private boolean validateFields() {
+		
+		List<Boolean> errors = new ArrayList<>();
+		
+		errors.add(employeeFirstNameField.isEmpty());
+		errors.add(employeeLastNameField.isEmpty());
+		
+		return !errors.contains(true);
+	}
 
 	private String getCorrectTitle() {
-		return (isEditable()) ? "Edycja typu urządzenia" : "Szczegóły typu urządzenia";
+		return (isEditable()) ? "Edycja pracownika" : "Szczegóły pracownika";
 	}
 
 	public boolean isEditable() {

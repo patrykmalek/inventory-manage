@@ -22,20 +22,18 @@ public class SoftwareDictionaryTablePanel extends DictionaryTablePanel<Software>
 		this.controller.setSoftwareDictionaryTable(this);
 		this.createTable();
 		this.setButtonEventListeners();
-		setPanelTitle("Słownik oddziałów");
+		setPanelTitle("Słownik oprogramowania");
 	}
 	
 	@Override
 	public void createTable() {
 		this.setTableModelAndSorter(new Class[] { 
 				java.lang.Integer.class,
-				java.lang.String.class,
 				java.lang.String.class
 		});
 		this.setTableColumnNames(new String[] { 
-				"ID oddziału",
-				"Kod oddziału",
-				"Nazwa oddziału"
+				"ID oprogramowania",
+				"Nazwa oprogramowania"
 		});
 	}
 
@@ -44,7 +42,7 @@ public class SoftwareDictionaryTablePanel extends DictionaryTablePanel<Software>
 		clearTable();
 		if(isEmptyData(softwares)) return;
 		for( Software software : softwares){
-//			addRowToTable(new Object[] {software.getSoftwareID(), software.getSoftwareName(), deviceType.getSoftwareName()});
+			addRowToTable(new Object[] {software.getSoftwareID(), software.getSoftwareName()});
 		}
 		resizeTable();
 	}

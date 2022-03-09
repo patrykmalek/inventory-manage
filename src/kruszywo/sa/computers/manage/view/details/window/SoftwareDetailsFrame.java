@@ -1,10 +1,11 @@
 package kruszywo.sa.computers.manage.view.details.window;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
 import kruszywo.sa.computers.manage.controller.Controller;
-import kruszywo.sa.computers.manage.model.Department;
+import kruszywo.sa.computers.manage.model.Software;
 import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
 import kruszywo.sa.computers.manage.view.util.PMJScrollPane;
@@ -26,14 +27,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-public class DepartmentDetailsFrame extends JDialog {
+
+import javax.swing.JTextPane;
+
+public class SoftwareDetailsFrame extends JDialog {
 	
 	private static final long serialVersionUID = 1L;
-	private int departmentID;
+	private int softwareID;
 	
 	private JLabel additionalTitleHeaderLabel;
-	private PMJTextField departmentCodeField;
-	private PMJTextField departmentNameField;
+	private PMJTextField softwareNameField;
+	private JTextPane softwareNotesField;
 	
 	private JPanel headerPanel;
 	private JPanel detailsPanel;
@@ -48,10 +52,11 @@ public class DepartmentDetailsFrame extends JDialog {
 	private Controller controller;
 	
 	
-	public DepartmentDetailsFrame(Controller controller) {
+	public SoftwareDetailsFrame(Controller controller) {
 		super(controller.getMainFrame(), "Panel", true);
 		this.controller = controller;
-		this.controller.setDepartmentDetailsFrame(this);
+		this.controller.setSoftwareDetailsFrame(this);
+		createWindow();
 	}
 	
 	public void createWindow() {
@@ -91,7 +96,7 @@ public class DepartmentDetailsFrame extends JDialog {
 		
 		headerPanel.add(titlePanel, BorderLayout.CENTER);
 		
-		JLabel titleHeaderLabel = new JLabel("Oddział");
+		JLabel titleHeaderLabel = new JLabel("Typ oprogramowania");
 		titleHeaderLabel.setForeground(SystemColor.textInactiveText);
 		titleHeaderLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		titlePanel.add(titleHeaderLabel, "cell 0 0,alignx left,growy");
@@ -107,25 +112,25 @@ public class DepartmentDetailsFrame extends JDialog {
 	private JPanel createDetailsPanel() {
 		JPanel detailsPanel = new JPanel();
 		detailsPanel.setBackground(SystemColor.text);
-		detailsPanel.setLayout(new MigLayout("", "[10px][150px][grow][grow][grow][grow][grow][10px]", "[25px][25px][25px][25px]"));
-		
-		JLabel deviceCodeLabel = new JLabel("Kod:");
-		deviceCodeLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		detailsPanel.add(deviceCodeLabel, "cell 1 1,alignx left");
-		
-		departmentCodeField = new PMJTextField(true, 13);
-		departmentCodeField.setEditable(isEditable());
-		departmentCodeField.setColumns(10);
-		detailsPanel.add(departmentCodeField, "cell 2 1 4 1,grow");
+		detailsPanel.setLayout(new MigLayout("", "[10px][150px][grow][grow][grow][grow][grow][10px]", "[25px][25px][25px][25px][grow][10px]"));
 		
 		JLabel deviceNameLabel = new JLabel("Nazwa:");
 		deviceNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		detailsPanel.add(deviceNameLabel, "cell 1 2,alignx left");
+		detailsPanel.add(deviceNameLabel, "cell 1 1,alignx left");
 		
-		departmentNameField = new PMJTextField(true, 13);
-		departmentNameField.setEditable(isEditable());
-		departmentNameField.setColumns(10);
-		detailsPanel.add(departmentNameField, "cell 2 2 4 1,grow");
+		softwareNameField = new PMJTextField(true, 13);
+		softwareNameField.setEditable(isEditable());
+		softwareNameField.setColumns(10);
+		detailsPanel.add(softwareNameField, "cell 2 1 4 1,grow");
+		
+		softwareNotesField = new JTextPane();
+		softwareNotesField.setEnabled(isEditable());
+		softwareNotesField.setBorder(BorderFactory.createTitledBorder("Dodatkowe informacje"));
+		softwareNotesField.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		
+		JScrollPane softwareNotesFieldContainer = new JScrollPane(softwareNotesField);
+		softwareNotesFieldContainer.setBorder(null);
+		detailsPanel.add(softwareNotesFieldContainer, "cell 1 4 6 1,grow");
 		
 		return detailsPanel;
 	}
@@ -160,7 +165,7 @@ public class DepartmentDetailsFrame extends JDialog {
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if(validateFields()) {
-					saveDepartmentData();
+					saveSoftwareData();
 					dispose();
 				}
 			}
@@ -176,42 +181,41 @@ public class DepartmentDetailsFrame extends JDialog {
 		
 	}
 	
-	public boolean addDepartmentDataToView(Department department) {
+	public boolean addSoftwareDataToView(Software software) {
 		
-		if(department == null) return false;
-		setDepartmentID(department.getDepartmentID());
+		if(software == null) return false;
+		setSoftwareID(software.getSoftwareID());
 		
-		additionalTitleHeaderLabel.setText(department.toString());
+		additionalTitleHeaderLabel.setText("Szczegóły");
 		
-		departmentCodeField.setText(department.getDepartmentCode());
-		departmentNameField.setText(department.getDepartmentName());
+		softwareNameField.setText(software.getSoftwareName());
+		softwareNotesField.setText(software.getSoftwareNotes());
 		
 		return true;
 	}
 	
-	public void saveDepartmentData() {
+	public void saveSoftwareData() {
 		
-		Department department = new Department();
+		Software software = new Software();
 		
-		department.setDepartmentID(getDepartmentID());
-		department.setDepartmentCode(departmentCodeField.getText());
-		department.setDepartmentName(departmentNameField.getText());
+		software.setSoftwareID(getSoftwareID());
+		software.setSoftwareName(softwareNameField.getText());
+		software.setSoftwareNotes(softwareNotesField.getText());
 		
-		getController().getManagerDAO().getDepartmentServiceDAO().saveData(department, getOperationType());
+		getController().getManagerDAO().getSoftwareServiceDAO().saveData(software, getOperationType());
 	}
 	
 	private boolean validateFields() {
 		
 		List<Boolean> errors = new ArrayList<>();
 		
-		errors.add(departmentCodeField.isEmpty());
-		errors.add(departmentNameField.isEmpty());
+		errors.add(softwareNameField.isEmpty());
 		
 		return !errors.contains(true);
 	}
 
 	private String getCorrectTitle() {
-		return (isEditable()) ? "Edycja miejsca użytkowania" : "Szczegóły miejsca użytkowania";
+		return (isEditable()) ? "Edycja typu oprogramowania" : "Szczegóły typu oprogramowania";
 	}
 
 	public boolean isEditable() {
@@ -235,12 +239,12 @@ public class DepartmentDetailsFrame extends JDialog {
 		this.operationType = operationType;
 	}
 
-	public int getDepartmentID() {
-		return departmentID;
+	public int getSoftwareID() {
+		return softwareID;
 	}
 
-	public void setDepartmentID(int departmentID) {
-		this.departmentID = departmentID;
+	public void setSoftwareID(int softwareID) {
+		this.softwareID = softwareID;
 	}
 
 	

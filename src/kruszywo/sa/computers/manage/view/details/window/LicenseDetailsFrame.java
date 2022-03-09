@@ -5,14 +5,13 @@ import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
 import kruszywo.sa.computers.manage.controller.Controller;
-import kruszywo.sa.computers.manage.model.Department;
 import kruszywo.sa.computers.manage.model.License;
-import kruszywo.sa.computers.manage.model.Employee;
 import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.model.Software;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
 import kruszywo.sa.computers.manage.view.util.PMCustomTextFieldWithDictionary;
 import kruszywo.sa.computers.manage.view.util.PMJDateChooser;
+import kruszywo.sa.computers.manage.view.util.PMJScrollPane;
 import kruszywo.sa.computers.manage.view.util.PMJTextField;
 
 import java.awt.BorderLayout;
@@ -33,8 +32,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
-
 import javax.swing.JTextPane;
 
 public class LicenseDetailsFrame extends JDialog {
@@ -44,9 +41,10 @@ public class LicenseDetailsFrame extends JDialog {
 	private JLabel licenseKeyLabel;
 	private JLabel licenseMainKeyLabel;
 	private JLabel licenseInvoiceNumberLabel;
-	private JLabel llicensePurchaseDateLabel;
-	private JLabel llicenseLastInstallationDateLabel;
 	private JLabel licenseAssignedEmailLabel;
+	private JLabel licenseSoftwareLabel;
+	private JLabel licensePurchaseDateLabel;
+	private JLabel licenseLastInstallationDateLabel;
 	
 
 	private int licenseID;
@@ -90,12 +88,12 @@ public class LicenseDetailsFrame extends JDialog {
 	private void createVisuals() {
 		setTitle(getCorrectTitle());
 		setIconImage(new ImageIcon(getClass().getResource("/edit-solid-dark-blue-15.png")).getImage());
-		setSize(800, 650);
+		setSize(800, 550);
 		headerPanel = createHeaderPanel();
 		detailsPanel = createDetailsPanel();
 		footerPanel = createFooterPanel();
 		getContentPane().add(this.headerPanel, BorderLayout.NORTH);
-		getContentPane().add(this.detailsPanel, BorderLayout.CENTER);
+		getContentPane().add(new PMJScrollPane(this.detailsPanel), BorderLayout.CENTER);
 		getContentPane().add(this.footerPanel, BorderLayout.SOUTH);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -130,86 +128,71 @@ public class LicenseDetailsFrame extends JDialog {
 	private JPanel createDetailsPanel() {
 		JPanel detailsPanel = new JPanel();
 		detailsPanel.setBackground(SystemColor.text);
-		detailsPanel.setLayout(new MigLayout("", "[10px][150px][grow][grow][grow][grow][grow][10px]", "[25px][25px][25px][25px][25px][25px][25px][25px][25px][25px][25px][25px][grow][10px]"));
+		detailsPanel.setLayout(new MigLayout("", "[10px][150px][grow][grow][grow][grow][grow][10px]", "[25px][25px][25px][25px][25px][25px][25px][25px][25px][grow][10px]"));
 		
+		licenseSoftwareLabel = new JLabel("Typ oprogramowania:");
+		licenseSoftwareLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		detailsPanel.add(licenseSoftwareLabel, "cell 1 1,alignx left");
 		
-		licenseKeyLabel = new JLabel("Numer seryjny:");
-		licenseKeyLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		detailsPanel.add(licenseKeyLabel, "cell 1 2,alignx left");
+		licenseMainKeyLabel = new JLabel("Główny klucz licencji:");
+		licenseMainKeyLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		detailsPanel.add(licenseMainKeyLabel, "cell 1 2,alignx left");
 		
 		licenseMainKeyField = new PMJTextField(true, 13);
 		licenseMainKeyField.setEditable(isEditable());
 		licenseMainKeyField.setColumns(10);
 		detailsPanel.add(licenseMainKeyField, "cell 2 2 4 1,grow");
 		
-		licenseInventoryNumberLabel = new JLabel("Numer inwentarzowy:");
-		licenseInventoryNumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		detailsPanel.add(licenseInventoryNumberLabel, "cell 1 3,alignx left");
+		licenseKeyLabel = new JLabel("Klucz licencji:");
+		licenseKeyLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		detailsPanel.add(licenseKeyLabel, "cell 1 3,alignx left");
 		
-		licenseInventoryNumberField = new PMJTextField(true, 13);
-		licenseInventoryNumberField.setEditable(isEditable());
-		licenseInventoryNumberField.setColumns(10);
-		detailsPanel.add(licenseInventoryNumberField, "cell 2 3 4 1,grow");
+		licenseKeyField = new PMJTextField(true, 13);
+		licenseKeyField.setEditable(isEditable());
+		licenseKeyField.setColumns(10);
+		detailsPanel.add(licenseKeyField, "cell 2 3 4 1,grow");
 		
-		licenseTypeNameLabel = new JLabel("Typ urządzenia:");
-		licenseTypeNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		detailsPanel.add(licenseTypeNameLabel, "cell 1 4,alignx left");
+		licenseAssignedEmailLabel = new JLabel("Przypisane konto email:");
+		licenseAssignedEmailLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		detailsPanel.add(licenseAssignedEmailLabel, "cell 1 4,alignx left");
 		
-		licenseTypeField = new PMCustomTextFieldWithDictionary<LicenseType>();
-		licenseTypeField.setEditable(isEditable());
-		detailsPanel.add(licenseTypeField, "cell 2 4 4 1, grow");
-		
-		licenseAssignedDepartmentLabel = new JLabel("Miejsce użycia:");
-		licenseAssignedDepartmentLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		detailsPanel.add(licenseAssignedDepartmentLabel, "cell 1 5,alignx left");
-		
-		licenseAssignedDepartmentField = new PMCustomTextFieldWithDictionary<Department>();
-		licenseAssignedDepartmentField.setEditable(isEditable());
-		detailsPanel.add(licenseAssignedDepartmentField, "cell 2 5 4 1,grow");
-		
-		licenseAssignedEmployeeLabel = new JLabel("Przypisany pracownik:");
-		licenseAssignedEmployeeLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		detailsPanel.add(licenseAssignedEmployeeLabel, "cell 1 6,alignx left");
-		
-		licenseAssignedEmployeeField = new PMCustomTextFieldWithDictionary<Employee>();
-		licenseAssignedEmployeeField.setEditable(isEditable());
-		detailsPanel.add(licenseAssignedEmployeeField, "cell 2 6 4 1,grow");
+		licenseAssignedEmailField = new PMJTextField(true, 13);
+		licenseAssignedEmailField.setEditable(isEditable());
+		licenseAssignedEmailField.setColumns(10);
+		detailsPanel.add(licenseAssignedEmailField, "cell 2 4 4 1,grow");
 		
 		licenseInvoiceNumberLabel = new JLabel("Powiązana faktura:");
 		licenseInvoiceNumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		detailsPanel.add(licenseInvoiceNumberLabel, "cell 1 7,alignx left");
+		detailsPanel.add(licenseInvoiceNumberLabel, "cell 1 5,alignx left");
+		
+		licenseSoftwareField = new PMCustomTextFieldWithDictionary<Software>();
+		licenseSoftwareField.setEditable(isEditable());
+		detailsPanel.add(licenseSoftwareField, "cell 2 1 4 1,grow");
 		
 		licenseInvoiceNumberField = new PMJTextField(true, 13);
 		licenseInvoiceNumberField.setEditable(isEditable());
 		licenseInvoiceNumberField.setColumns(10);
-		detailsPanel.add(licenseInvoiceNumberField, "cell 2 7 4 1,grow");
+		detailsPanel.add(licenseInvoiceNumberField, "cell 2 5 4 1,grow");
 		
 		licensePurchaseDateLabel = new JLabel("Data zakupu:");
 		licensePurchaseDateLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		detailsPanel.add(licensePurchaseDateLabel, "cell 1 8,alignx left");
+		detailsPanel.add(licensePurchaseDateLabel, "cell 1 6,alignx left");
 		
 		licensePurchaseDateField = new PMJDateChooser();
 		licensePurchaseDateField.setEnabled(isEditable());
 		licensePurchaseDateField.setDateFormatString(controller.getDefaultDateFormat().toPattern());
-		licensePurchaseDateField.setDate(getController().getCalendarWithTodayDate().getTime());
-		detailsPanel.add(licensePurchaseDateField, "cell 2 8,grow");
+		licensePurchaseDateField.setCalendar(getController().getCalendarWithTodayDate());
+		detailsPanel.add(licensePurchaseDateField, "cell 2 6,grow");
 		
 		licenseLastInstallationDateLabel = new JLabel("Data ostatniej instalacji:");
 		licenseLastInstallationDateLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		detailsPanel.add(licenseLastInstallationDateLabel, "cell 1 9,alignx left");
+		detailsPanel.add(licenseLastInstallationDateLabel, "cell 1 7,alignx left");
 		
 		licenseLastInstallationDateField = new PMJDateChooser();
 		licenseLastInstallationDateField.setEnabled(isEditable());
 		licenseLastInstallationDateField.setDateFormatString(controller.getDefaultDateFormat().toPattern());
-		licenseLastInstallationDateField.setDate(getController().getCalendarWithTodayDate().getTime());
-		detailsPanel.add(licenseLastInstallationDateField, "cell 2 9,grow");
-		
-		licenseComputerNameLabel = new JLabel("Nazwa komputera:");
-		licenseComputerNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		
-		licenseComputerNameField = new PMJTextField(true, 13);
-		licenseComputerNameField.setEditable(isEditable());
-		licenseComputerNameField.setColumns(10);
+		licenseLastInstallationDateField.setCalendar(getController().getCalendarWithTodayDate());
+		detailsPanel.add(licenseLastInstallationDateField, "cell 2 7,grow");
 		
 		licenseNotesField = new JTextPane();
 		licenseNotesField.setEnabled(isEditable());
@@ -218,7 +201,7 @@ public class LicenseDetailsFrame extends JDialog {
 		
 		JScrollPane licenseNotesContainer = new JScrollPane(licenseNotesField);
 		licenseNotesContainer.setBorder(null);
-		detailsPanel.add(licenseNotesContainer, "cell 1 12 6 1,grow");
+		detailsPanel.add(licenseNotesContainer, "cell 1 9 6 1,grow");
 		
 		return detailsPanel;
 	}
@@ -292,7 +275,7 @@ public class LicenseDetailsFrame extends JDialog {
 		licenseSoftwareField.getDictionaryButton().removeActionListener(licenseSoftwareField.getDictionaryButton().getActionListeners()[0]);
 		licenseSoftwareField.getDictionaryButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				getController().getManagerDAO().getLicenseServiceDAO().openEmployeeDictionaryWindowAndAddItem();
+				getController().getManagerDAO().getLicenseServiceDAO().openSoftwareDictionaryWindowAndAddItem();
 			}
 		});
 
@@ -303,31 +286,17 @@ public class LicenseDetailsFrame extends JDialog {
 		
 		if(license == null) return false;
 		setLicenseID(license.getLicenseID());
-		setComputer(IntStream.of(getIdsToShowComputerNameField()).anyMatch(x -> x == license.getLicenseType().getLicenseTypeID()));
 		
-		if(isComputer()) {
-			showComputerNameField();
-			licenseComputerNameField.setText(license.getComputerName());
-		}
-		
-		
-		additionalTitleHeaderLabel.setText(license.getLicenseType().getLicenseTypeName() + ", " + 
-											license.getAssignedEmployee().getFirstName() + " " + 
-											license.getAssignedEmployee().getLastName() +", " + 
-											license.getAssignedDepartment().getDepartmentName());
-		
-		licenseNameField.setText(license.getLicenseName());                
-		licenseMainKeyLabel.setText(license.getLicenseUniqueNumber());
-		licenseInventoryNumberField.setText(license.getLicenseInventoryNumber());
-		
-		licenseTypeField.addItem(license.getLicenseType());
-		licenseAssignedDepartmentField.addItem(license.getAssignedDepartment());
-		licenseAssignedEmployeeField.addItem(license.getAssignedEmployee());
-		
+		additionalTitleHeaderLabel.setText(license.getSoftware().getSoftwareName());
+		         
+		licenseSoftwareField.addItem(license.getSoftware());
+		licenseMainKeyField.setText(license.getLicenseMainKey());
+		licenseKeyField.setText(license.getLicenseKey());
+		licenseAssignedEmailField.setText(license.getAssignedEmail());
 		licenseInvoiceNumberField.setText(license.getInvoiceNumber());
 		licensePurchaseDateField.setCalendar(getController().getCalendarWithCustomDate(license.getPurchaseDate(), getController().getDefaultDateFormat(), false));
 		licenseLastInstallationDateField.setCalendar(getController().getCalendarWithCustomDate(license.getLastInstallationDate(), getController().getDefaultDateFormat(), false));
-		licenseNotesField.setText(license.getNotes());
+		licenseNotesField.setText(license.getLicenseNotes());
 		return true;
 	}
 	
@@ -336,17 +305,15 @@ public class LicenseDetailsFrame extends JDialog {
 		License license = new License();
 		
 		license.setLicenseID(getLicenseID());
-		license.setLicenseName(licenseNameField.getText());
-		license.setLicenseUniqueNumber(licenseMainKeyLabel.getText());
-		license.setLicenseInventoryNumber(licenseInventoryNumberField.getText());
-		license.setLicenseType(licenseTypeField.getItem());
-		license.setAssignedDepartment(licenseAssignedDepartmentField.getItem());
-		license.setAssignedEmployee(licenseAssignedEmployeeField.getItem());
+		license.setSoftware(licenseSoftwareField.getItem());
+		license.setLicenseKey(licenseKeyField.getText());
+		license.setLicenseMainKey(licenseMainKeyLabel.getText());
+		license.setAssignedEmail(licenseAssignedEmailField.getText());
 		license.setInvoiceNumber(licenseInvoiceNumberField.getText());
 		license.setPurchaseDate(licensePurchaseDateField.getCustomDate());
 		license.setLastInstallationDate(licenseLastInstallationDateField.getCustomDate());
-		license.setNotes(licenseNotesField.getText());
-		license.setComputerName(licenseComputerNameField.getText());
+		license.setLicenseNotes(licenseNotesField.getText());
+		
 		getController().getManagerDAO().getLicenseServiceDAO().saveData(license, getOperationType());
 	}
 	
@@ -354,9 +321,10 @@ public class LicenseDetailsFrame extends JDialog {
 		
 		List<Boolean> errors = new ArrayList<>();
 		
-		errors.add(licenseNameField.isEmpty());
-		errors.add(licenseMainKeyLabel.isEmpty());
-		errors.add(licenseInventoryNumberField.isEmpty());
+		errors.add(licenseSoftwareField.isEmpty());
+		errors.add(licenseMainKeyField.isEmpty());
+		errors.add(licenseAssignedEmailField.isEmpty());
+		errors.add(licenseInvoiceNumberField.isEmpty());
 		
 		return !errors.contains(true);
 	}

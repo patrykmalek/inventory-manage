@@ -19,7 +19,7 @@ public class LicenseDictionaryTablePanel extends DictionaryTablePanel<License> {
 	public LicenseDictionaryTablePanel(Controller controller) {
 		super();
 		this.controller = controller;
-		this.controller.setLicenseDictionaryTablePanel(this);
+		this.controller.setLicenseDictionaryTable(this);
 		this.createTable();
 		this.setButtonEventListeners();
 		setPanelTitle("Licencje");
@@ -42,8 +42,8 @@ public class LicenseDictionaryTablePanel extends DictionaryTablePanel<License> {
 				"Oprogramowanie",
 				"Klucz główny",
 				"Klucz",
-				"Powiązana faktura",
 				"Przypisany e-mail",
+				"Powiązana faktura",
 				"Data zakupu",
 				"Data ost. instalacji"
 		});
@@ -55,7 +55,7 @@ public class LicenseDictionaryTablePanel extends DictionaryTablePanel<License> {
 		if(isEmptyData(licenses)) return;
 		for( License license : licenses){
 			addRowToTable(new Object[] {license.getLicenseID(), license.getSoftware().toString(), license.getLicenseMainKey(),
-					license.getLicenseKey(), license.getInvoiceNumber(), license.getAssignedEmail(), 
+					license.getLicenseKey(), license.getAssignedEmail(), license.getInvoiceNumber(), 
 					license.getPurchaseDate(), license.getLastInstallationDate()});
 		}
 		resizeTable();

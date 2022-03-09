@@ -8,6 +8,7 @@ import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.model.DeviceType;
 import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
+import kruszywo.sa.computers.manage.view.util.PMJScrollPane;
 import kruszywo.sa.computers.manage.view.util.PMJTextField;
 
 import java.awt.BorderLayout;
@@ -24,6 +25,8 @@ import net.miginfocom.swing.MigLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JTextPane;
 
@@ -73,7 +76,7 @@ public class DeviceTypeDetailsFrame extends JDialog {
 		detailsPanel = createDetailsPanel();
 		footerPanel = createFooterPanel();
 		getContentPane().add(this.headerPanel, BorderLayout.NORTH);
-		getContentPane().add(this.detailsPanel, BorderLayout.CENTER);
+		getContentPane().add(new PMJScrollPane(this.detailsPanel), BorderLayout.CENTER);
 		getContentPane().add(this.footerPanel, BorderLayout.SOUTH);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -128,6 +131,7 @@ public class DeviceTypeDetailsFrame extends JDialog {
 		JScrollPane deviceTypeNotesFieldContainer = new JScrollPane(deviceTypeNotesField);
 		deviceTypeNotesFieldContainer.setBorder(null);
 		detailsPanel.add(deviceTypeNotesFieldContainer, "cell 1 4 6 1,grow");
+
 		
 		return detailsPanel;
 	}
@@ -161,8 +165,10 @@ public class DeviceTypeDetailsFrame extends JDialog {
 		saveButton.removeActionListener(saveButton.getActionListeners()[0]);
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				saveDeviceTypeData();
-				dispose();
+				if(validateFields()) {
+					saveDeviceTypeData();
+					dispose();
+				}
 			}
 		});
 		
@@ -200,6 +206,15 @@ public class DeviceTypeDetailsFrame extends JDialog {
 		getController().getManagerDAO().getDeviceTypeServiceDAO().saveData(deviceType, getOperationType());
 	}
 
+	private boolean validateFields() {
+		
+		List<Boolean> errors = new ArrayList<>();
+		
+		errors.add(deviceTypeNameField.isEmpty());
+		
+		return !errors.contains(true);
+	}
+	
 	private String getCorrectTitle() {
 		return (isEditable()) ? "Edycja typu urządzenia" : "Szczegóły typu urządzenia";
 	}

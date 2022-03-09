@@ -21,6 +21,8 @@ public class TabbedPanel extends JPanel{
 	public static final String DEVICES_TYPE_DICTIONARY_PANEL = "Typy urządzeń";
 	public static final String DEPARTMENT_DICTIONARY_PANEL = "Miejsca użytkowania";
 	public static final String EMPLOYEE_DICTIONARY_PANEL = "Pracownicy";
+	public static final String LICENSES_DICTIONARY_PANEL = "Licencje";
+	public static final String SOFTWARE_DICTIONARY_PANEL = "Oprogramowanie";
 	
 	private JTabbedPane tabbedPane;
 
@@ -51,7 +53,6 @@ public class TabbedPanel extends JPanel{
 			
 			@Override
 			public void stateChanged(ChangeEvent event) {
-//				System.out.println(tabbedPane.getSelectedIndex());
 				
 			}
 		});

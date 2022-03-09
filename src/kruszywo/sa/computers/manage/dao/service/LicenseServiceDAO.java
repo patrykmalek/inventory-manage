@@ -8,15 +8,10 @@ import kruszywo.sa.computers.manage.exception.SystemOperationException;
 import kruszywo.sa.computers.manage.model.CommonFunctions;
 import kruszywo.sa.computers.manage.model.Software;
 import kruszywo.sa.computers.manage.model.License;
-import kruszywo.sa.computers.manage.model.LicenseType;
-import kruszywo.sa.computers.manage.model.Employee;
 import kruszywo.sa.computers.manage.model.OperationType;
-import kruszywo.sa.computers.manage.model.Software;
 import kruszywo.sa.computers.manage.view.details.window.LicenseDetailsFrame;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.SoftwareDictionaryTablePanel;
-import kruszywo.sa.computers.manage.view.dictionary.table.panel.LicenseTypeDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.DictionaryFrame;
-import kruszywo.sa.computers.manage.view.dictionary.table.panel.EmployeeDictionaryTablePanel;
 
 public class LicenseServiceDAO {
 
@@ -112,17 +107,17 @@ public class LicenseServiceDAO {
 
 	public void insertLicense(License license) {
 		getManagerDAO().getLicenseDAO().insert(license);
-		getController().getLicenseDictionaryTablePanel().updateTable(getManagerDAO().getLicenseDAO().getAll());
+		getController().getLicenseDictionaryTable().updateTable(getManagerDAO().getLicenseDAO().getAll());
 	}
 
 	public void updateLicense(License license) {
 		getManagerDAO().getLicenseDAO().update(license);
-		getController().getLicenseDictionaryTablePanel().updateTable(getManagerDAO().getLicenseDAO().getAll());
+		getController().getLicenseDictionaryTable().updateTable(getManagerDAO().getLicenseDAO().getAll());
 	}
 	
 	public void deleteLicense(License license) {
 		getManagerDAO().getLicenseDAO().delete(license);
-		getController().getLicenseDictionaryTablePanel().updateTable(getManagerDAO().getLicenseDAO().getAll());
+		getController().getLicenseDictionaryTable().updateTable(getManagerDAO().getLicenseDAO().getAll());
 	}
 
 	public ManagerDAO getManagerDAO() {

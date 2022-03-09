@@ -13,6 +13,7 @@ import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
 import kruszywo.sa.computers.manage.view.util.PMCustomTextFieldWithDictionary;
 import kruszywo.sa.computers.manage.view.util.PMJDateChooser;
+import kruszywo.sa.computers.manage.view.util.PMJScrollPane;
 import kruszywo.sa.computers.manage.view.util.PMJTextField;
 
 import java.awt.BorderLayout;
@@ -104,7 +105,7 @@ public class DeviceDetailsFrame extends JDialog {
 		detailsPanel = createDetailsPanel();
 		footerPanel = createFooterPanel();
 		getContentPane().add(this.headerPanel, BorderLayout.NORTH);
-		getContentPane().add(this.detailsPanel, BorderLayout.CENTER);
+		getContentPane().add(new PMJScrollPane(this.detailsPanel), BorderLayout.CENTER);
 		getContentPane().add(this.footerPanel, BorderLayout.SOUTH);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -385,10 +386,7 @@ public class DeviceDetailsFrame extends JDialog {
 		}
 		
 		
-		additionalTitleHeaderLabel.setText(device.getDeviceType().getDeviceTypeName() + ", " + 
-											device.getAssignedEmployee().getFirstName() + " " + 
-											device.getAssignedEmployee().getLastName() +", " + 
-											device.getAssignedDepartment().getDepartmentName());
+		additionalTitleHeaderLabel.setText(device.getDeviceName());
 		
 		deviceNameField.setText(device.getDeviceName());                
 		deviceUniqueNumberField.setText(device.getDeviceUniqueNumber());
@@ -435,6 +433,17 @@ public class DeviceDetailsFrame extends JDialog {
 		return !errors.contains(true);
 	}
 	
+	public void showComputerNameField() {
+		detailsPanel.add(deviceComputerNameLabel, "cell 1 10,alignx left");
+		detailsPanel.add(deviceComputerNameField, "cell 2 10 4 1,grow");
+		repaint();
+	}
+	
+	public void removeComputerNameField() {
+		detailsPanel.remove(deviceComputerNameLabel);
+		detailsPanel.remove(deviceComputerNameField);
+		repaint();
+	}
 
 	private String getCorrectTitle() {
 		return (isEditable()) ? "Edycja urządzenia" : "Szczegóły urządzenia";
@@ -487,18 +496,6 @@ public class DeviceDetailsFrame extends JDialog {
 
 	public boolean isComputer() {
 		return isComputer;
-	}
-	
-	public void showComputerNameField() {
-		detailsPanel.add(deviceComputerNameLabel, "cell 1 10,alignx left");
-		detailsPanel.add(deviceComputerNameField, "cell 2 10 4 1,grow");
-		repaint();
-	}
-	
-	public void removeComputerNameField() {
-		detailsPanel.remove(deviceComputerNameLabel);
-		detailsPanel.remove(deviceComputerNameField);
-		repaint();
 	}
 
 	public int[] getIdsToShowComputerNameField() {

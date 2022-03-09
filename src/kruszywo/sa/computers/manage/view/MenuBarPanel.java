@@ -21,8 +21,11 @@ public class MenuBarPanel extends JMenuBar {
 	private JMenuItem deviceTypeDictionaryItem;
 	private JMenuItem departmentDictionaryItem;
 	private JMenuItem employeeDictionaryItem;
-
+	private JMenuItem licensesDictionaryItem;
+	private JMenuItem softwareDictionaryItem;
+	
 	private Controller controller;
+
 
 	public MenuBarPanel(Controller controller) {
 		this.controller = controller;
@@ -38,11 +41,15 @@ public class MenuBarPanel extends JMenuBar {
 		deviceTypeDictionaryItem = createMenuItem(TabbedPanel.DEVICES_TYPE_DICTIONARY_PANEL, "keyboard-solid.png");
 		departmentDictionaryItem = createMenuItem(TabbedPanel.DEPARTMENT_DICTIONARY_PANEL, "laptop-house-solid.png");
 		employeeDictionaryItem = createMenuItem(TabbedPanel.EMPLOYEE_DICTIONARY_PANEL, "employees.png");
+		licensesDictionaryItem = createMenuItem(TabbedPanel.LICENSES_DICTIONARY_PANEL, "certificate-solid.png");
+		softwareDictionaryItem = createMenuItem(TabbedPanel.SOFTWARE_DICTIONARY_PANEL, "software-brands.png");
 		
 		dictionaryMenu.add(deviceDictionaryItem);
 		dictionaryMenu.add(deviceTypeDictionaryItem);
 		dictionaryMenu.add(departmentDictionaryItem);
 		dictionaryMenu.add(employeeDictionaryItem);
+		dictionaryMenu.add(licensesDictionaryItem);
+		dictionaryMenu.add(softwareDictionaryItem);
 		
 		this.add(dictionaryMenu);
 	}
@@ -70,6 +77,18 @@ public class MenuBarPanel extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.addEmployeeDictionaryPanel();
+			}
+		});
+		licensesDictionaryItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.addLicensesDictionaryPanel();
+			}
+		});
+		softwareDictionaryItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.addSoftwareDictionaryPanel();
 			}
 		});
 	}

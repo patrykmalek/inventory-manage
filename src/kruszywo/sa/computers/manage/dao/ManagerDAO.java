@@ -6,6 +6,7 @@ import kruszywo.sa.computers.manage.dao.service.DeviceServiceDAO;
 import kruszywo.sa.computers.manage.dao.service.DeviceTypeServiceDAO;
 import kruszywo.sa.computers.manage.dao.service.EmployeeServiceDAO;
 import kruszywo.sa.computers.manage.dao.service.LicenseServiceDAO;
+import kruszywo.sa.computers.manage.dao.service.SoftwareServiceDAO;
 
 public class ManagerDAO {
 
@@ -17,6 +18,7 @@ public class ManagerDAO {
 	private DepartmentServiceDAO departmentServiceDAO;
 	private EmployeeServiceDAO employeeServiceDAO;
 	private LicenseServiceDAO licenseServiceDAO;
+	private SoftwareServiceDAO softwareServiceDAO;
 	
 	private DeviceDAO deviceDAO;
 	private DeviceTypeDAO deviceTypeDAO;
@@ -33,12 +35,15 @@ public class ManagerDAO {
 		this.setDeviceTypeDAO(new DeviceTypeDAO(controller));
 		this.setDepartmentDAO(new DepartmentDAO(controller));
 		this.setEmployeeDAO(new EmployeeDAO(controller));
+		this.setLicenseDAO(new LicenseDAO(controller));
+		this.setSoftwareDAO(new SoftwareDAO(controller));
 		
 		this.setDeviceServiceDAO(new DeviceServiceDAO(controller, this));
 		this.setDeviceTypeServiceDAO(new DeviceTypeServiceDAO(controller, this));
 		this.setDepartmentServiceDAO(new DepartmentServiceDAO(controller, this));
 		this.setEmployeeServiceDAO(new EmployeeServiceDAO(controller, this));
 		this.setLicenseServiceDAO(new LicenseServiceDAO(controller, this));
+		this.setSoftwareServiceDAO(new SoftwareServiceDAO(controller, this));
 	}
 
 	public DeviceDAO getDeviceDAO() {
@@ -128,4 +133,13 @@ public class ManagerDAO {
 	public void setLicenseServiceDAO(LicenseServiceDAO licenseServiceDAO) {
 		this.licenseServiceDAO = licenseServiceDAO;
 	}
+
+	public SoftwareServiceDAO getSoftwareServiceDAO() {
+		return softwareServiceDAO;
+	}
+
+	public void setSoftwareServiceDAO(SoftwareServiceDAO softwareServiceDAO) {
+		this.softwareServiceDAO = softwareServiceDAO;
+	}
+	
 }
