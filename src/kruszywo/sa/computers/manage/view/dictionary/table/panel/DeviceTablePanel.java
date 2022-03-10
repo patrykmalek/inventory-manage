@@ -25,6 +25,7 @@ import kruszywo.sa.computers.manage.view.TablePanel;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
 import kruszywo.sa.computers.manage.view.util.ClipboardKeyAdapter;
 import kruszywo.sa.computers.manage.view.util.PMJTable;
+import kruszywo.sa.computers.manage.view.util.TableColumnManager;
 
 public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 
@@ -138,6 +139,9 @@ public class DeviceTablePanel extends JPanel implements TablePanel<Device> {
 				"Data zakupu",
 				"Ostatnia instalacja"
 		});
+		
+		TableColumnManager tcm = new TableColumnManager(table);
+		tcm.hideColumn(0);
 	}
 
 	@SuppressWarnings("rawtypes")

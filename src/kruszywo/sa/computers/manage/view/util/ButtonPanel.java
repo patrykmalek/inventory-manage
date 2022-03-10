@@ -2,14 +2,11 @@ package kruszywo.sa.computers.manage.view.util;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,38 +135,6 @@ public class ButtonPanel extends JPanel{
 				JOptionPane.showMessageDialog(new JFrame(), "Przycisk jeszcze nie ma podpiętej akcji.", "Informacja", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		
-		button.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
 	}
 
 	public Color getButtonHeaderBackgroundColor() {

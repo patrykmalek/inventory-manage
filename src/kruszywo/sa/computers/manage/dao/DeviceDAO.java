@@ -196,18 +196,18 @@ public class DeviceDAO implements DAO<Device>{
 	public void insert(Device device) {
 			try {
 				PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(INSERT);
-				 
-	            ps.setString(1, device.getDeviceUniqueNumber());
-	            ps.setString(2, device.getDeviceName());
-	            ps.setString(3,  device.getDeviceInventoryNumber());
-	            ps.setInt(4, device.getDeviceType().getDeviceTypeID());
-	            ps.setInt(5, device.getAssignedDepartment().getDepartmentID());
-	            ps.setInt(6, device.getAssignedEmployee().getEmployeeID());
-				ps.setString(7, device.getInvoiceNumber());
-	            ps.setString(8, device.getPurchaseDate());
-	            ps.setString(9, device.getLastInstallationDate());
-	            ps.setString(10, device.getNotes());
-	            ps.setString(11, device.getComputerName());
+				
+	            ps.setObject(1, device.getDeviceUniqueNumber());
+	            ps.setObject(2, device.getDeviceName());
+	            ps.setObject(3,  device.getDeviceInventoryNumber());
+	            ps.setObject(4, (device.getDeviceType().getDeviceTypeID() == 0) ? null : device.getDeviceType().getDeviceTypeID());
+	            ps.setObject(5, (device.getAssignedDepartment().getDepartmentID() == 0) ? null : device.getAssignedDepartment().getDepartmentID());
+	            ps.setObject(6, (device.getAssignedEmployee().getEmployeeID() == 0) ? null : device.getAssignedEmployee().getEmployeeID());
+				ps.setObject(7, device.getInvoiceNumber());
+	            ps.setObject(8, device.getPurchaseDate());
+	            ps.setObject(9, device.getLastInstallationDate());
+	            ps.setObject(10, device.getNotes());
+	            ps.setObject(11, device.getComputerName());
 	            
 				controller.getDatabaseProvider().executePreparedStatement(ps);
 				
@@ -222,17 +222,17 @@ public class DeviceDAO implements DAO<Device>{
 		try {
 			PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(UPDATE);
 			 
-            ps.setString(1, device.getDeviceUniqueNumber());
-            ps.setString(2, device.getDeviceName());
-            ps.setString(3,  device.getDeviceInventoryNumber());
-            ps.setInt(4, device.getDeviceType().getDeviceTypeID());
-            ps.setInt(5, device.getAssignedDepartment().getDepartmentID());
-            ps.setInt(6, device.getAssignedEmployee().getEmployeeID());
-			ps.setString(7, device.getInvoiceNumber());
-            ps.setString(8, device.getPurchaseDate());
-            ps.setString(9, device.getLastInstallationDate());
-            ps.setString(10, device.getNotes());
-            ps.setString(11, device.getComputerName());
+            ps.setObject(1, device.getDeviceUniqueNumber());
+            ps.setObject(2, device.getDeviceName());
+            ps.setObject(3,  device.getDeviceInventoryNumber());
+            ps.setObject(4, (device.getDeviceType().getDeviceTypeID() == 0) ? null : device.getDeviceType().getDeviceTypeID());
+            ps.setObject(5, (device.getAssignedDepartment().getDepartmentID() == 0) ? null : device.getAssignedDepartment().getDepartmentID());
+            ps.setObject(6, (device.getAssignedEmployee().getEmployeeID() == 0) ? null : device.getAssignedEmployee().getEmployeeID());
+			ps.setObject(7, device.getInvoiceNumber());
+            ps.setObject(8, device.getPurchaseDate());
+            ps.setObject(9, device.getLastInstallationDate());
+            ps.setObject(10, device.getNotes());
+            ps.setObject(11, device.getComputerName());
             ps.setInt(12, device.getDeviceID());
             
             

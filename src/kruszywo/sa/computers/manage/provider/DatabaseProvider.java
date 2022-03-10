@@ -45,7 +45,7 @@ public class DatabaseProvider {
 			statement.execute(query);
 			statement.close();
 		} catch (SQLException e) {
-			new SystemOperationException("Błąd podczas zapisu do bazy danych.", e);
+			new SystemOperationException("Błąd podczas wykonywania zapytania do bazy.", e);
 		}
 	}
 		
@@ -56,7 +56,7 @@ public class DatabaseProvider {
 			this.resultSet = null;
 			this.resultSet = statement.executeQuery(query);
 		} catch (SQLException e) {
-			new SystemOperationException("Błąd podczas odczytu danych z bazy danych.", e);
+			new SystemOperationException("Błąd podczas wykonywania zapytania do bazy.", e);
 		}
 	}
 	
@@ -65,7 +65,7 @@ public class DatabaseProvider {
 			preparedStatement.executeUpdate();
 			preparedStatement.close();
 		} catch (SQLException e) {
-			new SystemOperationException("Błąd podczas zapisu do bazy danych.", e);
+			new SystemOperationException("Błąd podczas wykonywania zapytania do bazy.", e);
 		}
 	}
 	
@@ -74,7 +74,7 @@ public class DatabaseProvider {
 			this.resultSet = null;
 			this.resultSet = preparedStatement.executeQuery();
 		} catch (SQLException e) {
-			new SystemOperationException("Błąd podczas zapisu do bazy danych.", e);
+			new SystemOperationException("Błąd podczas wykonywania zapytania do bazy.", e);
 		}
 	}
 

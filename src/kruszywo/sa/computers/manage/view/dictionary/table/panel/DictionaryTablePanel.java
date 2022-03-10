@@ -25,6 +25,7 @@ import kruszywo.sa.computers.manage.view.TablePanel;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
 import kruszywo.sa.computers.manage.view.util.ClipboardKeyAdapter;
 import kruszywo.sa.computers.manage.view.util.PMJTable;
+import kruszywo.sa.computers.manage.view.util.TableColumnManager;
 
 public abstract class DictionaryTablePanel<T> extends JPanel implements TablePanel<T> {
 
@@ -34,6 +35,9 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 	
 	private JScrollPane tableContainer;
 	private PMJTable table;
+
+	private TableColumnManager tableColumnManager;
+	
 	private JPanel centerPanel;
 	private JPanel northPanel;
 	private ButtonPanel buttonPanel;
@@ -57,8 +61,8 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 		this.setLayout(new BorderLayout());
 		
 		this.table = new PMJTable(false);
-			
-		this.table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);	
+		this.table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		this.tableColumnManager = new TableColumnManager(this.table);
 		
 		this.tableContainer = new JScrollPane(table);
 	
@@ -160,6 +164,7 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 	@Override
 	public void setTableColumnNames(String[] columnNames) {
 		this.table.getDefaultTableModel().setColumnIdentifiers(columnNames);
+		getTableColumnManager().hideColumn(0);
 	}
 	
 	@Override
@@ -308,6 +313,14 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 
 	public void setParentWindow(JDialog parentWindow) {
 		this.parentWindow = parentWindow;
+	}
+
+	public TableColumnManager getTableColumnManager() {
+		return tableColumnManager;
+	}
+
+	public void setTableColumnManager(TableColumnManager tableColumnManager) {
+		this.tableColumnManager = tableColumnManager;
 	}
 
 }

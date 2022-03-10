@@ -80,6 +80,7 @@ public class SystemOperationException extends Exception{
 		this.createLabels();
 		if (this.getErrors().size() == 1) {
 			this.showWindow();
+			this.getErrors().clear();
 		}
 	}
 
