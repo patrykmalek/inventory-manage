@@ -17,12 +17,17 @@ public class MenuBarPanel extends JMenuBar {
 	private static final long serialVersionUID = 5845864327274589304L;
 	
 	private JMenu dictionaryMenu;
+	private JMenu settingsMenu;
+	private JMenu helpMenu;
+	
 	private JMenuItem deviceDictionaryItem;
 	private JMenuItem deviceTypeDictionaryItem;
 	private JMenuItem departmentDictionaryItem;
 	private JMenuItem employeeDictionaryItem;
 	private JMenuItem licensesDictionaryItem;
 	private JMenuItem softwareDictionaryItem;
+	
+	private JMenuItem aboutAppItem;
 	
 	private Controller controller;
 
@@ -51,7 +56,16 @@ public class MenuBarPanel extends JMenuBar {
 		dictionaryMenu.add(licensesDictionaryItem);
 		dictionaryMenu.add(softwareDictionaryItem);
 		
+		settingsMenu = new JMenu("Ustawienia");
+		helpMenu = new JMenu("Pomoc");
+		
+		aboutAppItem = createMenuItem("O programie", "bars-solid.png");
+		
+		helpMenu.add(aboutAppItem);
+		
 		this.add(dictionaryMenu);
+		this.add(settingsMenu);
+		this.add(helpMenu);
 	}
 	
 	private void createEventListeners() {

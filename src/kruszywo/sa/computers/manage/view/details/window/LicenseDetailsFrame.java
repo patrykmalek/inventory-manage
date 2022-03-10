@@ -366,5 +366,13 @@ public class LicenseDetailsFrame extends JDialog {
 		return licenseSoftwareField;
 	}
 
+	public JPanel getDetailsPanel() {
+		return detailsPanel;
+	}
+
+	public void setDetailsPanel(JPanel detailsPanel) {
+		this.detailsPanel = detailsPanel;
+	}
+
 	
 }

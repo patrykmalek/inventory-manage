@@ -33,12 +33,13 @@ public class MainFrame extends JFrame {
 	private void createVisuals() {
 		this.setTitle("Ewidencja urządzeń");
 		this.setIconImage(new ImageIcon(getClass().getResource("/industry-solid-25.png")).getImage());
-		this.setSize(1900, 800);
+		this.setSize(1360, 680);
 		this.mainPanel = createMainPanel();
 		this.getContentPane().add(this.mainPanel, BorderLayout.CENTER);
 		this.createListeners();
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.setLocationRelativeTo(null);
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 	}
 	
 	private JPanel createMainPanel() {

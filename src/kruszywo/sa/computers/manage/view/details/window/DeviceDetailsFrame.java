@@ -2,7 +2,10 @@ package kruszywo.sa.computers.manage.view.details.window;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.model.Department;
@@ -10,6 +13,7 @@ import kruszywo.sa.computers.manage.model.Device;
 import kruszywo.sa.computers.manage.model.DeviceType;
 import kruszywo.sa.computers.manage.model.Employee;
 import kruszywo.sa.computers.manage.model.OperationType;
+import kruszywo.sa.computers.manage.view.dictionary.table.panel.SoftwareDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
 import kruszywo.sa.computers.manage.view.util.PMCustomTextFieldWithDictionary;
 import kruszywo.sa.computers.manage.view.util.PMJDateChooser;
@@ -17,6 +21,7 @@ import kruszywo.sa.computers.manage.view.util.PMJScrollPane;
 import kruszywo.sa.computers.manage.view.util.PMJTextField;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 
@@ -104,8 +109,19 @@ public class DeviceDetailsFrame extends JDialog {
 		headerPanel = createHeaderPanel();
 		detailsPanel = createDetailsPanel();
 		footerPanel = createFooterPanel();
+		SoftwareDictionaryTablePanel test = new SoftwareDictionaryTablePanel(controller);
+		test.updateTable(controller.getManagerDAO().getSoftwareDAO().getAll());
+		
+		LicenseDetailsFrame test2 = new LicenseDetailsFrame(controller);
+
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new PMJScrollPane(this.detailsPanel), test2.getDetailsPanel());
+		splitPane.setDividerLocation(500);
+		splitPane.setBorder(null);
+
+
+		
 		getContentPane().add(this.headerPanel, BorderLayout.NORTH);
-		getContentPane().add(new PMJScrollPane(this.detailsPanel), BorderLayout.CENTER);
+		getContentPane().add(splitPane, BorderLayout.CENTER);
 		getContentPane().add(this.footerPanel, BorderLayout.SOUTH);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);

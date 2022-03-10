@@ -33,6 +33,7 @@ public class Main {
 				databaseProvider.connect();
 				Controller controller = new Controller(databaseProvider);
 				MainFrame mainFrame = new MainFrame(controller);
+				controller.addDevicesPanel();
 				mainFrame.displayWindow();
 			}
 		});
