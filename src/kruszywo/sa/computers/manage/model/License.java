@@ -1,5 +1,7 @@
 package kruszywo.sa.computers.manage.model;
 
+import java.io.File;
+
 public class License {
 
 	private int licenseID;
@@ -10,6 +12,7 @@ public class License {
 	private String lastInstallationDate;
 	private String licenseNotes;
 	private String assignedEmail;
+	private File licenseFile;
 	
 	private Software software;
 	
@@ -90,6 +93,18 @@ public class License {
 	@Override
 	public String toString() {
 		return software.toString();
+	}
+
+	public File getLicenseFile() {
+		return licenseFile;
+	}
+
+	public void setLicenseFile(File licenseFile) {
+		this.licenseFile = licenseFile;
+	}
+	
+	public byte[] getLicenseFileAsByte() {
+		return (licenseFile != null) ? CommonFunctions.readFileAsByte(licenseFile) : null;
 	}
 	
 }

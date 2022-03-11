@@ -4,8 +4,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
-import javax.swing.plaf.basic.BasicSplitPaneDivider;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.model.Department;
@@ -21,7 +19,6 @@ import kruszywo.sa.computers.manage.view.util.PMJScrollPane;
 import kruszywo.sa.computers.manage.view.util.PMJTextField;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 

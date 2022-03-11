@@ -24,6 +24,11 @@ public class TabbedPanel extends JPanel{
 	public static final String LICENSES_DICTIONARY_PANEL = "Licencje";
 	public static final String SOFTWARE_DICTIONARY_PANEL = "Oprogramowanie";
 	
+	public static final String COMPUTERS_COMPONENTS_DICTIONARY_PANEL = "Podzespoły komputerowe";
+	public static final String CPU_DICTIONARY_PANEL = "Procesory";
+	public static final String MASS_STORAGE_DICTIONARY_PANEL = "Pamięci masowe";
+	public static final String RAM_DICTIONARY_PANEL = "Pamięci RAM";
+	
 	private JTabbedPane tabbedPane;
 
 	private Controller controller;

@@ -11,12 +11,18 @@ import kruszywo.sa.computers.manage.provider.DatabaseProvider;
 import kruszywo.sa.computers.manage.view.TabbedPanel;
 import kruszywo.sa.computers.manage.view.MainFrame;
 import kruszywo.sa.computers.manage.view.WaitWindow;
+import kruszywo.sa.computers.manage.view.details.window.ComputerCPUDetailsFrame;
+import kruszywo.sa.computers.manage.view.details.window.ComputerMassStorageDetailsFrame;
+import kruszywo.sa.computers.manage.view.details.window.ComputerRAMDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.DepartmentDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.DeviceDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.DeviceTypeDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.EmployeeDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.LicenseDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.SoftwareDetailsFrame;
+import kruszywo.sa.computers.manage.view.dictionary.table.panel.ComputerCPUDictionaryTablePanel;
+import kruszywo.sa.computers.manage.view.dictionary.table.panel.ComputerMassStorageDictionaryTablePanel;
+import kruszywo.sa.computers.manage.view.dictionary.table.panel.ComputerRAMDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.DepartmentDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.DeviceTablePanel;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.DeviceTypeDictionaryTablePanel;
@@ -36,6 +42,9 @@ public class Controller {
 	private EmployeeDictionaryTablePanel employeeDictionaryTable;
 	private	LicenseDictionaryTablePanel licenseDictionaryTable;
 	private SoftwareDictionaryTablePanel softwareDictionaryTable;
+	private ComputerCPUDictionaryTablePanel computerCPUDictionaryTable;
+	private ComputerRAMDictionaryTablePanel computerRAMDictionaryTable;
+	private ComputerMassStorageDictionaryTablePanel computerMassStorageDictionaryTable;
 	
 	private DeviceDetailsFrame deviceDetailsFrame;
 	private DeviceTypeDetailsFrame deviceTypeDetailsFrame;
@@ -43,6 +52,9 @@ public class Controller {
 	private EmployeeDetailsFrame employeeDetailsFrame;
 	private LicenseDetailsFrame licenseDetailsFrame;
 	private SoftwareDetailsFrame softwareDetailsFrame;
+	private ComputerCPUDetailsFrame computerCPUDetailsFrame;
+	private ComputerRAMDetailsFrame computerRAMDetailsFrame;
+	private ComputerMassStorageDetailsFrame computerMassStorageDetailsFrame;
 	
 	public static WaitWindow waitWindow;
 	
@@ -88,6 +100,21 @@ public class Controller {
 	public void addSoftwareDictionaryPanel() {
 		this.getTabbedPanel().addTabbedPanel(TabbedPanel.SOFTWARE_DICTIONARY_PANEL, new SoftwareDictionaryTablePanel(this));
 		this.getSoftwareDictionaryTable().updateTable(getManagerDAO().getSoftwareDAO().getAll());
+	}
+	
+	public void addComputerCpuDictionaryPanel() {
+		this.getTabbedPanel().addTabbedPanel(TabbedPanel.CPU_DICTIONARY_PANEL, new ComputerCPUDictionaryTablePanel(this));
+		this.getComputerCPUDictionaryTable().updateTable(getManagerDAO().getComputerCPUDAO().getAll());
+	}
+	
+	public void addComputerRamDictionaryPanel() {
+		this.getTabbedPanel().addTabbedPanel(TabbedPanel.RAM_DICTIONARY_PANEL, new ComputerRAMDictionaryTablePanel(this));
+		this.getComputerRAMDictionaryTable().updateTable(getManagerDAO().getComputerRAMDAO().getAll());
+	}
+	
+	public void addComputerMassStorageDictionaryPanel() {
+		this.getTabbedPanel().addTabbedPanel(TabbedPanel.RAM_DICTIONARY_PANEL, new ComputerMassStorageDictionaryTablePanel(this));
+		this.getComputerMassStorageDictionaryTable().updateTable(getManagerDAO().getComputerMassStorageDAO().getAll());
 	}
 
 	public DatabaseProvider getDatabaseProvider() {
@@ -255,6 +282,54 @@ public class Controller {
 
 	public void setSoftwareDetailsFrame(SoftwareDetailsFrame softwareDetailsFrame) {
 		this.softwareDetailsFrame = softwareDetailsFrame;
+	}
+
+	public ComputerCPUDetailsFrame getComputerCPUDetailsFrame() {
+		return computerCPUDetailsFrame;
+	}
+
+	public void setComputerCPUDetailsFrame(ComputerCPUDetailsFrame computerCPUDetailsFrame) {
+		this.computerCPUDetailsFrame = computerCPUDetailsFrame;
+	}
+
+	public ComputerCPUDictionaryTablePanel getComputerCPUDictionaryTable() {
+		return computerCPUDictionaryTable;
+	}
+
+	public void setComputerCPUDictionaryTable(ComputerCPUDictionaryTablePanel computerCPUDictionaryTable) {
+		this.computerCPUDictionaryTable = computerCPUDictionaryTable;
+	}
+
+	public ComputerRAMDictionaryTablePanel getComputerRAMDictionaryTable() {
+		return computerRAMDictionaryTable;
+	}
+
+	public void setComputerRAMDictionaryTable(ComputerRAMDictionaryTablePanel computerRAMDictionaryTable) {
+		this.computerRAMDictionaryTable = computerRAMDictionaryTable;
+	}
+
+	public ComputerRAMDetailsFrame getComputerRAMDetailsFrame() {
+		return computerRAMDetailsFrame;
+	}
+
+	public void setComputerRAMDetailsFrame(ComputerRAMDetailsFrame computerRAMDetailsFrame) {
+		this.computerRAMDetailsFrame = computerRAMDetailsFrame;
+	}
+
+	public ComputerMassStorageDictionaryTablePanel getComputerMassStorageDictionaryTable() {
+		return computerMassStorageDictionaryTable;
+	}
+
+	public void setComputerMassStorageDictionaryTable(ComputerMassStorageDictionaryTablePanel computerMassStorageDictionaryTable) {
+		this.computerMassStorageDictionaryTable = computerMassStorageDictionaryTable;
+	}
+
+	public ComputerMassStorageDetailsFrame getComputerMassStorageDetailsFrame() {
+		return computerMassStorageDetailsFrame;
+	}
+
+	public void setComputerMassStorageDetailsFrame(ComputerMassStorageDetailsFrame computerMassStorageDetailsFrame) {
+		this.computerMassStorageDetailsFrame = computerMassStorageDetailsFrame;
 	}
 
 

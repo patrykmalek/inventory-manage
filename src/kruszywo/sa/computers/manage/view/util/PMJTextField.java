@@ -32,7 +32,7 @@ public class PMJTextField extends JTextField{
 	
 	private ImageIcon clearFieldButtonIcon;
 	private JPopupMenu popupMenu;
-	private boolean emptyAfterCheck;
+	private boolean warningAfterCheck;
 	
 	public PMJTextField (String text) {
 		super(text);
@@ -68,7 +68,7 @@ public class PMJTextField extends JTextField{
 		this.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				if(!hasFocus() && !isEmptyAfterCheck()) {
+				if(!hasFocus() && !isWarningAfterCheck()) {
 					setBackground(SystemColor.inactiveCaptionBorder);
 					setBorder(getCustomFieldBorder(new Color(0, 60, 110)));
 				}
@@ -76,7 +76,7 @@ public class PMJTextField extends JTextField{
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
-				if(!hasFocus() && !isEmptyAfterCheck()) {
+				if(!hasFocus() && !isWarningAfterCheck()) {
 					setBackground(SystemColor.white);
 					setBorder(getCustomFieldBorder(UIManager.getColor("Button.shadow")));
 				}
@@ -88,7 +88,7 @@ public class PMJTextField extends JTextField{
 			
 			@Override
 			public void focusGained(FocusEvent e) {
-				deleteEmptyWarning();
+				deleteWarning();
 				setBackground(SystemColor.inactiveCaption);
 				setBorder(getCustomFieldBorder(new Color(0, 10, 110)));
 			}
@@ -238,33 +238,44 @@ public class PMJTextField extends JTextField{
 	
 	public boolean isEmpty() {
 		if(getText().isEmpty()) {
-			setEmptyWarning();
+			setWarning();
 			return true;
 		} else {
-			deleteEmptyWarning();
+			deleteWarning();
 			return false;
 		}
 	}
 	
+	public boolean isInteger() {
+		try {
+			if(getText().isEmpty()) return true;
+			Integer.parseInt(getText());
+			deleteWarning();
+			return true;
+		} catch (NumberFormatException e) {
+			setWarning();
+			return false;
+		}
+	}
 
-	private void setEmptyWarning() {
+	private void setWarning() {
 		setBorder(getCustomFieldBorderWhenEmpty());
 		setBackground(new Color(255, 214, 214));
-		setEmptyAfterCheck(true);
+		setWarningAfterCheck(true);
 	}
 	
-	private void deleteEmptyWarning() {
+	private void deleteWarning() {
 		setBackground(SystemColor.white);
 		setBorder(getCustomFieldBorder(UIManager.getColor("Button.shadow")));
-		setEmptyAfterCheck(false);
+		setWarningAfterCheck(false);
 	}
 
-	private boolean isEmptyAfterCheck() {
-		return emptyAfterCheck;
+	private boolean isWarningAfterCheck() {
+		return warningAfterCheck;
 	}
 
-	private void setEmptyAfterCheck(boolean emptyAfterCheck) {
-		this.emptyAfterCheck = emptyAfterCheck;
+	private void setWarningAfterCheck(boolean warningAfterCheck) {
+		this.warningAfterCheck = warningAfterCheck;
 	}
 
 	public JPopupMenu getPopupMenu() {
@@ -281,6 +292,10 @@ public class PMJTextField extends JTextField{
 
 	public void setClearFieldButtonIcon(ImageIcon clearFieldButtonIcon) {
 		this.clearFieldButtonIcon = clearFieldButtonIcon;
+	}
+	
+	public int getInt() {
+		return (getText().isEmpty()) ? 0 : Integer.parseInt(getText());
 	}
 
 }

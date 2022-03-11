@@ -1,6 +1,11 @@
 package kruszywo.sa.computers.manage.model;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,6 +14,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import kruszywo.sa.computers.manage.exception.SystemOperationException;
 
 public class CommonFunctions {
 
@@ -108,4 +115,41 @@ public class CommonFunctions {
 		
 		return true;
 	}
+
+    public static byte[] readFileAsByte(File file) {
+        ByteArrayOutputStream bos = null;
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            byte[] buffer = new byte[1024];
+            bos = new ByteArrayOutputStream();
+            for (int len; (len = fis.read(buffer)) != -1;) {
+                bos.write(buffer, 0, len);
+            }
+            fis.close();
+        } catch (FileNotFoundException | NullPointerException e) {
+        	new SystemOperationException("Brak pliku", e);
+        } catch (IOException e2) {
+            new SystemOperationException("Błąd wejścia/wyjścia", e2);
+        }
+        return bos != null ? bos.toByteArray() : null;
+    }
+    
+    public static File getFileFromInputStream(String fileName, InputStream inputStream) {
+    	File tempFile = null;
+    	FileOutputStream fos = null;
+		try {
+			tempFile = File.createTempFile("license_temp", ".tmp");
+			tempFile.deleteOnExit();
+			
+			fos = new FileOutputStream(tempFile);
+	        byte[] buffer = new byte[1024];
+	        while (inputStream.read(buffer) > 0) {
+	            fos.write(buffer);
+	        }
+		} catch (IOException e) {
+			new SystemOperationException("Błąd tworzenia pliku ze strumienia", e);
+		}
+        
+        return tempFile;
+    }
 }

@@ -1,6 +1,9 @@
 package kruszywo.sa.computers.manage.dao;
 
 import kruszywo.sa.computers.manage.controller.Controller;
+import kruszywo.sa.computers.manage.dao.service.ComputerCPUServiceDAO;
+import kruszywo.sa.computers.manage.dao.service.ComputerMassStorageServiceDAO;
+import kruszywo.sa.computers.manage.dao.service.ComputerRAMServiceDAO;
 import kruszywo.sa.computers.manage.dao.service.DepartmentServiceDAO;
 import kruszywo.sa.computers.manage.dao.service.DeviceServiceDAO;
 import kruszywo.sa.computers.manage.dao.service.DeviceTypeServiceDAO;
@@ -19,6 +22,10 @@ public class ManagerDAO {
 	private EmployeeServiceDAO employeeServiceDAO;
 	private LicenseServiceDAO licenseServiceDAO;
 	private SoftwareServiceDAO softwareServiceDAO;
+	private ComputerCPUServiceDAO computerCPUServiceDAO;
+	private ComputerRAMServiceDAO computerRAMServiceDAO;
+	private ComputerMassStorageServiceDAO computerMassStorageServiceDAO;
+	
 	
 	private DeviceDAO deviceDAO;
 	private DeviceTypeDAO deviceTypeDAO;
@@ -26,6 +33,10 @@ public class ManagerDAO {
 	private EmployeeDAO employeeDAO;
 	private SoftwareDAO softwareDAO;
 	private LicenseDAO licenseDAO;
+	private ComputerMassStorageDAO computerMassStorageDAO;
+	private ComputerRAMDAO computerRAMDAO;
+	private ComputerCPUDAO computerCPUDAO;
+	
 	
 	public ManagerDAO(Controller controller) {
 		this.controller = controller;
@@ -37,6 +48,9 @@ public class ManagerDAO {
 		this.setEmployeeDAO(new EmployeeDAO(controller));
 		this.setLicenseDAO(new LicenseDAO(controller));
 		this.setSoftwareDAO(new SoftwareDAO(controller));
+		this.setComputerMassStorageDAO(new ComputerMassStorageDAO(controller));
+		this.setComputerRAMDAO(new ComputerRAMDAO(controller));
+		this.setComputerCPUDAO(new ComputerCPUDAO(controller));
 		
 		this.setDeviceServiceDAO(new DeviceServiceDAO(controller, this));
 		this.setDeviceTypeServiceDAO(new DeviceTypeServiceDAO(controller, this));
@@ -44,6 +58,9 @@ public class ManagerDAO {
 		this.setEmployeeServiceDAO(new EmployeeServiceDAO(controller, this));
 		this.setLicenseServiceDAO(new LicenseServiceDAO(controller, this));
 		this.setSoftwareServiceDAO(new SoftwareServiceDAO(controller, this));
+		this.setComputerCPUServiceDAO(new ComputerCPUServiceDAO(controller, this));
+		this.setComputerRAMServiceDAO(new ComputerRAMServiceDAO(controller, this));
+		this.setComputerMassStorageServiceDAO(new ComputerMassStorageServiceDAO(controller, this));
 	}
 
 	public DeviceDAO getDeviceDAO() {
@@ -140,6 +157,54 @@ public class ManagerDAO {
 
 	public void setSoftwareServiceDAO(SoftwareServiceDAO softwareServiceDAO) {
 		this.softwareServiceDAO = softwareServiceDAO;
+	}
+
+	public ComputerMassStorageDAO getComputerMassStorageDAO() {
+		return computerMassStorageDAO;
+	}
+
+	public void setComputerMassStorageDAO(ComputerMassStorageDAO computerMassStorageDAO) {
+		this.computerMassStorageDAO = computerMassStorageDAO;
+	}
+
+	public ComputerRAMDAO getComputerRAMDAO() {
+		return computerRAMDAO;
+	}
+
+	public void setComputerRAMDAO(ComputerRAMDAO computerRAMDAO) {
+		this.computerRAMDAO = computerRAMDAO;
+	}
+
+	public ComputerCPUDAO getComputerCPUDAO() {
+		return computerCPUDAO;
+	}
+
+	public void setComputerCPUDAO(ComputerCPUDAO computerCPUDAO) {
+		this.computerCPUDAO = computerCPUDAO;
+	}
+
+	public ComputerCPUServiceDAO getComputerCPUServiceDAO() {
+		return computerCPUServiceDAO;
+	}
+
+	public void setComputerCPUServiceDAO(ComputerCPUServiceDAO computerCPUServiceDAO) {
+		this.computerCPUServiceDAO = computerCPUServiceDAO;
+	}
+
+	public ComputerRAMServiceDAO getComputerRAMServiceDAO() {
+		return computerRAMServiceDAO;
+	}
+
+	public void setComputerRAMServiceDAO(ComputerRAMServiceDAO computerRAMServiceDAO) {
+		this.computerRAMServiceDAO = computerRAMServiceDAO;
+	}
+
+	public ComputerMassStorageServiceDAO getComputerMassStorageServiceDAO() {
+		return computerMassStorageServiceDAO;
+	}
+
+	public void setComputerMassStorageServiceDAO(ComputerMassStorageServiceDAO computerMassStorageServiceDAO) {
+		this.computerMassStorageServiceDAO = computerMassStorageServiceDAO;
 	}
 	
 }

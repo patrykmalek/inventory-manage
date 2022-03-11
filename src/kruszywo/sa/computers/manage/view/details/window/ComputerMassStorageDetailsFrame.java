@@ -1,11 +1,11 @@
 package kruszywo.sa.computers.manage.view.details.window;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
+
 import kruszywo.sa.computers.manage.controller.Controller;
-import kruszywo.sa.computers.manage.model.Software;
+import kruszywo.sa.computers.manage.model.ComputerMassStorage;
 import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
 import kruszywo.sa.computers.manage.view.util.PMJScrollPane;
@@ -28,16 +28,17 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JTextPane;
 
-public class SoftwareDetailsFrame extends JDialog {
+public class ComputerMassStorageDetailsFrame extends JDialog {
 	
 	private static final long serialVersionUID = 1L;
-	private int softwareID;
+	private int computerMassStorageID;
 	
 	private JLabel additionalTitleHeaderLabel;
-	private PMJTextField softwareNameField;
-	private JTextPane softwareNotesField;
+	private PMJTextField computerMassStorageNameField;
+	private PMJTextField computerMassStorageSerialNumberField;
+	private PMJTextField computerMassStorageTypeField;
+	private PMJTextField computerMassStorageCapacityField;
 	
 	private JPanel headerPanel;
 	private JPanel detailsPanel;
@@ -52,10 +53,10 @@ public class SoftwareDetailsFrame extends JDialog {
 	private Controller controller;
 	
 	
-	public SoftwareDetailsFrame(Controller controller) {
+	public ComputerMassStorageDetailsFrame(Controller controller) {
 		super(controller.getMainFrame(), "Panel", true);
 		this.controller = controller;
-		this.controller.setSoftwareDetailsFrame(this);
+		this.controller.setComputerMassStorageDetailsFrame(this);
 		createWindow();
 	}
 	
@@ -96,7 +97,7 @@ public class SoftwareDetailsFrame extends JDialog {
 		
 		headerPanel.add(titlePanel, BorderLayout.CENTER);
 		
-		JLabel titleHeaderLabel = new JLabel("Oprogramowanie");
+		JLabel titleHeaderLabel = new JLabel("Pamięć masowa");
 		titleHeaderLabel.setForeground(SystemColor.textInactiveText);
 		titleHeaderLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		titlePanel.add(titleHeaderLabel, "cell 0 0,alignx left,growy");
@@ -112,25 +113,43 @@ public class SoftwareDetailsFrame extends JDialog {
 	private JPanel createDetailsPanel() {
 		JPanel detailsPanel = new JPanel();
 		detailsPanel.setBackground(SystemColor.text);
-		detailsPanel.setLayout(new MigLayout("", "[10px][150px][grow][grow][grow][grow][grow][10px]", "[25px][25px][25px][25px][grow][10px]"));
+		detailsPanel.setLayout(new MigLayout("", "[10px][150px][grow][grow][grow][grow][grow][10px]", "[25px][25px][25px][25px][25px][grow][10px]"));
 		
-		JLabel deviceNameLabel = new JLabel("Nazwa:");
-		deviceNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		detailsPanel.add(deviceNameLabel, "cell 1 1,alignx left");
+		JLabel computerMassStorageNameLabel = new JLabel("Nazwa:");
+		computerMassStorageNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		detailsPanel.add(computerMassStorageNameLabel, "cell 1 1,alignx left");
 		
-		softwareNameField = new PMJTextField(true, 13);
-		softwareNameField.setEditable(isEditable());
-		softwareNameField.setColumns(10);
-		detailsPanel.add(softwareNameField, "cell 2 1 4 1,grow");
+		computerMassStorageNameField = new PMJTextField(true, 13);
+		computerMassStorageNameField.setEditable(isEditable());
+		computerMassStorageNameField.setColumns(10);
+		detailsPanel.add(computerMassStorageNameField, "cell 2 1 4 1,grow");
 		
-		softwareNotesField = new JTextPane();
-		softwareNotesField.setEnabled(isEditable());
-		softwareNotesField.setBorder(BorderFactory.createTitledBorder("Dodatkowe informacje"));
-		softwareNotesField.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		JLabel computerMassStorageSerialNumberLabel = new JLabel("Numer seryjny:");
+		computerMassStorageSerialNumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		detailsPanel.add(computerMassStorageSerialNumberLabel, "cell 1 2,alignx left");
 		
-		JScrollPane softwareNotesFieldContainer = new JScrollPane(softwareNotesField);
-		softwareNotesFieldContainer.setBorder(null);
-		detailsPanel.add(softwareNotesFieldContainer, "cell 1 4 6 1,grow");
+		computerMassStorageSerialNumberField = new PMJTextField(true, 13);
+		computerMassStorageSerialNumberField.setEditable(isEditable());
+		computerMassStorageSerialNumberField.setColumns(10);
+		detailsPanel.add(computerMassStorageSerialNumberField, "cell 2 2 4 1,grow");
+		
+		JLabel computerMassStorageTypeLabel = new JLabel("Typ pamięci masowej:");
+		computerMassStorageTypeLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		detailsPanel.add(computerMassStorageTypeLabel, "cell 1 3,alignx left");
+		
+		computerMassStorageTypeField = new PMJTextField(true, 13);
+		computerMassStorageTypeField.setEditable(isEditable());
+		computerMassStorageTypeField.setColumns(10);
+		detailsPanel.add(computerMassStorageTypeField, "cell 2 3 4 1,grow");
+		
+		JLabel computerMassStorageCapacityLabel = new JLabel("Pojemność pamięci (MB):");
+		computerMassStorageCapacityLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		detailsPanel.add(computerMassStorageCapacityLabel, "cell 1 4,alignx left");
+		
+		computerMassStorageCapacityField = new PMJTextField(true, 13);
+		computerMassStorageCapacityField.setEditable(isEditable());
+		computerMassStorageCapacityField.setColumns(10);
+		detailsPanel.add(computerMassStorageCapacityField, "cell 2 4 4 1,grow");
 		
 		return detailsPanel;
 	}
@@ -165,7 +184,7 @@ public class SoftwareDetailsFrame extends JDialog {
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if(validateFields()) {
-					saveSoftwareData();
+					saveComputerMassStorageData();
 					dispose();
 				}
 			}
@@ -181,41 +200,47 @@ public class SoftwareDetailsFrame extends JDialog {
 		
 	}
 	
-	public boolean addSoftwareDataToView(Software software) {
+	public boolean addComputerMassStorageDataToView(ComputerMassStorage computerMassStorage) {
 		
-		if(software == null) return false;
-		setSoftwareID(software.getSoftwareID());
+		if(computerMassStorage == null) return false;
+		setComputerMassStorageID(computerMassStorage.getMassStorageID());
 		
 		additionalTitleHeaderLabel.setText("Szczegóły");
 		
-		softwareNameField.setText(software.getSoftwareName());
-		softwareNotesField.setText(software.getSoftwareNotes());
+		computerMassStorageNameField.setText(computerMassStorage.getMassStorageName());
+		computerMassStorageSerialNumberField.setText(computerMassStorage.getMassStorageSerialNumber());
+		computerMassStorageTypeField.setText(computerMassStorage.getMassStorageType());
+		computerMassStorageCapacityField.setText(String.valueOf(computerMassStorage.getMassStorageCapacityMB()));
 		
 		return true;
 	}
 	
-	public void saveSoftwareData() {
+	public void saveComputerMassStorageData() {
 		
-		Software software = new Software();
-		
-		software.setSoftwareID(getSoftwareID());
-		software.setSoftwareName(softwareNameField.getText());
-		software.setSoftwareNotes(softwareNotesField.getText());
-		
-		getController().getManagerDAO().getSoftwareServiceDAO().saveData(software, getOperationType());
+		ComputerMassStorage computerMassStorage = new ComputerMassStorage();
+
+			computerMassStorage.setMassStorageID(getComputerMassStorageID());
+			computerMassStorage.setMassStorageName(computerMassStorageNameField.getText());
+		 	computerMassStorage.setMassStorageType(computerMassStorageTypeField.getText());
+		 	computerMassStorage.setMassStorageSerialNumber(computerMassStorageSerialNumberField.getText());
+		 	computerMassStorage.setMassStorageCapacityMB(computerMassStorageCapacityField.getInt());
+
+		getController().getManagerDAO().getComputerMassStorageServiceDAO().saveData(computerMassStorage, getOperationType());
 	}
 	
 	private boolean validateFields() {
 		
 		List<Boolean> errors = new ArrayList<>();
 		
-		errors.add(softwareNameField.isEmpty());
+		errors.add(computerMassStorageNameField.isEmpty());
+		errors.add(computerMassStorageTypeField.isEmpty());
+		errors.add(!computerMassStorageCapacityField.isInteger());
 		
 		return !errors.contains(true);
 	}
 
 	private String getCorrectTitle() {
-		return (isEditable()) ? "Edycja typu oprogramowania" : "Szczegóły typu oprogramowania";
+		return (isEditable()) ? "Edycja szczegółów pamięci masowej" : "Szczegóły pamięci masowej";
 	}
 
 	public boolean isEditable() {
@@ -239,12 +264,12 @@ public class SoftwareDetailsFrame extends JDialog {
 		this.operationType = operationType;
 	}
 
-	public int getSoftwareID() {
-		return softwareID;
+	public int getComputerMassStorageID() {
+		return computerMassStorageID;
 	}
 
-	public void setSoftwareID(int softwareID) {
-		this.softwareID = softwareID;
+	public void setComputerMassStorageID(int computerMassStorageID) {
+		this.computerMassStorageID = computerMassStorageID;
 	}
 
 	

@@ -58,7 +58,7 @@ public class LicenseDAO implements DAO<License>{
 			 	license.setLastInstallationDate(resultSet.getString("last_installation_date"));
 			 	license.setAssignedEmail(resultSet.getString("assigned_email"));
 			 	license.setLicenseNotes(resultSet.getString("license_notes"));
-	
+			 	
 			 }
 		  ps.close();
 		  resultSet.close();
@@ -97,10 +97,11 @@ public class LicenseDAO implements DAO<License>{
 			 	license.setLicenseNotes(resultSet.getString("license_notes"));
 			 	
 			 }
+			 
 		  ps.close();
 		  resultSet.close();
 		} catch (SQLException e) {
-			new SystemOperationException("Błąd podczas odczytu wszystkich urządzeń z bazy", e);
+			new SystemOperationException("Błąd podczas odczytu wszystkich danych licencji z bazy", e);
 		}
       return license;
 	}
@@ -133,7 +134,7 @@ public class LicenseDAO implements DAO<License>{
 				 	license.setLastInstallationDate(resultSet.getString("last_installation_date"));
 				 	license.setAssignedEmail(resultSet.getString("assigned_email"));
 				 	license.setLicenseNotes(resultSet.getString("license_notes"));
-
+				 	
 				 	licenses.add(license);
 				}
 			  ps.close();
@@ -180,7 +181,6 @@ public class LicenseDAO implements DAO<License>{
             ps.setString(7, license.getLicenseNotes());
             ps.setString(8, license.getAssignedEmail());
             ps.setInt(9, license.getLicenseID());
-           
 
 			controller.getDatabaseProvider().executePreparedStatement(ps);
 			

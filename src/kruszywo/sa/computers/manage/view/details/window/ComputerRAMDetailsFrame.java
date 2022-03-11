@@ -1,11 +1,11 @@
 package kruszywo.sa.computers.manage.view.details.window;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
+
 import kruszywo.sa.computers.manage.controller.Controller;
-import kruszywo.sa.computers.manage.model.Software;
+import kruszywo.sa.computers.manage.model.ComputerRAM;
 import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
 import kruszywo.sa.computers.manage.view.util.PMJScrollPane;
@@ -28,16 +28,15 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JTextPane;
 
-public class SoftwareDetailsFrame extends JDialog {
+public class ComputerRAMDetailsFrame extends JDialog {
 	
 	private static final long serialVersionUID = 1L;
-	private int softwareID;
+	private int computerCpuID;
 	
 	private JLabel additionalTitleHeaderLabel;
-	private PMJTextField softwareNameField;
-	private JTextPane softwareNotesField;
+	private PMJTextField computerRamTypeField;
+	private PMJTextField computerRamCapacityField;
 	
 	private JPanel headerPanel;
 	private JPanel detailsPanel;
@@ -52,10 +51,10 @@ public class SoftwareDetailsFrame extends JDialog {
 	private Controller controller;
 	
 	
-	public SoftwareDetailsFrame(Controller controller) {
+	public ComputerRAMDetailsFrame(Controller controller) {
 		super(controller.getMainFrame(), "Panel", true);
 		this.controller = controller;
-		this.controller.setSoftwareDetailsFrame(this);
+		this.controller.setComputerRAMDetailsFrame(this);
 		createWindow();
 	}
 	
@@ -96,7 +95,7 @@ public class SoftwareDetailsFrame extends JDialog {
 		
 		headerPanel.add(titlePanel, BorderLayout.CENTER);
 		
-		JLabel titleHeaderLabel = new JLabel("Oprogramowanie");
+		JLabel titleHeaderLabel = new JLabel("Pamięć RAM");
 		titleHeaderLabel.setForeground(SystemColor.textInactiveText);
 		titleHeaderLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		titlePanel.add(titleHeaderLabel, "cell 0 0,alignx left,growy");
@@ -114,23 +113,23 @@ public class SoftwareDetailsFrame extends JDialog {
 		detailsPanel.setBackground(SystemColor.text);
 		detailsPanel.setLayout(new MigLayout("", "[10px][150px][grow][grow][grow][grow][grow][10px]", "[25px][25px][25px][25px][grow][10px]"));
 		
-		JLabel deviceNameLabel = new JLabel("Nazwa:");
-		deviceNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		detailsPanel.add(deviceNameLabel, "cell 1 1,alignx left");
+		JLabel computerCpuNameLabel = new JLabel("Typ pamięci:");
+		computerCpuNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		detailsPanel.add(computerCpuNameLabel, "cell 1 1,alignx left");
 		
-		softwareNameField = new PMJTextField(true, 13);
-		softwareNameField.setEditable(isEditable());
-		softwareNameField.setColumns(10);
-		detailsPanel.add(softwareNameField, "cell 2 1 4 1,grow");
+		computerRamTypeField = new PMJTextField(true, 13);
+		computerRamTypeField.setEditable(isEditable());
+		computerRamTypeField.setColumns(10);
+		detailsPanel.add(computerRamTypeField, "cell 2 1 4 1,grow");
 		
-		softwareNotesField = new JTextPane();
-		softwareNotesField.setEnabled(isEditable());
-		softwareNotesField.setBorder(BorderFactory.createTitledBorder("Dodatkowe informacje"));
-		softwareNotesField.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		JLabel computerRamCapacityLabel = new JLabel("Pojemność pamięci:");
+		computerRamCapacityLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		detailsPanel.add(computerRamCapacityLabel, "cell 1 2,alignx left");
 		
-		JScrollPane softwareNotesFieldContainer = new JScrollPane(softwareNotesField);
-		softwareNotesFieldContainer.setBorder(null);
-		detailsPanel.add(softwareNotesFieldContainer, "cell 1 4 6 1,grow");
+		computerRamCapacityField = new PMJTextField(true, 13);
+		computerRamCapacityField.setEditable(isEditable());
+		computerRamCapacityField.setColumns(10);
+		detailsPanel.add(computerRamCapacityField, "cell 2 2 4 1,grow");
 		
 		return detailsPanel;
 	}
@@ -165,7 +164,7 @@ public class SoftwareDetailsFrame extends JDialog {
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if(validateFields()) {
-					saveSoftwareData();
+					saveComputerRAMData();
 					dispose();
 				}
 			}
@@ -181,41 +180,42 @@ public class SoftwareDetailsFrame extends JDialog {
 		
 	}
 	
-	public boolean addSoftwareDataToView(Software software) {
+	public boolean addComputerRAMDataToView(ComputerRAM computerRam) {
 		
-		if(software == null) return false;
-		setSoftwareID(software.getSoftwareID());
+		if(computerRam == null) return false;
+		setComputerRAMID(computerRam.getMemoryRamID());
 		
 		additionalTitleHeaderLabel.setText("Szczegóły");
 		
-		softwareNameField.setText(software.getSoftwareName());
-		softwareNotesField.setText(software.getSoftwareNotes());
+		computerRamTypeField.setText(computerRam.getMemoryRamType());
+		computerRamCapacityField.setText(String.valueOf(computerRam.getMemoryRamCapacityMB()));
 		
 		return true;
 	}
 	
-	public void saveSoftwareData() {
+	public void saveComputerRAMData() {
 		
-		Software software = new Software();
-		
-		software.setSoftwareID(getSoftwareID());
-		software.setSoftwareName(softwareNameField.getText());
-		software.setSoftwareNotes(softwareNotesField.getText());
-		
-		getController().getManagerDAO().getSoftwareServiceDAO().saveData(software, getOperationType());
+		ComputerRAM computerRam = new ComputerRAM();
+
+			computerRam.setMemoryRamID(getComputerRAMID());
+			computerRam.setMemoryRamType(computerRamTypeField.getText());
+			computerRam.setMemoryRamCapacityMB(computerRamCapacityField.getInt());
+
+		getController().getManagerDAO().getComputerRAMServiceDAO().saveData(computerRam, getOperationType());
 	}
 	
 	private boolean validateFields() {
 		
 		List<Boolean> errors = new ArrayList<>();
 		
-		errors.add(softwareNameField.isEmpty());
+		errors.add(computerRamTypeField.isEmpty());
+		errors.add(!computerRamCapacityField.isInteger());
 		
 		return !errors.contains(true);
 	}
 
 	private String getCorrectTitle() {
-		return (isEditable()) ? "Edycja typu oprogramowania" : "Szczegóły typu oprogramowania";
+		return (isEditable()) ? "Edycja szczegółów pamięci RAM" : "Szczegóły pamięci RAM";
 	}
 
 	public boolean isEditable() {
@@ -239,12 +239,12 @@ public class SoftwareDetailsFrame extends JDialog {
 		this.operationType = operationType;
 	}
 
-	public int getSoftwareID() {
-		return softwareID;
+	public int getComputerRAMID() {
+		return computerCpuID;
 	}
 
-	public void setSoftwareID(int softwareID) {
-		this.softwareID = softwareID;
+	public void setComputerRAMID(int computerCpuID) {
+		this.computerCpuID = computerCpuID;
 	}
 
 	

@@ -91,7 +91,7 @@ public class DepartmentDetailsFrame extends JDialog {
 		
 		headerPanel.add(titlePanel, BorderLayout.CENTER);
 		
-		JLabel titleHeaderLabel = new JLabel("Oddział");
+		JLabel titleHeaderLabel = new JLabel("Miejsce użytkowania");
 		titleHeaderLabel.setForeground(SystemColor.textInactiveText);
 		titleHeaderLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		titlePanel.add(titleHeaderLabel, "cell 0 0,alignx left,growy");

@@ -27,4 +27,31 @@ public class PMFileChooser extends JFileChooser {
 		return selectedFile;
 	}
 	
+	public File getFile() {
+		File selectedFile = null;
+		
+		int returnValue = showOpenDialog(null);
+		if (returnValue == JFileChooser.APPROVE_OPTION) {
+			selectedFile = getSelectedFile();
+		}
+		
+		return selectedFile;
+	}
+	
+	public String getDirectoryForSaveFile() {
+		String directorySavePath = "";
+		File selectedFile = null;
+		
+		setDialogTitle("Okreś ścieżkę zapisu pliku");
+		setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		
+		int returnValue = showSaveDialog(null);
+		if (returnValue == JFileChooser.APPROVE_OPTION) {
+			selectedFile = getSelectedFile();
+			directorySavePath = selectedFile.getName();
+		}
+
+		return directorySavePath;
+	}
+	
 }

@@ -17,6 +17,8 @@ public class MenuBarPanel extends JMenuBar {
 	private static final long serialVersionUID = 5845864327274589304L;
 	
 	private JMenu dictionaryMenu;
+	private JMenu dictionaryComputersComponents;
+	
 	private JMenu settingsMenu;
 	private JMenu helpMenu;
 	
@@ -26,6 +28,10 @@ public class MenuBarPanel extends JMenuBar {
 	private JMenuItem employeeDictionaryItem;
 	private JMenuItem licensesDictionaryItem;
 	private JMenuItem softwareDictionaryItem;
+	
+	private JMenuItem computerCpuDictionaryItem;
+	private JMenuItem computerRamDictionaryItem;
+	private JMenuItem computerMassStorageDictionaryItem;
 	
 	private JMenuItem aboutAppItem;
 	
@@ -49,12 +55,24 @@ public class MenuBarPanel extends JMenuBar {
 		licensesDictionaryItem = createMenuItem(TabbedPanel.LICENSES_DICTIONARY_PANEL, "certificate-solid.png");
 		softwareDictionaryItem = createMenuItem(TabbedPanel.SOFTWARE_DICTIONARY_PANEL, "software-brands.png");
 		
+		dictionaryComputersComponents = new JMenu("Podzespoły komputerowe");
+		computerCpuDictionaryItem = createMenuItem(TabbedPanel.CPU_DICTIONARY_PANEL, "microchip-solid.png");
+		computerRamDictionaryItem = createMenuItem(TabbedPanel.RAM_DICTIONARY_PANEL, "memory-solid.png");
+		computerMassStorageDictionaryItem = createMenuItem(TabbedPanel.MASS_STORAGE_DICTIONARY_PANEL, "sd-card-solid.png");
+		
+		dictionaryComputersComponents.add(computerCpuDictionaryItem);
+		dictionaryComputersComponents.add(computerRamDictionaryItem);
+		dictionaryComputersComponents.add(computerMassStorageDictionaryItem);
+		
 		dictionaryMenu.add(deviceDictionaryItem);
 		dictionaryMenu.add(deviceTypeDictionaryItem);
 		dictionaryMenu.add(departmentDictionaryItem);
 		dictionaryMenu.add(employeeDictionaryItem);
 		dictionaryMenu.add(licensesDictionaryItem);
 		dictionaryMenu.add(softwareDictionaryItem);
+		dictionaryMenu.add(dictionaryComputersComponents);
+		
+		
 		
 		settingsMenu = new JMenu("Ustawienia");
 		helpMenu = new JMenu("Pomoc");
@@ -103,6 +121,24 @@ public class MenuBarPanel extends JMenuBar {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				controller.addSoftwareDictionaryPanel();
+			}
+		});
+		computerCpuDictionaryItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.addComputerCpuDictionaryPanel();
+			}
+		});
+		computerRamDictionaryItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.addComputerRamDictionaryPanel();
+			}
+		});
+		computerMassStorageDictionaryItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.addComputerMassStorageDictionaryPanel();
 			}
 		});
 	}

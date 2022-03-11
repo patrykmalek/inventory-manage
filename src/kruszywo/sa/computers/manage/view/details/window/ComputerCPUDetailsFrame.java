@@ -1,11 +1,11 @@
 package kruszywo.sa.computers.manage.view.details.window;
 
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
+
 import kruszywo.sa.computers.manage.controller.Controller;
-import kruszywo.sa.computers.manage.model.Software;
+import kruszywo.sa.computers.manage.model.ComputerCPU;
 import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
 import kruszywo.sa.computers.manage.view.util.PMJScrollPane;
@@ -28,16 +28,16 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JTextPane;
 
-public class SoftwareDetailsFrame extends JDialog {
+public class ComputerCPUDetailsFrame extends JDialog {
 	
 	private static final long serialVersionUID = 1L;
-	private int softwareID;
+	private int computerCpuID;
 	
 	private JLabel additionalTitleHeaderLabel;
-	private PMJTextField softwareNameField;
-	private JTextPane softwareNotesField;
+	private PMJTextField computerCpuNameField;
+	private PMJTextField computerCpuCoresNumberField;
+	private PMJTextField computerCpuClockSpeedField;
 	
 	private JPanel headerPanel;
 	private JPanel detailsPanel;
@@ -52,10 +52,10 @@ public class SoftwareDetailsFrame extends JDialog {
 	private Controller controller;
 	
 	
-	public SoftwareDetailsFrame(Controller controller) {
+	public ComputerCPUDetailsFrame(Controller controller) {
 		super(controller.getMainFrame(), "Panel", true);
 		this.controller = controller;
-		this.controller.setSoftwareDetailsFrame(this);
+		this.controller.setComputerCPUDetailsFrame(this);
 		createWindow();
 	}
 	
@@ -96,7 +96,7 @@ public class SoftwareDetailsFrame extends JDialog {
 		
 		headerPanel.add(titlePanel, BorderLayout.CENTER);
 		
-		JLabel titleHeaderLabel = new JLabel("Oprogramowanie");
+		JLabel titleHeaderLabel = new JLabel("Procesor");
 		titleHeaderLabel.setForeground(SystemColor.textInactiveText);
 		titleHeaderLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		titlePanel.add(titleHeaderLabel, "cell 0 0,alignx left,growy");
@@ -114,23 +114,32 @@ public class SoftwareDetailsFrame extends JDialog {
 		detailsPanel.setBackground(SystemColor.text);
 		detailsPanel.setLayout(new MigLayout("", "[10px][150px][grow][grow][grow][grow][grow][10px]", "[25px][25px][25px][25px][grow][10px]"));
 		
-		JLabel deviceNameLabel = new JLabel("Nazwa:");
-		deviceNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		detailsPanel.add(deviceNameLabel, "cell 1 1,alignx left");
+		JLabel computerCpuNameLabel = new JLabel("Nazwa:");
+		computerCpuNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		detailsPanel.add(computerCpuNameLabel, "cell 1 1,alignx left");
 		
-		softwareNameField = new PMJTextField(true, 13);
-		softwareNameField.setEditable(isEditable());
-		softwareNameField.setColumns(10);
-		detailsPanel.add(softwareNameField, "cell 2 1 4 1,grow");
+		computerCpuNameField = new PMJTextField(true, 13);
+		computerCpuNameField.setEditable(isEditable());
+		computerCpuNameField.setColumns(10);
+		detailsPanel.add(computerCpuNameField, "cell 2 1 4 1,grow");
 		
-		softwareNotesField = new JTextPane();
-		softwareNotesField.setEnabled(isEditable());
-		softwareNotesField.setBorder(BorderFactory.createTitledBorder("Dodatkowe informacje"));
-		softwareNotesField.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		JLabel computerCpuCoresNumberLabel = new JLabel("Ilość rdzeni:");
+		computerCpuCoresNumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		detailsPanel.add(computerCpuCoresNumberLabel, "cell 1 2,alignx left");
 		
-		JScrollPane softwareNotesFieldContainer = new JScrollPane(softwareNotesField);
-		softwareNotesFieldContainer.setBorder(null);
-		detailsPanel.add(softwareNotesFieldContainer, "cell 1 4 6 1,grow");
+		computerCpuCoresNumberField = new PMJTextField(true, 13);
+		computerCpuCoresNumberField.setEditable(isEditable());
+		computerCpuCoresNumberField.setColumns(10);
+		detailsPanel.add(computerCpuCoresNumberField, "cell 2 2 4 1,grow");
+		
+		JLabel computerCpuClockSpeedLabel = new JLabel("Szybkość zegara:");
+		computerCpuClockSpeedLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		detailsPanel.add(computerCpuClockSpeedLabel, "cell 1 3,alignx left");
+		
+		computerCpuClockSpeedField = new PMJTextField(true, 13);
+		computerCpuClockSpeedField.setEditable(isEditable());
+		computerCpuClockSpeedField.setColumns(10);
+		detailsPanel.add(computerCpuClockSpeedField, "cell 2 3 4 1,grow");
 		
 		return detailsPanel;
 	}
@@ -165,7 +174,7 @@ public class SoftwareDetailsFrame extends JDialog {
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				if(validateFields()) {
-					saveSoftwareData();
+					saveComputerCPUData();
 					dispose();
 				}
 			}
@@ -181,41 +190,45 @@ public class SoftwareDetailsFrame extends JDialog {
 		
 	}
 	
-	public boolean addSoftwareDataToView(Software software) {
+	public boolean addComputerCPUDataToView(ComputerCPU computerCpu) {
 		
-		if(software == null) return false;
-		setSoftwareID(software.getSoftwareID());
+		if(computerCpu == null) return false;
+		setComputerCPUID(computerCpu.getComputerCpuID());
 		
 		additionalTitleHeaderLabel.setText("Szczegóły");
 		
-		softwareNameField.setText(software.getSoftwareName());
-		softwareNotesField.setText(software.getSoftwareNotes());
+		computerCpuNameField.setText(computerCpu.getComputerCpuName());
+		computerCpuCoresNumberField.setText(String.valueOf(computerCpu.getComputerCpuCoresNumber()));
+		computerCpuClockSpeedField.setText(String.valueOf(computerCpu.getComputerCpuClockSpeed()));
 		
 		return true;
 	}
 	
-	public void saveSoftwareData() {
+	public void saveComputerCPUData() {
 		
-		Software software = new Software();
-		
-		software.setSoftwareID(getSoftwareID());
-		software.setSoftwareName(softwareNameField.getText());
-		software.setSoftwareNotes(softwareNotesField.getText());
-		
-		getController().getManagerDAO().getSoftwareServiceDAO().saveData(software, getOperationType());
+		ComputerCPU computerCpu = new ComputerCPU();
+
+			computerCpu.setComputerCpuID(getComputerCPUID());
+		 	computerCpu.setComputerCpuName(computerCpuNameField.getText());
+		 	computerCpu.setComputerCpuCoresNumber(computerCpuCoresNumberField.getInt());
+		 	computerCpu.setComputerCpuClockSpeed(computerCpuClockSpeedField.getInt());
+
+		getController().getManagerDAO().getComputerCPUServiceDAO().saveData(computerCpu, getOperationType());
 	}
 	
 	private boolean validateFields() {
 		
 		List<Boolean> errors = new ArrayList<>();
 		
-		errors.add(softwareNameField.isEmpty());
+		errors.add(computerCpuNameField.isEmpty());
+		errors.add(!computerCpuCoresNumberField.isInteger());
+		errors.add(!computerCpuClockSpeedField.isInteger());
 		
 		return !errors.contains(true);
 	}
 
 	private String getCorrectTitle() {
-		return (isEditable()) ? "Edycja typu oprogramowania" : "Szczegóły typu oprogramowania";
+		return (isEditable()) ? "Edycja szczegółów procesora" : "Szczegóły procesora";
 	}
 
 	public boolean isEditable() {
@@ -239,12 +252,12 @@ public class SoftwareDetailsFrame extends JDialog {
 		this.operationType = operationType;
 	}
 
-	public int getSoftwareID() {
-		return softwareID;
+	public int getComputerCPUID() {
+		return computerCpuID;
 	}
 
-	public void setSoftwareID(int softwareID) {
-		this.softwareID = softwareID;
+	public void setComputerCPUID(int computerCpuID) {
+		this.computerCpuID = computerCpuID;
 	}
 
 	
