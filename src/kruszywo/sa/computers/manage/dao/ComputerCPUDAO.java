@@ -135,7 +135,7 @@ public class ComputerCPUDAO implements DAO<ComputerCPU>{
 			 ps.setString(1, computerCpu.getComputerCpuName());
 	         ps.setInt(2, computerCpu.getComputerCpuCoresNumber());
 	         ps.setInt(3, computerCpu.getComputerCpuClockSpeed());
-             ps.setInt(5, computerCpu.getComputerCpuID());
+             ps.setInt(4, computerCpu.getComputerCpuID());
            
 
 			controller.getDatabaseProvider().executePreparedStatement(ps);
