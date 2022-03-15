@@ -57,7 +57,6 @@ public class ComputerMassStorageDetailsFrame extends JDialog {
 		super(controller.getMainFrame(), "Panel", true);
 		this.controller = controller;
 		this.controller.setComputerMassStorageDetailsFrame(this);
-		createWindow();
 	}
 	
 	public void createWindow() {

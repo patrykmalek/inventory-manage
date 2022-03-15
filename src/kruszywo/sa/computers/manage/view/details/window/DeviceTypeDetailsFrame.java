@@ -56,7 +56,6 @@ public class DeviceTypeDetailsFrame extends JDialog {
 		super(controller.getMainFrame(), "Panel", true);
 		this.controller = controller;
 		this.controller.setDeviceTypeDetailsFrame(this);
-		createWindow();
 	}
 	
 	public void createWindow() {

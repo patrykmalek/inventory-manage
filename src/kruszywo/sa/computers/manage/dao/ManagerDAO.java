@@ -2,6 +2,7 @@ package kruszywo.sa.computers.manage.dao;
 
 import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.dao.service.ComputerCPUServiceDAO;
+import kruszywo.sa.computers.manage.dao.service.ComputerComponentServiceDAO;
 import kruszywo.sa.computers.manage.dao.service.ComputerMassStorageServiceDAO;
 import kruszywo.sa.computers.manage.dao.service.ComputerRAMServiceDAO;
 import kruszywo.sa.computers.manage.dao.service.DepartmentServiceDAO;
@@ -25,6 +26,7 @@ public class ManagerDAO {
 	private ComputerCPUServiceDAO computerCPUServiceDAO;
 	private ComputerRAMServiceDAO computerRAMServiceDAO;
 	private ComputerMassStorageServiceDAO computerMassStorageServiceDAO;
+	private ComputerComponentServiceDAO computerComponentServiceDAO;
 	
 	
 	private DeviceDAO deviceDAO;
@@ -36,6 +38,7 @@ public class ManagerDAO {
 	private ComputerMassStorageDAO computerMassStorageDAO;
 	private ComputerRAMDAO computerRAMDAO;
 	private ComputerCPUDAO computerCPUDAO;
+	private ComputerComponentDAO computerComponentDAO;
 	
 	
 	public ManagerDAO(Controller controller) {
@@ -51,6 +54,7 @@ public class ManagerDAO {
 		this.setComputerMassStorageDAO(new ComputerMassStorageDAO(controller));
 		this.setComputerRAMDAO(new ComputerRAMDAO(controller));
 		this.setComputerCPUDAO(new ComputerCPUDAO(controller));
+		this.setComputerComponentDAO(new ComputerComponentDAO(controller));
 		
 		this.setDeviceServiceDAO(new DeviceServiceDAO(controller, this));
 		this.setDeviceTypeServiceDAO(new DeviceTypeServiceDAO(controller, this));
@@ -61,6 +65,7 @@ public class ManagerDAO {
 		this.setComputerCPUServiceDAO(new ComputerCPUServiceDAO(controller, this));
 		this.setComputerRAMServiceDAO(new ComputerRAMServiceDAO(controller, this));
 		this.setComputerMassStorageServiceDAO(new ComputerMassStorageServiceDAO(controller, this));
+		this.setComputerComponentServiceDAO(new ComputerComponentServiceDAO(controller, this));
 	}
 
 	public DeviceDAO getDeviceDAO() {
@@ -205,6 +210,22 @@ public class ManagerDAO {
 
 	public void setComputerMassStorageServiceDAO(ComputerMassStorageServiceDAO computerMassStorageServiceDAO) {
 		this.computerMassStorageServiceDAO = computerMassStorageServiceDAO;
+	}
+
+	public ComputerComponentDAO getComputerComponentDAO() {
+		return computerComponentDAO;
+	}
+
+	public void setComputerComponentDAO(ComputerComponentDAO computerComponentDAO) {
+		this.computerComponentDAO = computerComponentDAO;
+	}
+
+	public ComputerComponentServiceDAO getComputerComponentServiceDAO() {
+		return computerComponentServiceDAO;
+	}
+
+	public void setComputerComponentServiceDAO(ComputerComponentServiceDAO computerComponentServiceDAO) {
+		this.computerComponentServiceDAO = computerComponentServiceDAO;
 	}
 	
 }

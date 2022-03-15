@@ -40,6 +40,11 @@ public class ComputerCPU {
 	public void setComputerCpuClockSpeed(int computerCpuClockSpeed) {
 		this.computerCpuClockSpeed = computerCpuClockSpeed;
 	}
+
+	@Override
+	public String toString() {
+		return getComputerCpuName();
+	}
 	
 
 

@@ -55,7 +55,6 @@ public class ComputerRAMDetailsFrame extends JDialog {
 		super(controller.getMainFrame(), "Panel", true);
 		this.controller = controller;
 		this.controller.setComputerRAMDetailsFrame(this);
-		createWindow();
 	}
 	
 	public void createWindow() {

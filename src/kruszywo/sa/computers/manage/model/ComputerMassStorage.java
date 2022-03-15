@@ -55,5 +55,11 @@ public class ComputerMassStorage {
 		return (int) Math.round(massStorageCapacityGB);
 	}
 
+	@Override
+	public String toString() {
+		return getMassStorageName() + ", " + getMassStorageType() + " (" +getMassStorageCapacityMB()+ ")";
+	}
+
+	
 	
 }

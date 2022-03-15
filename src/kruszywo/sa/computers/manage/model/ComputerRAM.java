@@ -43,6 +43,12 @@ public class ComputerRAM {
 	public void setMemoryRamCapacityMB(int memoryRamCapacityMB) {
 		this.memoryRamCapacityMB = memoryRamCapacityMB;
 	}
+
+
+	@Override
+	public String toString() {
+		return getMemoryRamType() + " ("+ getMemoryRamCapacityMB() + " MB)";
+	}
 	
 	
 }

@@ -56,7 +56,6 @@ public class ComputerCPUDetailsFrame extends JDialog {
 		super(controller.getMainFrame(), "Panel", true);
 		this.controller = controller;
 		this.controller.setComputerCPUDetailsFrame(this);
-		createWindow();
 	}
 	
 	public void createWindow() {

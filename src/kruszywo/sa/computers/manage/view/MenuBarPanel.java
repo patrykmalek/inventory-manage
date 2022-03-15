@@ -29,6 +29,7 @@ public class MenuBarPanel extends JMenuBar {
 	private JMenuItem licensesDictionaryItem;
 	private JMenuItem softwareDictionaryItem;
 	
+	private JMenuItem allComponentsDictionaryItem;
 	private JMenuItem computerCpuDictionaryItem;
 	private JMenuItem computerRamDictionaryItem;
 	private JMenuItem computerMassStorageDictionaryItem;
@@ -56,10 +57,12 @@ public class MenuBarPanel extends JMenuBar {
 		softwareDictionaryItem = createMenuItem(TabbedPanel.SOFTWARE_DICTIONARY_PANEL, "software-brands.png");
 		
 		dictionaryComputersComponents = new JMenu("Podzespoły komputerowe");
+		allComponentsDictionaryItem = createMenuItem(TabbedPanel.COMPUTERS_COMPONENTS_DICTIONARY_PANEL, "laptop-house-solid.png");
 		computerCpuDictionaryItem = createMenuItem(TabbedPanel.CPU_DICTIONARY_PANEL, "microchip-solid.png");
 		computerRamDictionaryItem = createMenuItem(TabbedPanel.RAM_DICTIONARY_PANEL, "memory-solid.png");
 		computerMassStorageDictionaryItem = createMenuItem(TabbedPanel.MASS_STORAGE_DICTIONARY_PANEL, "sd-card-solid.png");
 		
+		dictionaryComputersComponents.add(allComponentsDictionaryItem);
 		dictionaryComputersComponents.add(computerCpuDictionaryItem);
 		dictionaryComputersComponents.add(computerRamDictionaryItem);
 		dictionaryComputersComponents.add(computerMassStorageDictionaryItem);
@@ -141,6 +144,13 @@ public class MenuBarPanel extends JMenuBar {
 				controller.addComputerMassStorageDictionaryPanel();
 			}
 		});
+		allComponentsDictionaryItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controller.addComputerComponentsDictionaryPanel();
+			}
+		});
+		
 	}
 
 	public Controller getController() {

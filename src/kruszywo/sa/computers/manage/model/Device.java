@@ -10,6 +10,7 @@ public class Device {
 	private String invoiceNumber;
 	private String purchaseDate;
 	private String lastInstallationDate;
+	private String lastModificationDate;
 	private String notes;
 	private String computerName;
 	
@@ -109,11 +110,7 @@ public class Device {
 
 	@Override
 	public String toString() {
-		return "Device [deviceID=" + deviceID + ", deviceName=" + deviceName + ", deviceUniqueNumber="
-				+ deviceUniqueNumber + ", deviceInventoryNumber=" + deviceInventoryNumber + ", invoiceNumber="
-				+ invoiceNumber + ", purchaseDate=" + purchaseDate + ", lastInstallationDate=" + lastInstallationDate
-				+ ", notes=" + notes + ", deviceType=" + deviceType + ", assignedDepartment=" + assignedDepartment
-				+ ", assignedEmployee=" + assignedEmployee + "]";
+		return deviceName;
 	}
 
 	public String getComputerName() {
@@ -122,6 +119,14 @@ public class Device {
 
 	public void setComputerName(String computerName) {
 		this.computerName = computerName;
+	}
+
+	public String getLastModificationDate() {
+		return lastModificationDate;
+	}
+
+	public void setLastModificationDate(String lastModificationDate) {
+		this.lastModificationDate = lastModificationDate;
 	}
 	
 	

@@ -6,11 +6,13 @@ import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.dao.ManagerDAO;
 import kruszywo.sa.computers.manage.exception.SystemOperationException;
 import kruszywo.sa.computers.manage.model.CommonFunctions;
+import kruszywo.sa.computers.manage.model.ComputerComponent;
 import kruszywo.sa.computers.manage.model.Department;
 import kruszywo.sa.computers.manage.model.Device;
 import kruszywo.sa.computers.manage.model.DeviceType;
 import kruszywo.sa.computers.manage.model.Employee;
 import kruszywo.sa.computers.manage.model.OperationType;
+import kruszywo.sa.computers.manage.view.details.window.ComputerComponentDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.DeviceDetailsFrame;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.DepartmentDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.DeviceTypeDictionaryTablePanel;
@@ -65,6 +67,15 @@ public class DeviceServiceDAO {
 		DeviceDetailsFrame deviceDetailsWindow = new DeviceDetailsFrame(controller);
 		deviceDetailsWindow.setOperationType(OperationType.INSERT);
 		deviceDetailsWindow.createWindow();
+		
+		ComputerComponentDetailsFrame computerComponentDetailsFrame = new ComputerComponentDetailsFrame(getController());
+		computerComponentDetailsFrame.setOperationType(OperationType.INSERT);
+		computerComponentDetailsFrame.createPanels();
+		computerComponentDetailsFrame.createEventListeners();
+		computerComponentDetailsFrame.setAddedFromDevice(false);
+		deviceDetailsWindow.setComputerComponentDetailsFrame(computerComponentDetailsFrame);
+		deviceDetailsWindow.setComputerComponentDetailsPanel(computerComponentDetailsFrame.getDetailsPanel());
+		
 		deviceDetailsWindow.showWindow();
 	}
 	
@@ -74,6 +85,17 @@ public class DeviceServiceDAO {
 		DeviceDetailsFrame deviceDetailsWindow = new DeviceDetailsFrame(controller);
 		deviceDetailsWindow.setOperationType(OperationType.DISPLAY);
 		deviceDetailsWindow.createWindow();
+		
+		ComputerComponent computerComponent = getManagerDAO().getComputerComponentDAO().getByComputerID(deviceID);
+		ComputerComponentDetailsFrame computerComponentDetailsFrame = new ComputerComponentDetailsFrame(getController());
+		computerComponentDetailsFrame.setOperationType(OperationType.DISPLAY);
+		computerComponentDetailsFrame.createPanels();
+		computerComponentDetailsFrame.createEventListeners();
+		computerComponentDetailsFrame.setAddedFromDevice(false);
+		deviceDetailsWindow.setComputerComponentDetailsFrame(computerComponentDetailsFrame);
+		deviceDetailsWindow.setComputerComponentDetailsPanel(computerComponentDetailsFrame.getDetailsPanel());
+		computerComponentDetailsFrame.addComputerComponentDataToView(computerComponent);
+		
 		deviceDetailsWindow.addDeviceDataToView(device);
 		deviceDetailsWindow.showWindow();
 	}
@@ -84,6 +106,17 @@ public class DeviceServiceDAO {
 		DeviceDetailsFrame deviceDetailsWindow = new DeviceDetailsFrame(controller);
 		deviceDetailsWindow.setOperationType(OperationType.UPDATE);
 		deviceDetailsWindow.createWindow();
+		
+		ComputerComponent computerComponent = getManagerDAO().getComputerComponentDAO().getByComputerID(deviceID);
+		ComputerComponentDetailsFrame computerComponentDetailsFrame = new ComputerComponentDetailsFrame(getController());
+		computerComponentDetailsFrame.setOperationType((computerComponent != null) ? OperationType.UPDATE : OperationType.INSERT);
+		computerComponentDetailsFrame.createPanels();
+		computerComponentDetailsFrame.createEventListeners();
+		computerComponentDetailsFrame.setAddedFromDevice(false);
+		deviceDetailsWindow.setComputerComponentDetailsFrame(computerComponentDetailsFrame);
+		deviceDetailsWindow.setComputerComponentDetailsPanel(computerComponentDetailsFrame.getDetailsPanel());
+		computerComponentDetailsFrame.addComputerComponentDataToView(computerComponent);
+		
 		deviceDetailsWindow.addDeviceDataToView(device);
 		deviceDetailsWindow.showWindow();
 	}
@@ -100,9 +133,9 @@ public class DeviceServiceDAO {
 		getController().getDeviceDetailsFrame().getDeviceTypeField().addItem(deviceType);
 		getController().getDeviceDetailsFrame().setComputer(deviceType.getDeviceTypeID() == 1001);
 		if(getController().getDeviceDetailsFrame().isComputer()) {
-			getController().getDeviceDetailsFrame().showComputerNameField();
+			getController().getDeviceDetailsFrame().showComputerComponents();
 		} else {
-			getController().getDeviceDetailsFrame().removeComputerNameField();
+			getController().getDeviceDetailsFrame().removeComputerComponents();
 		}
 		deviceTypeDictionaryTablePanel.resetChoosenID();
 	}

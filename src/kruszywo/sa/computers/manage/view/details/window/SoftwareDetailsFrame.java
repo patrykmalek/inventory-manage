@@ -56,7 +56,6 @@ public class SoftwareDetailsFrame extends JDialog {
 		super(controller.getMainFrame(), "Panel", true);
 		this.controller = controller;
 		this.controller.setSoftwareDetailsFrame(this);
-		createWindow();
 	}
 	
 	public void createWindow() {

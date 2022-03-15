@@ -73,7 +73,6 @@ public class LicenseDetailsFrame extends JDialog {
 		super(controller.getMainFrame(), "Panel", true);
 		this.controller = controller;
 		this.controller.setLicenseDetailsFrame(this);
-		createWindow();
 	}
 	
 	public void createWindow() {
