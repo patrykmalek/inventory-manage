@@ -12,11 +12,12 @@ public class Device {
 	private String lastInstallationDate;
 	private String lastModificationDate;
 	private String notes;
-	private String computerName;
+	private boolean used;
 	
 	private DeviceType deviceType;
 	private Department assignedDepartment;
 	private Employee assignedEmployee;
+	private ComputerComponent computerComponent;
 	
 	public Device() {}
 
@@ -113,20 +114,28 @@ public class Device {
 		return deviceName;
 	}
 
-	public String getComputerName() {
-		return computerName;
-	}
-
-	public void setComputerName(String computerName) {
-		this.computerName = computerName;
-	}
-
 	public String getLastModificationDate() {
 		return lastModificationDate;
 	}
 
 	public void setLastModificationDate(String lastModificationDate) {
 		this.lastModificationDate = lastModificationDate;
+	}
+
+	public ComputerComponent getComputerComponent() {
+		return (computerComponent == null) ? new ComputerComponent() : computerComponent;
+	}
+
+	public void setComputerComponent(ComputerComponent computerComponent) {
+		this.computerComponent = computerComponent;
+	}
+
+	public boolean isUsed() {
+		return used;
+	}
+
+	public void setUsed(boolean used) {
+		this.used = used;
 	}
 	
 	

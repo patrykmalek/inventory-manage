@@ -10,6 +10,7 @@ import java.util.List;
 import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.exception.SystemOperationException;
 import kruszywo.sa.computers.manage.model.CommonFunctions;
+import kruszywo.sa.computers.manage.model.ComputerComponent;
 import kruszywo.sa.computers.manage.model.Department;
 import kruszywo.sa.computers.manage.model.Device;
 import kruszywo.sa.computers.manage.model.DeviceType;
@@ -21,11 +22,11 @@ public class DeviceDAO implements DAO<Device>{
 	private Controller controller;
 	
 	private static final String FIND_BY_ID = "SELECT * FROM DEVICES D LEFT JOIN DEVICE_TYPE DT ON (DT.ID_DEVICE_TYPE = D.ID_DEVICE_TYPE) LEFT JOIN DEPARTMENT DP ON (DP.ID_DEPARTMENT = D.ID_ASSIGNED_DEPARTMENT) LEFT JOIN EMPLOYEE E ON (E.ID_EMPLOYEE = D.ID_ASSIGNED_EMPLOYEE) WHERE D.ID_DEVICE=?;";
-    private static final String FIND_BY_NAME = "SELECT * FROM DEVICES D LEFT JOIN DEVICE_TYPE DT ON (DT.ID_DEVICE_TYPE = D.ID_DEVICE_TYPE) LEFT JOIN DEPARTMENT DP ON (DP.ID_DEPARTMENT = D.ID_ASSIGNED_DEPARTMENT) LEFT JOIN EMPLOYEE E ON (E.ID_EMPLOYEE = D.ID_ASSIGNED_EMPLOYEE) WHERE D.DEVICE_UNIQUE_NUMBER || D.DEVICE_NAME || D.DEVICE_INVENTORY_NUMBER || D.INVOICE_NUMBER || D.PURCHASE_DATE || D.LAST_INSTALLATION_DATE || D.COMPUTER_NAME LIKE ?";
+    private static final String FIND_BY_NAME = "SELECT * FROM DEVICES D LEFT JOIN DEVICE_TYPE DT ON (DT.ID_DEVICE_TYPE = D.ID_DEVICE_TYPE) LEFT JOIN DEPARTMENT DP ON (DP.ID_DEPARTMENT = D.ID_ASSIGNED_DEPARTMENT) LEFT JOIN EMPLOYEE E ON (E.ID_EMPLOYEE = D.ID_ASSIGNED_EMPLOYEE) WHERE D.DEVICE_UNIQUE_NUMBER || D.DEVICE_NAME || D.DEVICE_INVENTORY_NUMBER || D.INVOICE_NUMBER || D.PURCHASE_DATE || D.LAST_INSTALLATION_DATE LIKE ?";
 	private static final String FIND_ALL = "SELECT * FROM DEVICES D LEFT JOIN DEVICE_TYPE DT ON (DT.ID_DEVICE_TYPE = D.ID_DEVICE_TYPE) LEFT JOIN DEPARTMENT DP ON (DP.ID_DEPARTMENT = D.ID_ASSIGNED_DEPARTMENT) LEFT JOIN EMPLOYEE E ON (E.ID_EMPLOYEE = D.ID_ASSIGNED_EMPLOYEE);";
 	private static final String FIND_ALL_COMPUTERS_AND_LAPTOP = "SELECT * FROM DEVICES D LEFT JOIN DEVICE_TYPE DT ON (DT.ID_DEVICE_TYPE = D.ID_DEVICE_TYPE) LEFT JOIN DEPARTMENT DP ON (DP.ID_DEPARTMENT = D.ID_ASSIGNED_DEPARTMENT) LEFT JOIN EMPLOYEE E ON (E.ID_EMPLOYEE = D.ID_ASSIGNED_EMPLOYEE) WHERE D.ID_DEVICE_TYPE IN (1001, 1013);";
-    private static final String INSERT = "INSERT INTO devices (device_unique_number, device_name, device_inventory_number, id_device_type, id_assigned_department, id_assigned_employee, invoice_number, purchase_date, last_installation_date, device_notes, computer_name, last_modification_date) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    private static final String UPDATE = "UPDATE devices SET device_unique_number=?, device_name=?, device_inventory_number=?, id_device_type=?, id_assigned_department=?, id_assigned_employee=?, invoice_number=?, purchase_date=?, last_installation_date=?, device_notes=?, computer_name=?, last_modification_date=? WHERE id_device=?;";
+    private static final String INSERT = "INSERT INTO devices (device_unique_number, device_name, device_inventory_number, id_device_type, id_assigned_department, id_assigned_employee, invoice_number, purchase_date, last_installation_date, device_notes, last_modification_date, is_used) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    private static final String UPDATE = "UPDATE devices SET device_unique_number=?, device_name=?, device_inventory_number=?, id_device_type=?, id_assigned_department=?, id_assigned_employee=?, invoice_number=?, purchase_date=?, last_installation_date=?, device_notes=?, last_modification_date=?, is_used=? WHERE id_device=?;";
     private static final String DELETE = "DELETE FROM DEVICES WHERE ID_DEVICE=?;";
 	
 	public DeviceDAO(Controller controller) {
@@ -39,6 +40,7 @@ public class DeviceDAO implements DAO<Device>{
 		DeviceType deviceType = null;
 		Department assignedDepartment = null;
 		Employee assignedEmployee = null;
+		ComputerComponent computerComponent = null;
      	try {
 	     	 PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(FIND_BY_ID);
 	     	 ps.setInt(1, deviceID);
@@ -52,6 +54,7 @@ public class DeviceDAO implements DAO<Device>{
 		 	deviceType = new DeviceType();
 		 	assignedDepartment = new Department();
 		 	assignedEmployee = new Employee();
+		 	computerComponent = controller.getManagerDAO().getComputerComponentDAO().getByComputerIDFromDeviceDAO(resultSet.getInt("id_device"));
 		 	
 		 	device.setDeviceID(resultSet.getInt("id_device"));
 		 	device.setDeviceUniqueNumber(resultSet.getString("device_unique_number"));
@@ -61,8 +64,8 @@ public class DeviceDAO implements DAO<Device>{
 		 	device.setPurchaseDate(resultSet.getString("purchase_date"));
 		 	device.setLastInstallationDate(resultSet.getString("last_installation_date"));
 		 	device.setNotes(resultSet.getString("device_notes"));
-		 	device.setComputerName(resultSet.getString("computer_name"));
 		 	device.setLastModificationDate(resultSet.getString("last_modification_date"));
+		 	device.setUsed((resultSet.getObject("IS_USED") != null && resultSet.getBoolean("IS_USED")));
 		 	
 		 	deviceType.setDeviceTypeID(resultSet.getInt("id_device_type"));
 		 	deviceType.setDeviceTypeName(resultSet.getString("device_type_name"));
@@ -75,10 +78,11 @@ public class DeviceDAO implements DAO<Device>{
 		 	assignedEmployee.setFirstName(resultSet.getString("employee_first_name"));
 		 	assignedEmployee.setLastName(resultSet.getString("employee_last_name"));
 		 	
+		 	
 		 	device.setDeviceType(deviceType);
 		 	device.setAssignedDepartment(assignedDepartment);
 		 	device.setAssignedEmployee(assignedEmployee);
-			 
+			device.setComputerComponent(computerComponent); 
 		 }
 		  ps.close();
 		  resultSet.close();
@@ -94,6 +98,7 @@ public class DeviceDAO implements DAO<Device>{
 		DeviceType deviceType = null;
 		Department assignedDepartment = null;
 		Employee assignedEmployee = null;
+		ComputerComponent computerComponent = null;
      	try {
 	     	 PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(FIND_BY_NAME);
 	     	 ps.setString(1, "%" + deviceTextToFind + "%");
@@ -107,6 +112,7 @@ public class DeviceDAO implements DAO<Device>{
 		 	deviceType = new DeviceType();
 		 	assignedDepartment = new Department();
 		 	assignedEmployee = new Employee();
+		 	computerComponent = controller.getManagerDAO().getComputerComponentDAO().getByComputerID(resultSet.getInt("id_device"));
 		 	
 		 	device.setDeviceID(resultSet.getInt("id_device"));
 		 	device.setDeviceUniqueNumber(resultSet.getString("device_unique_number"));
@@ -116,9 +122,9 @@ public class DeviceDAO implements DAO<Device>{
 		 	device.setPurchaseDate(resultSet.getString("purchase_date"));
 		 	device.setLastInstallationDate(resultSet.getString("last_installation_date"));
 		 	device.setNotes(resultSet.getString("device_notes"));
-		 	device.setComputerName(resultSet.getString("computer_name"));
 			device.setLastModificationDate(resultSet.getString("last_modification_date"));
-		 	
+			device.setUsed((resultSet.getObject("IS_USED") != null && resultSet.getBoolean("IS_USED")));
+			
 		 	deviceType.setDeviceTypeID(resultSet.getInt("id_device_type"));
 		 	deviceType.setDeviceTypeName(resultSet.getString("device_type_name"));
 		 	
@@ -133,7 +139,7 @@ public class DeviceDAO implements DAO<Device>{
 		 	device.setDeviceType(deviceType);
 		 	device.setAssignedDepartment(assignedDepartment);
 		 	device.setAssignedEmployee(assignedEmployee);
-			 
+		 	device.setComputerComponent(computerComponent); 
 		 }
 		  ps.close();
 		  resultSet.close();
@@ -155,12 +161,14 @@ public class DeviceDAO implements DAO<Device>{
 				DeviceType deviceType = null;
 				Department assignedDepartment = null;
 				Employee assignedEmployee = null;
+				ComputerComponent computerComponent = null;
 			 while (resultSet.next()) {
 					
 				 	device = new Device();
 				 	deviceType = new DeviceType();
 				 	assignedDepartment = new Department();
 				 	assignedEmployee = new Employee();
+				 	computerComponent = controller.getManagerDAO().getComputerComponentDAO().getByComputerID(resultSet.getInt("id_device"));
 				 	
 				 	device.setDeviceID(resultSet.getInt("id_device"));
 				 	device.setDeviceUniqueNumber(resultSet.getString("device_unique_number"));
@@ -170,9 +178,9 @@ public class DeviceDAO implements DAO<Device>{
 				 	device.setPurchaseDate(resultSet.getString("purchase_date"));
 				 	device.setLastInstallationDate(resultSet.getString("last_installation_date"));
 				 	device.setNotes(resultSet.getString("device_notes"));
-				 	device.setComputerName(resultSet.getString("computer_name"));
 					device.setLastModificationDate(resultSet.getString("last_modification_date"));
-				 	
+					device.setUsed((resultSet.getObject("IS_USED") != null && resultSet.getBoolean("IS_USED")));
+					
 				 	deviceType.setDeviceTypeID(resultSet.getInt("id_device_type"));
 				 	deviceType.setDeviceTypeName(resultSet.getString("device_type_name"));
 				 	
@@ -187,6 +195,7 @@ public class DeviceDAO implements DAO<Device>{
 				 	device.setDeviceType(deviceType);
 				 	device.setAssignedDepartment(assignedDepartment);
 				 	device.setAssignedEmployee(assignedEmployee);
+				 	device.setComputerComponent(computerComponent); 
 				 	
 				 devices.add(device);
 				}
@@ -224,7 +233,6 @@ public class DeviceDAO implements DAO<Device>{
 				 	device.setPurchaseDate(resultSet.getString("purchase_date"));
 				 	device.setLastInstallationDate(resultSet.getString("last_installation_date"));
 				 	device.setNotes(resultSet.getString("device_notes"));
-				 	device.setComputerName(resultSet.getString("computer_name"));
 				 	
 				 	deviceType.setDeviceTypeID(resultSet.getInt("id_device_type"));
 				 	deviceType.setDeviceTypeName(resultSet.getString("device_type_name"));
@@ -266,8 +274,8 @@ public class DeviceDAO implements DAO<Device>{
 	            ps.setObject(8, device.getPurchaseDate());
 	            ps.setObject(9, device.getLastInstallationDate());
 	            ps.setObject(10, device.getNotes());
-	            ps.setObject(11, device.getComputerName());
-	            ps.setObject(12, CommonFunctions.formatDate(new Date(), "yyyy-MM-dd HH:mm:ss"));
+	            ps.setObject(11, CommonFunctions.formatDate(new Date(), "yyyy-MM-dd HH:mm:ss"));
+	            ps.setObject(12, device.isUsed());
 	            
 				controller.getDatabaseProvider().executePreparedStatement(ps);
 				
@@ -292,8 +300,8 @@ public class DeviceDAO implements DAO<Device>{
             ps.setObject(8, device.getPurchaseDate());
             ps.setObject(9, device.getLastInstallationDate());
             ps.setObject(10, device.getNotes());
-            ps.setObject(11, device.getComputerName());
-            ps.setObject(12, CommonFunctions.formatDate(new Date(), "yyyy-MM-dd HH:mm:ss"));
+            ps.setObject(11, CommonFunctions.formatDate(new Date(), "yyyy-MM-dd HH:mm:ss"));
+            ps.setObject(12, device.isUsed());
             ps.setInt(13, device.getDeviceID());
             
             

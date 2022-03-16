@@ -15,8 +15,8 @@ public class ComputerRAMDAO implements DAO<ComputerRAM>{
 	private List<ComputerRAM> computerRAMs;
 	private Controller controller;
 	
-	private static final String FIND_BY_ID = "SELECT * FROM MEMORY_RAM WHERE ID_MEMORY_RAM=?;";
-    private static final String FIND_ALL = "SELECT * FROM MEMORY_RAM;";
+	private static final String FIND_BY_ID = "SELECT MR.ID_MEMORY_RAM, MR.MEMORY_RAM_TYPE, MR.MEMORY_RAM_CAPACITY, CC.ID_COMPUTER_COMPONENTS FROM MEMORY_RAM MR LEFT JOIN COMPUTER_COMPONENTS CC ON (CC.ID_MEMORY_RAM = MR.ID_MEMORY_RAM) WHERE MR.ID_MEMORY_RAM=?;";
+    private static final String FIND_ALL = "SELECT MR.ID_MEMORY_RAM, MR.MEMORY_RAM_TYPE, MR.MEMORY_RAM_CAPACITY, CC.ID_COMPUTER_COMPONENTS FROM MEMORY_RAM MR LEFT JOIN COMPUTER_COMPONENTS CC ON (CC.ID_MEMORY_RAM = MR.ID_MEMORY_RAM);";
     private static final String INSERT = "INSERT INTO MEMORY_RAM (MEMORY_RAM_TYPE, MEMORY_RAM_CAPACITY) VALUES(?, ?);";
     private static final String UPDATE = "UPDATE MEMORY_RAM SET MEMORY_RAM_TYPE=?, MEMORY_RAM_CAPACITY=? WHERE ID_MEMORY_RAM=?;";
     private static final String DELETE = "DELETE FROM MEMORY_RAM WHERE ID_MEMORY_RAM=?;";
@@ -53,6 +53,7 @@ public class ComputerRAMDAO implements DAO<ComputerRAM>{
 			 	computerRAM.setMemoryRamID(resultSet.getInt("ID_MEMORY_RAM"));
 			 	computerRAM.setMemoryRamType(resultSet.getString("MEMORY_RAM_TYPE"));
 			 	computerRAM.setMemoryRamCapacityMB(resultSet.getInt("MEMORY_RAM_CAPACITY"));
+			 	computerRAM.setUsed((resultSet.getObject("ID_COMPUTER_COMPONENTS") != null));
 	
 			 }
 		  ps.close();
@@ -80,6 +81,7 @@ public class ComputerRAMDAO implements DAO<ComputerRAM>{
 				 	computerRAM.setMemoryRamID(resultSet.getInt("ID_MEMORY_RAM"));
 				 	computerRAM.setMemoryRamType(resultSet.getString("MEMORY_RAM_TYPE"));
 				 	computerRAM.setMemoryRamCapacityMB(resultSet.getInt("MEMORY_RAM_CAPACITY"));
+				 	computerRAM.setUsed((resultSet.getObject("ID_COMPUTER_COMPONENTS") != null));
 				 	
 				 	computerRAMs.add(computerRAM);
 				}

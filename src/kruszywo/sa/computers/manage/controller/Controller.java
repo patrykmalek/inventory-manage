@@ -13,6 +13,7 @@ import kruszywo.sa.computers.manage.view.MainFrame;
 import kruszywo.sa.computers.manage.view.WaitWindow;
 import kruszywo.sa.computers.manage.view.details.window.ComputerCPUDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.ComputerComponentDetailsFrame;
+import kruszywo.sa.computers.manage.view.details.window.ComputerLicenseAssignedDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.ComputerMassStorageDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.ComputerRAMDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.DepartmentDetailsFrame;
@@ -23,6 +24,7 @@ import kruszywo.sa.computers.manage.view.details.window.LicenseDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.SoftwareDetailsFrame;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.ComputerCPUDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.ComputerComponentDictionaryTablePanel;
+import kruszywo.sa.computers.manage.view.dictionary.table.panel.ComputerLicenseAssignedTablePanel;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.ComputerMassStorageDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.ComputerRAMDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.DepartmentDictionaryTablePanel;
@@ -48,6 +50,7 @@ public class Controller {
 	private ComputerRAMDictionaryTablePanel computerRAMDictionaryTable;
 	private ComputerMassStorageDictionaryTablePanel computerMassStorageDictionaryTable;
 	private ComputerComponentDictionaryTablePanel computerComponentDictionaryTable;
+	private ComputerLicenseAssignedTablePanel computerLicenseAssignedTable;
 	
 	private DeviceDetailsFrame deviceDetailsFrame;
 	private DeviceTypeDetailsFrame deviceTypeDetailsFrame;
@@ -59,6 +62,7 @@ public class Controller {
 	private ComputerRAMDetailsFrame computerRAMDetailsFrame;
 	private ComputerMassStorageDetailsFrame computerMassStorageDetailsFrame;
 	private ComputerComponentDetailsFrame computerComponentDetailsFrame;
+	private ComputerLicenseAssignedDetailsFrame computerLicenseAssignedDetailsFrame;
 	
 	public static WaitWindow waitWindow;
 	
@@ -355,6 +359,22 @@ public class Controller {
 
 	public void setComputerComponentDetailsFrame(ComputerComponentDetailsFrame computerComponentDetailsFrame) {
 		this.computerComponentDetailsFrame = computerComponentDetailsFrame;
+	}
+
+	public ComputerLicenseAssignedTablePanel getComputerLicenseAssignedTable() {
+		return computerLicenseAssignedTable;
+	}
+
+	public void setComputerLicenseAssignedTable(ComputerLicenseAssignedTablePanel computerLicenseAssignedTable) {
+		this.computerLicenseAssignedTable = computerLicenseAssignedTable;
+	}
+
+	public ComputerLicenseAssignedDetailsFrame getComputerLicenseAssignedDetailsFrame() {
+		return computerLicenseAssignedDetailsFrame;
+	}
+
+	public void setComputerLicenseAssignedDetailsFrame(ComputerLicenseAssignedDetailsFrame computerLicenseAssignedDetailsFrame) {
+		this.computerLicenseAssignedDetailsFrame = computerLicenseAssignedDetailsFrame;
 	}
 
 

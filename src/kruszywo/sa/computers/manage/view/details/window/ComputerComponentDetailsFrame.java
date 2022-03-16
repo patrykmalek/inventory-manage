@@ -14,6 +14,7 @@ import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
 import kruszywo.sa.computers.manage.view.util.PMCustomTextFieldWithDictionary;
 import kruszywo.sa.computers.manage.view.util.PMJScrollPane;
+import kruszywo.sa.computers.manage.view.util.PMJTextField;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -41,6 +42,7 @@ public class ComputerComponentDetailsFrame extends JDialog {
 	private JLabel additionalTitleHeaderLabel;
 	private JLabel computerComponentDeviceLabel;
 	
+	private PMJTextField deviceComputerSystemNameField;
 	private PMCustomTextFieldWithDictionary<Device> computerComponentDeviceField;
 	private PMCustomTextFieldWithDictionary<ComputerCPU> computerComponentCPUField;
 	private PMCustomTextFieldWithDictionary<ComputerRAM> computerComponentRAMField;
@@ -66,6 +68,7 @@ public class ComputerComponentDetailsFrame extends JDialog {
 		super(controller.getMainFrame(), "Panel", true);
 		this.controller = controller;
 		this.controller.setComputerComponentDetailsFrame(this);
+		createWindow();
 	}
 	
 	public void createWindow() {
@@ -175,7 +178,14 @@ public class ComputerComponentDetailsFrame extends JDialog {
 		computerComponentMassStorageThirdField.setEditable(isEditable());
 		detailsPanel.add(computerComponentMassStorageThirdField, "cell 2 6 4 1,grow");
 		
+		JLabel deviceComputerSystemNameLabel= new JLabel("Nazwa systemowa:");
+		deviceComputerSystemNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		detailsPanel.add(deviceComputerSystemNameLabel, "cell 1 7,alignx left");
 		
+		deviceComputerSystemNameField = new PMJTextField(true, 13);
+		deviceComputerSystemNameField.setEditable(isEditable());
+		deviceComputerSystemNameField.setColumns(10);
+		detailsPanel.add(deviceComputerSystemNameField, "cell 2 7 4 1,grow");
 		
 		return detailsPanel;
 	}
@@ -273,6 +283,7 @@ public class ComputerComponentDetailsFrame extends JDialog {
 		computerComponentMassStorageFirstField.addItem(computerComponent.getComputerMassStorageFirst());
 		computerComponentMassStorageSecondField.addItem(computerComponent.getComputerMassStorageSecond());
 		computerComponentMassStorageThirdField.addItem(computerComponent.getComputerMassStorageThird());
+		deviceComputerSystemNameField.setText(computerComponent.getComputerSystemName());
 		
 		return true;
 	}
@@ -288,7 +299,7 @@ public class ComputerComponentDetailsFrame extends JDialog {
 		 	computerComponent.setComputerMassStorageFirst(computerComponentMassStorageFirstField.getItem());
 		 	computerComponent.setComputerMassStorageSecond(computerComponentMassStorageSecondField.getItem());
 		 	computerComponent.setComputerMassStorageThird(computerComponentMassStorageThirdField.getItem());
-		 	
+		 	computerComponent.setComputerSystemName(deviceComputerSystemNameField.getText());
 		getController().getManagerDAO().getComputerComponentServiceDAO().saveData(computerComponent, getOperationType());
 	}
 	
@@ -303,7 +314,7 @@ public class ComputerComponentDetailsFrame extends JDialog {
 		 	computerComponent.setComputerMassStorageFirst(computerComponentMassStorageFirstField.getItem());
 		 	computerComponent.setComputerMassStorageSecond(computerComponentMassStorageSecondField.getItem());
 		 	computerComponent.setComputerMassStorageThird(computerComponentMassStorageThirdField.getItem());
-		 	
+		 	computerComponent.setComputerSystemName(deviceComputerSystemNameField.getText());
 		getController().getManagerDAO().getComputerComponentServiceDAO().saveData(computerComponent, getOperationType());
 	}
 	

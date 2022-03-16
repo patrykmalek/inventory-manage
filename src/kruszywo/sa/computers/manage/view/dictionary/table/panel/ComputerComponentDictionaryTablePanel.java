@@ -3,6 +3,8 @@ package kruszywo.sa.computers.manage.view.dictionary.table.panel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -52,10 +54,13 @@ public class ComputerComponentDictionaryTablePanel extends DictionaryTablePanel<
 		clearTable();
 		if(isEmptyData(computerComponents)) return;
 		for( ComputerComponent computerComponent : computerComponents){
-			addRowToTable(new Object[] {computerComponent.getComputerComponentID(), computerComponent.getDevice().getDeviceName(), 
-					computerComponent.getComputerCPU().toString(), computerComponent.getComputerRAM().toString(), 
-					computerComponent.getComputerMassStorageFirst().toString(), computerComponent.getComputerMassStorageSecond().toString(),
-					computerComponent.getComputerMassStorageThird().toString()});
+			if(computerComponent.getDevice() != null) {
+				addRowToTable(new Object[] {computerComponent.getComputerComponentID(), computerComponent.getDevice().getDeviceName(), 
+						computerComponent.getComputerCPU().toString(), computerComponent.getComputerRAM().toString(), 
+						computerComponent.getComputerMassStorageFirst().toString(), computerComponent.getComputerMassStorageSecond().toString(),
+						computerComponent.getComputerMassStorageThird().toString()});
+			}
+			
 		}
 		resizeTable();
 	}
@@ -87,6 +92,27 @@ public class ComputerComponentDictionaryTablePanel extends DictionaryTablePanel<
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					if(getParentWindow() == null) getController().getManagerDAO().getComputerComponentServiceDAO().openComputerComponentWindowToOnlyShowDetails(getIdFromTable());
+				}
+			}
+		});
+		getTable().addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_F5) {
+					updateTable(getController().getManagerDAO().getComputerComponentDAO().getAll());
 				}
 			}
 		});

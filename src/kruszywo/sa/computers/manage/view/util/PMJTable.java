@@ -40,7 +40,7 @@ public class PMJTable extends JTable {
 	
 	private Color searchFieldBackgroundColor = SystemColor.white;
 	
-	private static int DEFAULT_FONT_SIZE = 12;
+	private static int DEFAULT_FONT_SIZE = 13;
 	
 	private boolean isEditable;
 
@@ -55,7 +55,7 @@ public class PMJTable extends JTable {
 	
 	private void createVisuals() {
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		this.setRowHeight(20);
+		this.setRowHeight(25);
 		this.setFont(new Font("Tahoma", Font.PLAIN, DEFAULT_FONT_SIZE));
 		this.getTableHeader().setFont(new Font("Tahoma", Font.PLAIN, DEFAULT_FONT_SIZE));
 		this.setShowGrid(false);
@@ -71,7 +71,7 @@ public class PMJTable extends JTable {
 	            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
 	                JLabel headerLabel = (JLabel) tableHeadaerRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-	                if(table.getColumnClass(column) == Date.class) {
+	                if(table.getColumnClass(column) == Date.class || table.getColumnClass(column) == Boolean.class) {
 	                	headerLabel.setHorizontalAlignment(SwingConstants.CENTER);
 	                } else {
 	                	headerLabel.setHorizontalAlignment(SwingConstants.LEFT);

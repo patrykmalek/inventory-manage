@@ -6,6 +6,7 @@ public class ComputerCPU {
 	private String computerCpuName;
 	private int computerCpuCoresNumber;
 	private int computerCpuClockSpeed;
+	private boolean used;
 	
 	public ComputerCPU() {}
 
@@ -44,6 +45,14 @@ public class ComputerCPU {
 	@Override
 	public String toString() {
 		return getComputerCpuName();
+	}
+
+	public boolean isUsed() {
+		return used;
+	}
+
+	public void setUsed(boolean used) {
+		this.used = used;
 	}
 	
 

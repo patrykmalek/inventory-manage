@@ -8,6 +8,7 @@ import java.util.List;
 
 import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.exception.SystemOperationException;
+import kruszywo.sa.computers.manage.model.Device;
 import kruszywo.sa.computers.manage.model.License;
 import kruszywo.sa.computers.manage.model.Software;
 
@@ -18,9 +19,10 @@ public class LicenseDAO implements DAO<License>{
 	
 	private static final String FIND_BY_ID = "SELECT * FROM LICENSES L LEFT JOIN SOFTWARE S ON (S.ID_SOFTWARE = L.ID_ASSIGNED_SOFTWARE) WHERE L.ID_LICENSE=?;";
 	private static final String FIND_BY_NAME = "SELECT * FROM LICENSES L LEFT JOIN SOFTWARE S ON (S.ID_SOFTWARE = L.ID_ASSIGNED_SOFTWARE) WHERE L.LICENSE_NOTES LIKE ?;";
+	private static final String FIND_ALL_BY_DEVICE = "SELECT * FROM LICENSES L LEFT JOIN SOFTWARE S ON (S.ID_SOFTWARE = L.ID_ASSIGNED_SOFTWARE) WHERE L.ID_DEVICE=?";
     private static final String FIND_ALL = "SELECT * FROM LICENSES L LEFT JOIN SOFTWARE S ON (S.ID_SOFTWARE = L.ID_ASSIGNED_SOFTWARE);";
-    private static final String INSERT = "INSERT INTO LICENSES (LICENSE_KEY, LICENSE_MAIN_KEY, ID_ASSIGNED_SOFTWARE, INVOICE_NUMBER, PURCHASE_DATE, LAST_INSTALLATION_DATE, LICENSE_NOTES, ASSIGNED_EMAIL) VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
-    private static final String UPDATE = "UPDATE LICENSES SET LICENSE_KEY=?, LICENSE_MAIN_KEY=?, ID_ASSIGNED_SOFTWARE=?, INVOICE_NUMBER=?, PURCHASE_DATE=?, LAST_INSTALLATION_DATE=?, LICENSE_NOTES=?, ASSIGNED_EMAIL=? WHERE ID_LICENSE=?;";
+    private static final String INSERT = "INSERT INTO LICENSES (LICENSE_KEY, LICENSE_MAIN_KEY, ID_ASSIGNED_SOFTWARE, INVOICE_NUMBER, PURCHASE_DATE, LAST_INSTALLATION_DATE, LICENSE_NOTES, ASSIGNED_EMAIL, ID_DEVICE) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    private static final String UPDATE = "UPDATE LICENSES SET LICENSE_KEY=?, LICENSE_MAIN_KEY=?, ID_ASSIGNED_SOFTWARE=?, INVOICE_NUMBER=?, PURCHASE_DATE=?, LAST_INSTALLATION_DATE=?, LICENSE_NOTES=?, ASSIGNED_EMAIL=?, ID_DEVICE=? WHERE ID_LICENSE=?;";
     private static final String DELETE = "DELETE FROM LICENSES WHERE ID_LICENSE=?;";
 	
 	public LicenseDAO(Controller controller) {
@@ -32,7 +34,7 @@ public class LicenseDAO implements DAO<License>{
 	public License get(int licenseID) {
 		License license = null;
 		Software software = null;
-				
+		Device device = null;
      	try {
 	     	 PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(FIND_BY_ID);
 	     	 ps.setInt(1, licenseID);
@@ -42,9 +44,10 @@ public class LicenseDAO implements DAO<License>{
    		 
 			 if(resultSet.next()) {
 					
-			 	license = new License();
+				license = new License();
 			 	software = new Software();
-			 	
+			 	device = controller.getManagerDAO().getDeviceDAO().get(resultSet.getInt("id_device"));
+			 
 			 	software.setSoftwareID(resultSet.getInt("id_assigned_software"));
 			 	software.setSoftwareName(resultSet.getString("software_name"));
 			 	software.setSoftwareNotes(resultSet.getString("software_notes"));
@@ -58,6 +61,8 @@ public class LicenseDAO implements DAO<License>{
 			 	license.setLastInstallationDate(resultSet.getString("last_installation_date"));
 			 	license.setAssignedEmail(resultSet.getString("assigned_email"));
 			 	license.setLicenseNotes(resultSet.getString("license_notes"));
+			 	license.setDevice(device);
+			 	license.setUsed((resultSet.getObject("id_device") != null));
 			 	
 			 }
 		  ps.close();
@@ -71,6 +76,7 @@ public class LicenseDAO implements DAO<License>{
 	public License get(String licenseTextToFind) {
 		License license = null;
 		Software software = null;
+		Device device = null;
      	try {
 	     	 PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(FIND_BY_NAME);
 	     	 ps.setString(1, "%" + licenseTextToFind + "%");
@@ -81,7 +87,8 @@ public class LicenseDAO implements DAO<License>{
 					
 				license = new License();
 			 	software = new Software();
-			 	
+			 	device = controller.getManagerDAO().getDeviceDAO().get(resultSet.getInt("id_device"));
+			 
 			 	software.setSoftwareID(resultSet.getInt("id_assigned_software"));
 			 	software.setSoftwareName(resultSet.getString("software_name"));
 			 	software.setSoftwareNotes(resultSet.getString("software_notes"));
@@ -95,7 +102,8 @@ public class LicenseDAO implements DAO<License>{
 			 	license.setLastInstallationDate(resultSet.getString("last_installation_date"));
 			 	license.setAssignedEmail(resultSet.getString("assigned_email"));
 			 	license.setLicenseNotes(resultSet.getString("license_notes"));
-			 	
+			 	license.setDevice(device);
+			 	license.setUsed((resultSet.getObject("id_device") != null));
 			 }
 			 
 		  ps.close();
@@ -116,10 +124,12 @@ public class LicenseDAO implements DAO<License>{
 				ResultSet resultSet = controller.getDatabaseProvider().getResultSet();
 				License license = null;
 				Software software = null;
-			 while (resultSet.next()) {
-					
+				Device device = null;
+			while (resultSet.next()) {
+						
 					license = new License();
 				 	software = new Software();
+				 	device = controller.getManagerDAO().getDeviceDAO().get(resultSet.getInt("id_device"));
 				 
 				 	software.setSoftwareID(resultSet.getInt("id_assigned_software"));
 				 	software.setSoftwareName(resultSet.getString("software_name"));
@@ -134,6 +144,50 @@ public class LicenseDAO implements DAO<License>{
 				 	license.setLastInstallationDate(resultSet.getString("last_installation_date"));
 				 	license.setAssignedEmail(resultSet.getString("assigned_email"));
 				 	license.setLicenseNotes(resultSet.getString("license_notes"));
+				 	license.setDevice(device);
+				 	license.setUsed((resultSet.getObject("id_device") != null));
+				 	
+				 	licenses.add(license);
+				}
+			  ps.close();
+			  resultSet.close();
+			} catch (SQLException e) {
+				new SystemOperationException("Błąd podczas odczytu wszystkich urządzeń z bazy", e);
+			}
+	      return licenses;
+	}
+	
+	public List<License> getAllByDeviceID(int deviceID) {
+		 licenses = new ArrayList<License>();
+	 
+         	try {
+				PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(FIND_ALL_BY_DEVICE);
+				ps.setInt(1, deviceID);
+				controller.getDatabaseProvider().executePreparedStatementWithResult(ps);
+				ResultSet resultSet = controller.getDatabaseProvider().getResultSet();
+				License license = null;
+				Software software = null;
+				Device device = null;
+			 while (resultSet.next()) {
+					
+					license = new License();
+				 	software = new Software();
+				 	device = controller.getManagerDAO().getDeviceDAO().get(resultSet.getInt("id_device"));
+				 
+				 	software.setSoftwareID(resultSet.getInt("id_assigned_software"));
+				 	software.setSoftwareName(resultSet.getString("software_name"));
+				 	software.setSoftwareNotes(resultSet.getString("software_notes"));
+				 	
+				 	license.setSoftware(software);
+				 	license.setLicenseID(resultSet.getInt("id_license"));
+				 	license.setLicenseKey(resultSet.getString("license_key"));
+				 	license.setLicenseMainKey(resultSet.getString("license_main_key"));
+				 	license.setInvoiceNumber(resultSet.getString("invoice_number"));
+				 	license.setPurchaseDate(resultSet.getString("purchase_date"));
+				 	license.setLastInstallationDate(resultSet.getString("last_installation_date"));
+				 	license.setAssignedEmail(resultSet.getString("assigned_email"));
+				 	license.setLicenseNotes(resultSet.getString("license_notes"));
+				 	license.setDevice(device);
 				 	
 				 	licenses.add(license);
 				}
@@ -158,6 +212,7 @@ public class LicenseDAO implements DAO<License>{
 	            ps.setString(6, license.getLastInstallationDate());
 	            ps.setString(7, license.getLicenseNotes());
 	            ps.setString(8, license.getAssignedEmail());
+	            ps.setObject(9, license.getDevice().getDeviceID());
 	            
 				controller.getDatabaseProvider().executePreparedStatement(ps);
 				
@@ -180,7 +235,8 @@ public class LicenseDAO implements DAO<License>{
             ps.setString(6, license.getLastInstallationDate());
             ps.setString(7, license.getLicenseNotes());
             ps.setString(8, license.getAssignedEmail());
-            ps.setInt(9, license.getLicenseID());
+            ps.setObject(9, license.getDevice().getDeviceID());
+            ps.setInt(10, license.getLicenseID());
 
 			controller.getDatabaseProvider().executePreparedStatement(ps);
 			

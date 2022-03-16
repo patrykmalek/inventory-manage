@@ -15,9 +15,9 @@ public class ComputerCPUDAO implements DAO<ComputerCPU>{
 	private List<ComputerCPU> computerCpus;
 	private Controller controller;
 	
-	private static final String FIND_BY_ID = "SELECT * FROM COMPUTER_CPU WHERE ID_COMPUTER_CPU=?;";
-	private static final String FIND_BY_NAME = "SELECT * FROM COMPUTER_CPU WHERE COMPUTER_CPU_NAME LIKE ? LIMIT 1;";
-    private static final String FIND_ALL = "SELECT * FROM COMPUTER_CPU;";
+	private static final String FIND_BY_ID = "SELECT CPU.ID_COMPUTER_CPU, CPU.COMPUTER_CPU_NAME, CPU.COMPUTER_CPU_CORES_NUMBER, CPU.COMPUTER_CPU_CLOCK_SPEED, CC.ID_COMPUTER_COMPONENTS FROM COMPUTER_CPU CPU LEFT JOIN COMPUTER_COMPONENTS CC ON (CC.ID_COMPUTER_CPU = CPU.ID_COMPUTER_CPU) WHERE CPU.ID_COMPUTER_CPU=?;";
+	private static final String FIND_BY_NAME = "SELECT CPU.ID_COMPUTER_CPU, CPU.COMPUTER_CPU_NAME, CPU.COMPUTER_CPU_CORES_NUMBER, CPU.COMPUTER_CPU_CLOCK_SPEED, CC.ID_COMPUTER_COMPONENTS FROM COMPUTER_CPU CPU LEFT JOIN COMPUTER_COMPONENTS CC ON (CC.ID_COMPUTER_CPU = CPU.ID_COMPUTER_CPU) WHERE CPU.COMPUTER_CPU_NAME LIKE ? LIMIT 1;";
+    private static final String FIND_ALL = "SELECT CPU.ID_COMPUTER_CPU, CPU.COMPUTER_CPU_NAME, CPU.COMPUTER_CPU_CORES_NUMBER, CPU.COMPUTER_CPU_CLOCK_SPEED, CC.ID_COMPUTER_COMPONENTS FROM COMPUTER_CPU CPU LEFT JOIN COMPUTER_COMPONENTS CC ON (CC.ID_COMPUTER_CPU = CPU.ID_COMPUTER_CPU);";
     private static final String INSERT = "INSERT INTO COMPUTER_CPU (COMPUTER_CPU_NAME, COMPUTER_CPU_CORES_NUMBER, COMPUTER_CPU_CLOCK_SPEED) VALUES(?, ?, ?);";
     private static final String UPDATE = "UPDATE COMPUTER_CPU SET COMPUTER_CPU_NAME=?, COMPUTER_CPU_CORES_NUMBER=?, COMPUTER_CPU_CLOCK_SPEED=? WHERE ID_COMPUTER_CPU=?;";
     private static final String DELETE = "DELETE FROM COMPUTER_CPU WHERE ID_COMPUTER_CPU=?;";
@@ -45,7 +45,7 @@ public class ComputerCPUDAO implements DAO<ComputerCPU>{
 			 	computerCpu.setComputerCpuName(resultSet.getString("COMPUTER_CPU_NAME"));
 			 	computerCpu.setComputerCpuCoresNumber(resultSet.getInt("COMPUTER_CPU_CORES_NUMBER"));
 			 	computerCpu.setComputerCpuClockSpeed(resultSet.getInt("COMPUTER_CPU_CLOCK_SPEED"));
-			 	
+			 	computerCpu.setUsed((resultSet.getObject("ID_COMPUTER_COMPONENTS") != null));
 	
 			 }
 		  ps.close();
@@ -72,7 +72,7 @@ public class ComputerCPUDAO implements DAO<ComputerCPU>{
 			 	computerCpu.setComputerCpuName(resultSet.getString("COMPUTER_CPU_NAME"));
 			 	computerCpu.setComputerCpuCoresNumber(resultSet.getInt("COMPUTER_CPU_CORES_NUMBER"));
 			 	computerCpu.setComputerCpuClockSpeed(resultSet.getInt("COMPUTER_CPU_CLOCK_SPEED"));
-			 	
+			 	computerCpu.setUsed((resultSet.getObject("ID_COMPUTER_COMPONENTS") != null));
 			 }
 		  ps.close();
 		  resultSet.close();
@@ -99,7 +99,8 @@ public class ComputerCPUDAO implements DAO<ComputerCPU>{
 				 	computerCpu.setComputerCpuName(resultSet.getString("COMPUTER_CPU_NAME"));
 				 	computerCpu.setComputerCpuCoresNumber(resultSet.getInt("COMPUTER_CPU_CORES_NUMBER"));
 				 	computerCpu.setComputerCpuClockSpeed(resultSet.getInt("COMPUTER_CPU_CLOCK_SPEED"));
-
+				 	computerCpu.setUsed((resultSet.getObject("ID_COMPUTER_COMPONENTS") != null));
+				 	
 				 	computerCpus.add(computerCpu);
 				}
 			  ps.close();

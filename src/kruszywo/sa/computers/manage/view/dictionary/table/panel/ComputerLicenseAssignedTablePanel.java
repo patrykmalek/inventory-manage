@@ -9,22 +9,44 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
 import kruszywo.sa.computers.manage.controller.Controller;
+import kruszywo.sa.computers.manage.model.Device;
 import kruszywo.sa.computers.manage.model.License;
 
 
-public class LicenseDictionaryTablePanel extends DictionaryTablePanel<License> {
+public class ComputerLicenseAssignedTablePanel extends DictionaryTablePanel<License> {
 
 	private static final long serialVersionUID = 1698570024703870348L;
 	private Controller controller;
-
-	public LicenseDictionaryTablePanel(Controller controller) {
+	
+	private Device device;
+	private JButton assignLicenseButton;
+	private JButton deleteAssignLicenseButton;
+	
+	public ComputerLicenseAssignedTablePanel(Controller controller) {
 		super();
 		this.controller = controller;
-		this.controller.setLicenseDictionaryTable(this);
+		this.controller.setComputerLicenseAssignedTable(this);
 		this.createTable();
+		this.createCustomButton();
 		this.setButtonEventListeners();
-		setPanelTitle("Licencje");
+		setPanelTitle("Powiazane licencje");
+	}
+	
+	private void createCustomButton() {
+		
+		getButtonPanel().removeAllButtons();
+		assignLicenseButton = new JButton();
+		assignLicenseButton.setText("Powiąż");
+		
+		deleteAssignLicenseButton = new JButton();
+		deleteAssignLicenseButton.setText("Odłącz");
+		
+		getButtonPanel().addButton(assignLicenseButton, new ImageIcon(getClass().getResource("/handshake-solid.png")));
+		getButtonPanel().addButton(deleteAssignLicenseButton, new ImageIcon(getClass().getResource("/handshake-slash-solid.png")));
 	}
 	
 	@Override
@@ -66,27 +88,26 @@ public class LicenseDictionaryTablePanel extends DictionaryTablePanel<License> {
 
 	@Override
 	public void setButtonEventListeners() {
-		getInsertButton().removeActionListener(getInsertButton().getActionListeners()[0]);
-		getInsertButton().addActionListener(new ActionListener() {
+		
+		assignLicenseButton = getButtonPanel().getButtons().get(0);
+		assignLicenseButton.removeActionListener(assignLicenseButton.getActionListeners()[0]);
+		assignLicenseButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				getController().getManagerDAO().getLicenseServiceDAO().openLicenseWindowToAddNew();
+			public void actionPerformed(ActionEvent event) {
+				getController().getManagerDAO().getLicenseServiceDAO().openAssignedLicenseToDevice(getDevice());
+				updateTable(getController().getManagerDAO().getLicenseDAO().getAllByDeviceID(getDevice().getDeviceID()));
 			}
 		});
-		getUpdateButton().removeActionListener(getUpdateButton().getActionListeners()[0]);
-		getUpdateButton().addActionListener(new ActionListener() {
+		deleteAssignLicenseButton = getButtonPanel().getButtons().get(1);
+		deleteAssignLicenseButton.removeActionListener(deleteAssignLicenseButton.getActionListeners()[0]);
+		deleteAssignLicenseButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				getController().getManagerDAO().getLicenseServiceDAO().openLicenseWindowToUpdate(getIdFromTable());
+			public void actionPerformed(ActionEvent event) {
+				getController().getManagerDAO().getLicenseServiceDAO().deleteAssignedLicense(getIdFromTable(), getDevice().getDeviceID());
+				updateTable(getController().getManagerDAO().getLicenseDAO().getAllByDeviceID(getDevice().getDeviceID()));
 			}
 		});
-		getDeleteButton().removeActionListener(getDeleteButton().getActionListeners()[0]);
-		getDeleteButton().addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				getController().getManagerDAO().getLicenseServiceDAO().deleteLicenseWithPrompt(getIdFromTable());
-			}
-		});
+		
 		getTable().addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
@@ -111,7 +132,7 @@ public class LicenseDictionaryTablePanel extends DictionaryTablePanel<License> {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_F5) {
-					updateTable(getController().getManagerDAO().getLicenseDAO().getAll());
+					
 				}
 			}
 		});
@@ -123,6 +144,14 @@ public class LicenseDictionaryTablePanel extends DictionaryTablePanel<License> {
 
 	public void setController(Controller controller) {
 		this.controller = controller;
+	}
+
+	public Device getDevice() {
+		return device;
+	}
+
+	public void setDevice(Device device) {
+		this.device = device;
 	}
 
 

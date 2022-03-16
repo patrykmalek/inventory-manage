@@ -7,6 +7,7 @@ public class ComputerMassStorage {
 	private String massStorageSerialNumber;
 	private String massStorageType;
 	private int massStorageCapacityMB;
+	private boolean used;
 	
 	public ComputerMassStorage() {}
 
@@ -57,7 +58,21 @@ public class ComputerMassStorage {
 
 	@Override
 	public String toString() {
-		return getMassStorageName() + ", " + getMassStorageType() + " (" +getMassStorageCapacityMB()+ ")";
+		String toString = "";
+		
+		if(getMassStorageName() != null && getMassStorageType() != null) {
+			toString = getMassStorageName() + ", " + getMassStorageType() + " (" + getMassStorageCapacityMB() + ")";
+		}
+		
+		return toString;
+	}
+
+	public boolean isUsed() {
+		return used;
+	}
+
+	public void setUsed(boolean used) {
+		this.used = used;
 	}
 
 	

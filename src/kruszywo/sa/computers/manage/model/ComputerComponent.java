@@ -10,6 +10,7 @@ public class ComputerComponent {
 	private ComputerMassStorage computerMassStorageFirst;
 	private ComputerMassStorage computerMassStorageSecond;
 	private ComputerMassStorage computerMassStorageThird;
+	private String computerSystemName;
 	
 	public ComputerComponent() {}
 	
@@ -58,6 +59,14 @@ public class ComputerComponent {
 
 	public void setComputerComponentID(int computerComponentID) {
 		this.computerComponentID = computerComponentID;
+	}
+
+	public String getComputerSystemName() {
+		return computerSystemName;
+	}
+
+	public void setComputerSystemName(String computerSystemName) {
+		this.computerSystemName = computerSystemName;
 	}
 	
 }

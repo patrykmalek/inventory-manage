@@ -3,6 +3,8 @@ package kruszywo.sa.computers.manage.view.dictionary.table.panel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -31,13 +33,15 @@ public class ComputerRAMDictionaryTablePanel extends DictionaryTablePanel<Comput
 				java.lang.Integer.class,
 				java.lang.Integer.class,
 				java.lang.String.class,
-				java.lang.Integer.class
+				java.lang.Integer.class,
+				java.lang.Boolean.class
 		});
 		this.setTableColumnNames(new String[] { 
 				"ID pamięci",
 				"Lp.",
 				"Typ pamięci",
-				"Pojemność pamięci MB"
+				"Pojemność pamięci MB",
+				"Użyty"
 		});
 	}
 
@@ -46,7 +50,7 @@ public class ComputerRAMDictionaryTablePanel extends DictionaryTablePanel<Comput
 		clearTable();
 		if(isEmptyData(computerRAMs)) return;
 		for( ComputerRAM computerRam : computerRAMs){
-			addRowToTable(new Object[] {computerRam.getMemoryRamID(), getTable().getRowCount() + 1, computerRam.getMemoryRamType(), computerRam.getMemoryRamCapacityMB()});
+			addRowToTable(new Object[] {computerRam.getMemoryRamID(), getTable().getRowCount() + 1, computerRam.getMemoryRamType(), computerRam.getMemoryRamCapacityMB(), computerRam.isUsed()});
 		}
 		resizeTable();
 	}
@@ -78,6 +82,27 @@ public class ComputerRAMDictionaryTablePanel extends DictionaryTablePanel<Comput
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					if(getParentWindow() == null) getController().getManagerDAO().getComputerRAMServiceDAO().openComputerRAMWindowToOnlyShowDetails(getIdFromTable());
+				}
+			}
+		});
+		getTable().addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_F5) {
+					updateTable(getController().getManagerDAO().getComputerRAMDAO().getAll());
 				}
 			}
 		});

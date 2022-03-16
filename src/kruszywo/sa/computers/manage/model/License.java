@@ -15,6 +15,8 @@ public class License {
 	private File licenseFile;
 	
 	private Software software;
+	private Device device;
+	private boolean used;
 	
 	public License() {}
 
@@ -105,6 +107,22 @@ public class License {
 	
 	public byte[] getLicenseFileAsByte() {
 		return (licenseFile != null) ? CommonFunctions.readFileAsByte(licenseFile) : null;
+	}
+
+	public Device getDevice() {
+		return (device != null) ? device : new Device();
+	}
+
+	public void setDevice(Device device) {
+		this.device = device;
+	}
+
+	public boolean isUsed() {
+		return used;
+	}
+
+	public void setUsed(boolean used) {
+		this.used = used;
 	}
 	
 }

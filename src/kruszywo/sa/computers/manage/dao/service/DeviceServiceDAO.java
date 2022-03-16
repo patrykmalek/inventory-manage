@@ -14,6 +14,7 @@ import kruszywo.sa.computers.manage.model.Employee;
 import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.view.details.window.ComputerComponentDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.DeviceDetailsFrame;
+import kruszywo.sa.computers.manage.view.dictionary.table.panel.ComputerLicenseAssignedTablePanel;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.DepartmentDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.DeviceTypeDictionaryTablePanel;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.DictionaryFrame;
@@ -68,6 +69,8 @@ public class DeviceServiceDAO {
 		deviceDetailsWindow.setOperationType(OperationType.INSERT);
 		deviceDetailsWindow.createWindow();
 		
+		ComputerLicenseAssignedTablePanel computerLicenseAssignedTablePanel = new ComputerLicenseAssignedTablePanel(getController());
+		deviceDetailsWindow.setComputerLicenseAssignedTablePanel(computerLicenseAssignedTablePanel);
 		ComputerComponentDetailsFrame computerComponentDetailsFrame = new ComputerComponentDetailsFrame(getController());
 		computerComponentDetailsFrame.setOperationType(OperationType.INSERT);
 		computerComponentDetailsFrame.createPanels();
@@ -85,6 +88,11 @@ public class DeviceServiceDAO {
 		DeviceDetailsFrame deviceDetailsWindow = new DeviceDetailsFrame(controller);
 		deviceDetailsWindow.setOperationType(OperationType.DISPLAY);
 		deviceDetailsWindow.createWindow();
+		
+		ComputerLicenseAssignedTablePanel computerLicenseAssignedTablePanel = new ComputerLicenseAssignedTablePanel(getController());
+		computerLicenseAssignedTablePanel.setDevice(device);
+		computerLicenseAssignedTablePanel.updateTable(getManagerDAO().getLicenseDAO().getAllByDeviceID(deviceID));
+		deviceDetailsWindow.setComputerLicenseAssignedTablePanel(computerLicenseAssignedTablePanel);
 		
 		ComputerComponent computerComponent = getManagerDAO().getComputerComponentDAO().getByComputerID(deviceID);
 		ComputerComponentDetailsFrame computerComponentDetailsFrame = new ComputerComponentDetailsFrame(getController());
@@ -106,6 +114,11 @@ public class DeviceServiceDAO {
 		DeviceDetailsFrame deviceDetailsWindow = new DeviceDetailsFrame(controller);
 		deviceDetailsWindow.setOperationType(OperationType.UPDATE);
 		deviceDetailsWindow.createWindow();
+		
+		ComputerLicenseAssignedTablePanel computerLicenseAssignedTablePanel = new ComputerLicenseAssignedTablePanel(getController());
+		computerLicenseAssignedTablePanel.setDevice(device);
+		computerLicenseAssignedTablePanel.updateTable(getManagerDAO().getLicenseDAO().getAllByDeviceID(deviceID));
+		deviceDetailsWindow.setComputerLicenseAssignedTablePanel(computerLicenseAssignedTablePanel);
 		
 		ComputerComponent computerComponent = getManagerDAO().getComputerComponentDAO().getByComputerID(deviceID);
 		ComputerComponentDetailsFrame computerComponentDetailsFrame = new ComputerComponentDetailsFrame(getController());

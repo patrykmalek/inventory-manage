@@ -122,7 +122,17 @@ public class ButtonPanel extends JPanel{
 	}
 	
 	public void removeButton(int indexButton) {
+		this.remove(indexButton);
 		this.buttons.remove(indexButton);
+	}
+	
+	public void removeAllButtons() {
+		
+		int startIndex = buttons.size() - 1;
+		System.out.println(startIndex);
+		for(int index = startIndex; index >= 0; index--) {
+			removeButton(index);
+		}
 	}
 
 	public List<JButton> getButtons() {

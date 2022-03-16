@@ -1,6 +1,7 @@
 package kruszywo.sa.computers.manage.dao.service;
 
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 
 import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.dao.ManagerDAO;
@@ -129,7 +130,8 @@ public class ComputerComponentServiceDAO {
 	
 	public void openCPUDictionaryWindowAndAddItem() {	
 		ComputerCPUDictionaryTablePanel computerCPUDictionaryTablePanel = new ComputerCPUDictionaryTablePanel(new Controller(getController().getDatabaseProvider()));
-		 computerCPUDictionaryTablePanel.updateTable(getManagerDAO().getComputerCPUDAO().getAll());
+		computerCPUDictionaryTablePanel.updateTable(getManagerDAO().getComputerCPUDAO().getAll());
+		computerCPUDictionaryTablePanel.getTable().getTableSorter().setRowFilter(RowFilter.regexFilter("(?i)" + false, 4));
 		DictionaryFrame<ComputerCPU> dictionaryFrame = new DictionaryFrame<>(getController(), computerCPUDictionaryTablePanel);
 		dictionaryFrame.showWindow();
 		
@@ -143,6 +145,7 @@ public class ComputerComponentServiceDAO {
 	public void openRAMDictionaryWindowAndAddItem() {	
 		ComputerRAMDictionaryTablePanel computerRAMDictionaryTablePanel = new ComputerRAMDictionaryTablePanel(new Controller(getController().getDatabaseProvider()));
 		computerRAMDictionaryTablePanel.updateTable(getManagerDAO().getComputerRAMDAO().getAll());
+		computerRAMDictionaryTablePanel.getTable().getTableSorter().setRowFilter(RowFilter.regexFilter("(?i)" + false, 4));
 		DictionaryFrame<ComputerRAM> dictionaryFrame = new DictionaryFrame<>(getController(), computerRAMDictionaryTablePanel);
 		dictionaryFrame.showWindow();
 		
@@ -153,9 +156,10 @@ public class ComputerComponentServiceDAO {
 		computerRAMDictionaryTablePanel.resetChoosenID();
 	}
 	
-	public void openMassStorageDictionaryWindowAndAddItem(PMCustomTextFieldWithDictionary<ComputerMassStorage> field) {	
+	public void openMassStorageDictionaryWindowAndAddItem(PMCustomTextFieldWithDictionary<ComputerMassStorage> field) {
 		ComputerMassStorageDictionaryTablePanel computerMassStorageDictionaryTablePanel = new ComputerMassStorageDictionaryTablePanel(new Controller(getController().getDatabaseProvider()));
 		computerMassStorageDictionaryTablePanel.updateTable(getManagerDAO().getComputerMassStorageDAO().getAll());
+		computerMassStorageDictionaryTablePanel.getTable().getTableSorter().setRowFilter(RowFilter.regexFilter("(?i)" + false, 5));
 		DictionaryFrame<ComputerMassStorage> dictionaryFrame = new DictionaryFrame<>(getController(), computerMassStorageDictionaryTablePanel);
 		dictionaryFrame.showWindow();
 		

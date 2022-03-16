@@ -3,6 +3,7 @@ package kruszywo.sa.computers.manage.view.details.window;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.WindowConstants;
 
 import kruszywo.sa.computers.manage.controller.Controller;
@@ -11,6 +12,7 @@ import kruszywo.sa.computers.manage.model.Device;
 import kruszywo.sa.computers.manage.model.DeviceType;
 import kruszywo.sa.computers.manage.model.Employee;
 import kruszywo.sa.computers.manage.model.OperationType;
+import kruszywo.sa.computers.manage.view.dictionary.table.panel.ComputerLicenseAssignedTablePanel;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
 import kruszywo.sa.computers.manage.view.util.PMCustomTextFieldWithDictionary;
 import kruszywo.sa.computers.manage.view.util.PMJDateChooser;
@@ -18,6 +20,7 @@ import kruszywo.sa.computers.manage.view.util.PMJScrollPane;
 import kruszywo.sa.computers.manage.view.util.PMJTextField;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
 
@@ -38,6 +41,8 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import javax.swing.JTextPane;
+import javax.swing.JCheckBox;
+import java.awt.Color;
 
 public class DeviceDetailsFrame extends JDialog {
 	
@@ -52,7 +57,6 @@ public class DeviceDetailsFrame extends JDialog {
 	private JLabel deviceInvoiceNumberLabel;
 	private JLabel devicePurchaseDateLabel;
 	private JLabel deviceLastInstallationDateLabel;
-	private JLabel deviceComputerNameLabel;
 
 	private int deviceID;
 	private PMJTextField deviceNameField;
@@ -65,7 +69,6 @@ public class DeviceDetailsFrame extends JDialog {
 	private PMJDateChooser devicePurchaseDateField;
 	private PMJDateChooser deviceLastInstallationDateField;
 	private JTextPane deviceNotesField;
-	private PMJTextField deviceComputerNameField;
 	
 	private JPanel headerPanel;
 	private JPanel detailsPanel;
@@ -82,10 +85,15 @@ public class DeviceDetailsFrame extends JDialog {
 	
 	private Controller controller;
 	
+	private ComputerLicenseAssignedTablePanel computerLicenseAssignedTablePanel;
+	
 	private ComputerComponentDetailsFrame computerComponentDetailsFrame;
 	private JPanel computerComponentDetailsPanel;
 	
 	private int[] idsToShowComputerNameField = {1013, 1001};
+	private JCheckBox deviceUsedField;
+	
+	private JTabbedPane tabPanel;
 	
 	public DeviceDetailsFrame(Controller controller) {
 		super(controller.getMainFrame(), "Panel", true);
@@ -108,13 +116,14 @@ public class DeviceDetailsFrame extends JDialog {
 		setSize(1200, 650);
 		headerPanel = createHeaderPanel();
 		detailsPanel = createDetailsPanel();
+		tabPanel = createTabbedPanel();
 		footerPanel = createFooterPanel();		
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new PMJScrollPane(this.detailsPanel), null);
 		splitPane.setDividerLocation(700);
 		splitPane.setBorder(null);
-
+		tabPanel.add("Dane podstawowe", splitPane);
 		getContentPane().add(this.headerPanel, BorderLayout.NORTH);
-		getContentPane().add(this.splitPane, BorderLayout.CENTER);
+		getContentPane().add(this.tabPanel, BorderLayout.CENTER);
 		getContentPane().add(this.footerPanel, BorderLayout.SOUTH);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -146,10 +155,24 @@ public class DeviceDetailsFrame extends JDialog {
 		return headerPanel;
 	}
 	
+	private JTabbedPane createTabbedPanel() {
+		JTabbedPane tabPanel = new JTabbedPane(JTabbedPane.TOP);
+		CardLayout panelLayout = new CardLayout();
+		tabPanel.setLayout(panelLayout);
+		tabPanel.setBorder(BorderFactory.createEmptyBorder());
+		
+		tabPanel.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		tabPanel.setFocusable(false);
+		
+
+		
+		return tabPanel;
+	}
+	
 	private JPanel createDetailsPanel() {
 		JPanel detailsPanel = new JPanel();
 		detailsPanel.setBackground(SystemColor.text);
-		detailsPanel.setLayout(new MigLayout("", "[10px][150px][grow][grow][grow][grow][grow][10px]", "[25px][25px][25px][25px][25px][25px][25px][25px][25px][25px][25px][25px][grow][10px]"));
+		detailsPanel.setLayout(new MigLayout("", "[10px][150px][grow][grow][grow][grow][grow][10px]", "[25px][25px][25px][25px][25px][25px][25px][25px][25px][25px][25px][25px][25px][grow][10px]"));
 		
 		deviceNameLabel = new JLabel("Nazwa:");
 		deviceNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -221,6 +244,12 @@ public class DeviceDetailsFrame extends JDialog {
 		devicePurchaseDateField.setDate(getController().getCalendarWithTodayDate().getTime());
 		detailsPanel.add(devicePurchaseDateField, "cell 2 8,grow");
 		
+		deviceUsedField = new JCheckBox("Użyty");
+		deviceUsedField.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		deviceUsedField.setBackground(Color.WHITE);
+		deviceUsedField.setFocusable(false);
+		detailsPanel.add(deviceUsedField, "cell 3 8,alignx center");
+		
 		deviceLastInstallationDateLabel = new JLabel("Data ostatniej instalacji:");
 		deviceLastInstallationDateLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceLastInstallationDateLabel, "cell 1 9,alignx left");
@@ -231,13 +260,6 @@ public class DeviceDetailsFrame extends JDialog {
 		deviceLastInstallationDateField.setDate(getController().getCalendarWithTodayDate().getTime());
 		detailsPanel.add(deviceLastInstallationDateField, "cell 2 9,grow");
 		
-		deviceComputerNameLabel = new JLabel("Nazwa komputera:");
-		deviceComputerNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		
-		deviceComputerNameField = new PMJTextField(true, 13);
-		deviceComputerNameField.setEditable(isEditable());
-		deviceComputerNameField.setColumns(10);
-		
 		deviceNotesField = new JTextPane();
 		deviceNotesField.setEnabled(isEditable());
 		deviceNotesField.setBorder(BorderFactory.createTitledBorder("Dodatkowe informacje"));
@@ -245,7 +267,7 @@ public class DeviceDetailsFrame extends JDialog {
 		
 		JScrollPane deviceNotesContainer = new JScrollPane(deviceNotesField);
 		deviceNotesContainer.setBorder(null);
-		detailsPanel.add(deviceNotesContainer, "cell 1 12 6 1,grow");
+		detailsPanel.add(deviceNotesContainer, "cell 1 13 6 1,grow");
 		
 		return detailsPanel;
 	}
@@ -391,7 +413,6 @@ public class DeviceDetailsFrame extends JDialog {
 		
 		if(isComputer()) {
 			showComputerComponents();
-			deviceComputerNameField.setText(device.getComputerName());
 		}
 		additionalTitleHeaderLabel.setText(device.getDeviceName());
 		
@@ -407,6 +428,8 @@ public class DeviceDetailsFrame extends JDialog {
 		devicePurchaseDateField.setCalendar(getController().getCalendarWithCustomDate(device.getPurchaseDate(), getController().getDefaultDateFormat(), false));
 		deviceLastInstallationDateField.setCalendar(getController().getCalendarWithCustomDate(device.getLastInstallationDate(), getController().getDefaultDateFormat(), false));
 		deviceNotesField.setText(device.getNotes());
+		deviceUsedField.setSelected(device.isUsed());
+		
 		return true;
 	}
 	
@@ -425,7 +448,7 @@ public class DeviceDetailsFrame extends JDialog {
 		device.setPurchaseDate(devicePurchaseDateField.getCustomDate());
 		device.setLastInstallationDate(deviceLastInstallationDateField.getCustomDate());
 		device.setNotes(deviceNotesField.getText());
-		device.setComputerName(deviceComputerNameField.getText());
+		device.setUsed(deviceUsedField.isSelected());
 		
 		if(isComputer()) {
 			getComputerComponentDetailsFrame().saveComputerComponentData(device);
@@ -446,17 +469,15 @@ public class DeviceDetailsFrame extends JDialog {
 	}
 	
 	public void showComputerComponents() {
-		detailsPanel.add(deviceComputerNameLabel, "cell 1 10,alignx left");
-		detailsPanel.add(deviceComputerNameField, "cell 2 10 4 1,grow");
 		splitPane.add(getComputerComponentDetailsPanel());
 		splitPane.setDividerLocation(700);
+		tabPanel.add("Licencje", getComputerLicenseAssignedTablePanel());
 		repaint();
 	}
 	
 	public void removeComputerComponents() {
-		detailsPanel.remove(deviceComputerNameLabel);
-		detailsPanel.remove(deviceComputerNameField);
 		splitPane.remove(2);
+		tabPanel.remove(getComputerLicenseAssignedTablePanel());
 		repaint();
 	}
 
@@ -535,6 +556,14 @@ public class DeviceDetailsFrame extends JDialog {
 
 	public void setComputerComponentDetailsPanel(JPanel computerComponentDetailsPanel) {
 		this.computerComponentDetailsPanel = computerComponentDetailsPanel;
+	}
+
+	public ComputerLicenseAssignedTablePanel getComputerLicenseAssignedTablePanel() {
+		return computerLicenseAssignedTablePanel;
+	}
+
+	public void setComputerLicenseAssignedTablePanel(ComputerLicenseAssignedTablePanel computerLicenseAssignedTablePanel) {
+		this.computerLicenseAssignedTablePanel = computerLicenseAssignedTablePanel;
 	}
 	
 }

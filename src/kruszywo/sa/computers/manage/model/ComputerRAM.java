@@ -5,6 +5,7 @@ public class ComputerRAM {
 	private int memoryRamID;
 	private String memoryRamType;
 	private int memoryRamCapacityMB;
+	private boolean used;
 	
 	public ComputerRAM() {}
 	
@@ -47,7 +48,23 @@ public class ComputerRAM {
 
 	@Override
 	public String toString() {
-		return getMemoryRamType() + " ("+ getMemoryRamCapacityMB() + " MB)";
+		String toString = "";
+		
+		if(getMemoryRamType() != null) {
+			toString = getMemoryRamType() + " ("+ getMemoryRamCapacityMB() + " MB)";
+		}
+		
+		return toString;
+	}
+
+
+	public boolean isUsed() {
+		return used;
+	}
+
+
+	public void setUsed(boolean used) {
+		this.used = used;
 	}
 	
 	

@@ -7,12 +7,16 @@ import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.dao.ManagerDAO;
 import kruszywo.sa.computers.manage.exception.SystemOperationException;
 import kruszywo.sa.computers.manage.model.CommonFunctions;
+import kruszywo.sa.computers.manage.model.Device;
 import kruszywo.sa.computers.manage.model.Software;
 import kruszywo.sa.computers.manage.model.License;
 import kruszywo.sa.computers.manage.model.OperationType;
+import kruszywo.sa.computers.manage.view.details.window.ComputerLicenseAssignedDetailsFrame;
 import kruszywo.sa.computers.manage.view.details.window.LicenseDetailsFrame;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.SoftwareDictionaryTablePanel;
+import kruszywo.sa.computers.manage.view.dictionary.table.panel.DeviceTablePanel;
 import kruszywo.sa.computers.manage.view.dictionary.table.panel.DictionaryFrame;
+import kruszywo.sa.computers.manage.view.dictionary.table.panel.LicenseDictionaryTablePanel;
 
 public class LicenseServiceDAO {
 
@@ -97,7 +101,46 @@ public class LicenseServiceDAO {
 		getController().getLicenseDetailsFrame().getLicenseSoftwareField().addItem(software);
 		softwareDictionaryTablePanel.resetChoosenID();
 	}
+	
+	public void openDeviceDictionaryWindowAndAddItem() {	
+		DeviceTablePanel deviceTablePanel = new DeviceTablePanel(new Controller(getController().getDatabaseProvider()));
+		deviceTablePanel.updateTable(getManagerDAO().getDeviceDAO().getOnlyComputersAll());
+		DictionaryFrame<Device> dictionaryFrame = new DictionaryFrame<>(getController(), deviceTablePanel);
+		dictionaryFrame.setSize(1200, 600);
+		dictionaryFrame.setLocationRelativeTo(null);
+		dictionaryFrame.showWindow();
+		
+		int choosenID = deviceTablePanel.getChoosenID();
+		if(choosenID < 0) return;
+		Device device = getManagerDAO().getDeviceDAO().get(choosenID);
+		getController().getComputerLicenseAssignedDetailsFrame().getDeviceField().addItem(device);
+		deviceTablePanel.resetChoosenID();
+	}
+	
 
+	public void openLicenseDictionaryWindowAndAddItem() {
+		LicenseDictionaryTablePanel licenseDictionaryTablePanel = new LicenseDictionaryTablePanel(new Controller(getController().getDatabaseProvider()));
+		licenseDictionaryTablePanel.updateTable(getManagerDAO().getLicenseDAO().getAll());
+		DictionaryFrame<License> dictionaryFrame = new DictionaryFrame<>(getController(), licenseDictionaryTablePanel);
+		dictionaryFrame.setSize(1200, 600);
+		dictionaryFrame.setLocationRelativeTo(null);
+		dictionaryFrame.showWindow();
+		
+		int choosenID = licenseDictionaryTablePanel.getChoosenID();
+		if(choosenID < 0) return;
+		License license = getManagerDAO().getLicenseDAO().get(choosenID);
+		getController().getComputerLicenseAssignedDetailsFrame().getLicenseField().addItem(license);
+		licenseDictionaryTablePanel.resetChoosenID();
+	}
+	
+
+	public void openAssignedLicenseToDevice(Device device) {
+		ComputerLicenseAssignedDetailsFrame computerLicenseAssignedDetailsFrame = new ComputerLicenseAssignedDetailsFrame(getController());
+		computerLicenseAssignedDetailsFrame.setOperationType(OperationType.UPDATE);
+		computerLicenseAssignedDetailsFrame.createWindow();
+		computerLicenseAssignedDetailsFrame.addComputerComponentDataToView(device);
+		computerLicenseAssignedDetailsFrame.showWindow();
+	}
 	
 	public void findSoftwareByTextAndAddItemToLicenseDetailsPanel() {
 		String textToFind = getController().getLicenseDetailsFrame().getLicenseSoftwareField().getCustomTextField().getText();
@@ -121,6 +164,22 @@ public class LicenseServiceDAO {
 		getController().getLicenseDictionaryTable().updateTable(getManagerDAO().getLicenseDAO().getAll());
 	}
 
+	public void assignedDeviceToLicense(License license) {
+		getManagerDAO().getLicenseDAO().update(license);
+	}
+
+	public void deleteAssignedLicense(int licenseID, int deviceID) {
+		if(!CommonFunctions.validateID(licenseID)) return;
+		License license = getManagerDAO().getLicenseDAO().get(licenseID);
+		
+		if(license.getDevice().getDeviceID() == deviceID) {
+			license.setDevice(null);
+			getManagerDAO().getLicenseDAO().update(license);
+		} else {
+			new SystemOperationException("Błąd podczas odłączania licencji od urządzenia");
+		}
+	}
+
 	public ManagerDAO getManagerDAO() {
 		return managerDAO;
 	}
@@ -136,5 +195,8 @@ public class LicenseServiceDAO {
 	public void setController(Controller controller) {
 		this.controller = controller;
 	}
+
+
+
 	
 }

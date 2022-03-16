@@ -7,6 +7,8 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
@@ -149,6 +151,30 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 			}
 		});
 		
+		this.table.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.isControlDown()) { 
+                    if (e.getKeyCode()==KeyEvent.VK_L) {
+                            int rowCount = table.getRowCount();
+                            JOptionPane.showMessageDialog(new JPanel(), "Ilość wierszy: " + rowCount, "Wiersze", JOptionPane.INFORMATION_MESSAGE);
+                    }
+	            }
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				
+			}
+		});
+		
 		this.table.addKeyListener(new ClipboardKeyAdapter(this.table));
 	}
 	
@@ -204,7 +230,7 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 		}
 		
 		if (data.isEmpty()) {
-			JOptionPane.showMessageDialog(new JFrame(), "Brak danych do załadowania");
+//			JOptionPane.showMessageDialog(new JFrame(), "Brak danych do załadowania");
 			return true;
 		}
 		return false;

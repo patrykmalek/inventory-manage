@@ -2,6 +2,8 @@ package kruszywo.sa.computers.manage.view.dictionary.table.panel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -57,6 +59,28 @@ public class DeviceTablePanel extends DictionaryTablePanel<Device> {
 					}
 			}
 		});
+		
+		getTable().addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_F5) {
+					updateTable(getController().getManagerDAO().getDeviceDAO().getAll());
+				}
+			}
+		});
 	}
 	
 	@Override
@@ -70,9 +94,13 @@ public class DeviceTablePanel extends DictionaryTablePanel<Device> {
 				java.lang.String.class,
 				java.lang.String.class,
 				java.lang.String.class,
+				java.lang.String.class,
+				java.lang.String.class,
+				java.lang.String.class,
 				java.util.Date.class,
 				java.util.Date.class,
-				java.util.Date.class
+				java.util.Date.class,
+				java.lang.Boolean.class
 		});
 		this.setTableColumnNames(new String[] { 
 				"ID urządzenia",
@@ -83,9 +111,13 @@ public class DeviceTablePanel extends DictionaryTablePanel<Device> {
 				"Miejsce użytk.",
 				"Pracownik",
 				"Powiązana faktura",
+				"Procesor",
+				"Pamięć RAM",
+				"Pamięć Masowa",
 				"Data zakupu",
 				"Ostatnia instalacja",
-				"Ostatnia modyfikacja"
+				"Ostatnia modyfikacja",
+				"Użyty"
 		});
 	}
 	
@@ -98,10 +130,12 @@ public class DeviceTablePanel extends DictionaryTablePanel<Device> {
 			addRowToTable(new Object[] {device.getDeviceID(), device.getDeviceUniqueNumber(), device.getDeviceName(), device.getDeviceInventoryNumber(), 
 						device.getDeviceType().getDeviceTypeName(), device.getAssignedDepartment().toString(), 
 						device.getAssignedEmployee().toString(), device.getInvoiceNumber(),
-						device.getPurchaseDate(), device.getLastInstallationDate(), device.getLastModificationDate()});
+						device.getComputerComponent().getComputerCPU().toString(), device.getComputerComponent().getComputerRAM().toString(), 
+						device.getComputerComponent().getComputerMassStorageFirst().toString(),
+						device.getPurchaseDate(), device.getLastInstallationDate(), device.getLastModificationDate(), device.isUsed()});
 		}
 		List<RowSorter.SortKey> sortKeys = new ArrayList<>();
-		int columnIndexToSort = 10;
+		int columnIndexToSort = 13;
 		sortKeys.add(new RowSorter.SortKey(columnIndexToSort, SortOrder.DESCENDING));
 		getTable().getRowSorter().setSortKeys(sortKeys);
 		

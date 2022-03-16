@@ -3,6 +3,8 @@ package kruszywo.sa.computers.manage.view.dictionary.table.panel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -76,6 +78,27 @@ public class EmployeeDictionaryTablePanel extends DictionaryTablePanel<Employee>
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					if(getParentWindow() == null) getController().getManagerDAO().getEmployeeServiceDAO().openEmployeeWindowToOnlyShowDetails(getIdFromTable());
+				}
+			}
+		});
+		getTable().addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_F5) {
+					updateTable(getController().getManagerDAO().getEmployeeDAO().getAll());
 				}
 			}
 		});

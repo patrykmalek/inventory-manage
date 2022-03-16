@@ -22,8 +22,8 @@ public class ComputerComponentDAO implements DAO<ComputerComponent>{
 	private static final String FIND_BY_ID = "SELECT * FROM COMPUTER_COMPONENTS WHERE ID_COMPUTER_COMPONENTS=?;";
 	private static final String FIND_BY_COMPUTER_ID = "SELECT * FROM COMPUTER_COMPONENTS WHERE ID_DEVICE=?;";
     private static final String FIND_ALL = "SELECT * FROM COMPUTER_COMPONENTS;";
-    private static final String INSERT = "INSERT INTO COMPUTER_COMPONENTS (ID_DEVICE, ID_COMPUTER_CPU, ID_MEMORY_RAM, ID_MASS_STORAGE_FIRST, ID_MASS_STORAGE_SECOND, ID_MASS_STORAGE_SECOND) VALUES(?, ?, ?, ?, ?, ?);";
-    private static final String UPDATE = "UPDATE COMPUTER_COMPONENTS SET ID_DEVICE=?, ID_COMPUTER_CPU=?, ID_MEMORY_RAM=?, ID_MASS_STORAGE_FIRST=?, ID_MASS_STORAGE_SECOND=?, ID_MASS_STORAGE_THIRD=? WHERE ID_COMPUTER_COMPONENTS=?;";
+    private static final String INSERT = "INSERT INTO COMPUTER_COMPONENTS (ID_DEVICE, ID_COMPUTER_CPU, ID_MEMORY_RAM, ID_MASS_STORAGE_FIRST, ID_MASS_STORAGE_SECOND, ID_MASS_STORAGE_SECOND, COMPUTER_SYSTEM_NAME) VALUES(?, ?, ?, ?, ?, ?, ?);";
+    private static final String UPDATE = "UPDATE COMPUTER_COMPONENTS SET ID_DEVICE=?, ID_COMPUTER_CPU=?, ID_MEMORY_RAM=?, ID_MASS_STORAGE_FIRST=?, ID_MASS_STORAGE_SECOND=?, ID_MASS_STORAGE_THIRD=?, COMPUTER_SYSTEM_NAME=? WHERE ID_COMPUTER_COMPONENTS=?;";
     private static final String DELETE = "DELETE FROM COMPUTER_COMPONENTS WHERE ID_COMPUTER_COMPONENTS=?;";
 	
 	public ComputerComponentDAO(Controller controller) {
@@ -64,6 +64,7 @@ public class ComputerComponentDAO implements DAO<ComputerComponent>{
 			 	computerComponent.setComputerMassStorageFirst(computerMassStorageFirst);
 			 	computerComponent.setComputerMassStorageSecond(computerMassStorageSecond);
 			 	computerComponent.setComputerMassStorageThird(computerMassStorageThird);
+			 	computerComponent.setComputerSystemName(resultSet.getString("COMPUTER_SYSTEM_NAME"));
 			 }
 		  ps.close();
 		  resultSet.close();
@@ -105,6 +106,48 @@ public class ComputerComponentDAO implements DAO<ComputerComponent>{
 			 	computerComponent.setComputerMassStorageFirst(computerMassStorageFirst);
 			 	computerComponent.setComputerMassStorageSecond(computerMassStorageSecond);
 			 	computerComponent.setComputerMassStorageThird(computerMassStorageThird);
+			 	computerComponent.setComputerSystemName(resultSet.getString("COMPUTER_SYSTEM_NAME"));
+			 }
+		  ps.close();
+		  resultSet.close();
+		} catch (SQLException e) {
+			new SystemOperationException("Błąd podczas odczytu komponentów komputera z bazy", e);
+		}
+      return computerComponent;
+	}
+	
+	public ComputerComponent getByComputerIDFromDeviceDAO(int computerID) {
+		ComputerComponent computerComponent = null;
+		Device device = null;
+		ComputerCPU computerCPU = null;
+		ComputerRAM computerRAM = null;
+		ComputerMassStorage computerMassStorageFirst = null;
+		ComputerMassStorage computerMassStorageSecond = null;
+		ComputerMassStorage computerMassStorageThird = null;
+     	try {
+	     	 PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(FIND_BY_COMPUTER_ID);
+	     	 ps.setInt(1, computerID);
+	     	
+	   		 controller.getDatabaseProvider().executePreparedStatementWithResult(ps);
+	   		 ResultSet resultSet = controller.getDatabaseProvider().getResultSet();
+   		 
+			 if(resultSet.next()) {
+					
+			 	computerComponent = new ComputerComponent();
+			 	computerCPU = controller.getManagerDAO().getComputerCPUDAO().get(resultSet.getInt("ID_COMPUTER_CPU"));
+			 	computerRAM = controller.getManagerDAO().getComputerRAMDAO().get(resultSet.getInt("ID_MEMORY_RAM"));
+			 	computerMassStorageFirst = controller.getManagerDAO().getComputerMassStorageDAO().get(resultSet.getInt("ID_MASS_STORAGE_FIRST"));
+			 	computerMassStorageSecond = controller.getManagerDAO().getComputerMassStorageDAO().get(resultSet.getInt("ID_MASS_STORAGE_SECOND"));
+			 	computerMassStorageThird = controller.getManagerDAO().getComputerMassStorageDAO().get(resultSet.getInt("ID_MASS_STORAGE_THIRD"));
+			 	
+			 	computerComponent.setComputerComponentID(resultSet.getInt("ID_COMPUTER_COMPONENTS"));
+			 	computerComponent.setDevice(device);
+			 	computerComponent.setComputerCPU(computerCPU);
+			 	computerComponent.setComputerRAM(computerRAM);
+			 	computerComponent.setComputerMassStorageFirst(computerMassStorageFirst);
+			 	computerComponent.setComputerMassStorageSecond(computerMassStorageSecond);
+			 	computerComponent.setComputerMassStorageThird(computerMassStorageThird);
+			 	computerComponent.setComputerSystemName(resultSet.getString("COMPUTER_SYSTEM_NAME"));
 			 }
 		  ps.close();
 		  resultSet.close();
@@ -146,6 +189,7 @@ public class ComputerComponentDAO implements DAO<ComputerComponent>{
 				 	computerComponent.setComputerMassStorageFirst(computerMassStorageFirst);
 				 	computerComponent.setComputerMassStorageSecond(computerMassStorageSecond);
 				 	computerComponent.setComputerMassStorageThird(computerMassStorageThird);
+				 	computerComponent.setComputerSystemName(resultSet.getString("COMPUTER_SYSTEM_NAME"));
 				 	computerComponents.add(computerComponent);
 				}
 			  ps.close();
@@ -166,6 +210,7 @@ public class ComputerComponentDAO implements DAO<ComputerComponent>{
 	            ps.setObject(4, (computerComponent.getComputerMassStorageFirst().getMassStorageID() == 0) ? null : computerComponent.getComputerMassStorageFirst().getMassStorageID());
 	            ps.setObject(5, (computerComponent.getComputerMassStorageSecond().getMassStorageID() == 0) ? null : computerComponent.getComputerMassStorageSecond().getMassStorageID());
 	            ps.setObject(6, (computerComponent.getComputerMassStorageThird().getMassStorageID() == 0) ? null : computerComponent.getComputerMassStorageThird().getMassStorageID());
+	            ps.setString(7, computerComponent.getComputerSystemName());
 	            
 				controller.getDatabaseProvider().executePreparedStatement(ps);
 				
@@ -186,7 +231,8 @@ public class ComputerComponentDAO implements DAO<ComputerComponent>{
             ps.setObject(4, (computerComponent.getComputerMassStorageFirst().getMassStorageID() == 0) ? null : computerComponent.getComputerMassStorageFirst().getMassStorageID());
             ps.setObject(5, (computerComponent.getComputerMassStorageSecond().getMassStorageID() == 0) ? null : computerComponent.getComputerMassStorageSecond().getMassStorageID());
             ps.setObject(6, (computerComponent.getComputerMassStorageThird().getMassStorageID() == 0) ? null : computerComponent.getComputerMassStorageThird().getMassStorageID());
-            ps.setInt(7, computerComponent.getComputerComponentID());
+            ps.setString(7, computerComponent.getComputerSystemName());
+            ps.setInt(8, computerComponent.getComputerComponentID());
 
 			controller.getDatabaseProvider().executePreparedStatement(ps);
 			

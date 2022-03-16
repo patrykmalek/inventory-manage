@@ -15,9 +15,9 @@ public class ComputerMassStorageDAO implements DAO<ComputerMassStorage>{
 	private List<ComputerMassStorage> computerMassStorages;
 	private Controller controller;
 	
-	private static final String FIND_BY_ID = "SELECT * FROM MASS_STORAGE WHERE ID_MASS_STORAGE=?;";
-	private static final String FIND_BY_NAME = "SELECT * FROM MASS_STORAGE WHERE MASS_STORAGE_NAME LIKE ? LIMIT 1;";
-    private static final String FIND_ALL = "SELECT * FROM MASS_STORAGE;";
+	private static final String FIND_BY_ID = "SELECT MS.ID_MASS_STORAGE, MS.MASS_STORAGE_CAPACITY, MS.MASS_STORAGE_NAME, MS.MASS_STORAGE_SERIAL_NUMBER, MS.MASS_STORAGE_TYPE, CC.ID_COMPUTER_COMPONENTS FROM MASS_STORAGE MS LEFT JOIN COMPUTER_COMPONENTS CC ON (CC.ID_MASS_STORAGE_FIRST = MS.ID_MASS_STORAGE OR CC.ID_MASS_STORAGE_SECOND = MS.ID_MASS_STORAGE OR CC.ID_MASS_STORAGE_THIRD = MS.ID_MASS_STORAGE) WHERE MS.ID_MASS_STORAGE=?;";
+	private static final String FIND_BY_NAME = "SELECT MS.ID_MASS_STORAGE, MS.MASS_STORAGE_CAPACITY, MS.MASS_STORAGE_NAME, MS.MASS_STORAGE_SERIAL_NUMBER, MS.MASS_STORAGE_TYPE, CC.ID_COMPUTER_COMPONENTS FROM MASS_STORAGE MS LEFT JOIN COMPUTER_COMPONENTS CC ON (CC.ID_MASS_STORAGE_FIRST = MS.ID_MASS_STORAGE OR CC.ID_MASS_STORAGE_SECOND = MS.ID_MASS_STORAGE OR CC.ID_MASS_STORAGE_THIRD = MS.ID_MASS_STORAGE) WHERE MS.MASS_STORAGE_NAME LIKE ? LIMIT 1;";
+    private static final String FIND_ALL = "SELECT MS.ID_MASS_STORAGE, MS.MASS_STORAGE_CAPACITY, MS.MASS_STORAGE_NAME, MS.MASS_STORAGE_SERIAL_NUMBER, MS.MASS_STORAGE_TYPE, CC.ID_COMPUTER_COMPONENTS FROM MASS_STORAGE MS LEFT JOIN COMPUTER_COMPONENTS CC ON (CC.ID_MASS_STORAGE_FIRST = MS.ID_MASS_STORAGE OR CC.ID_MASS_STORAGE_SECOND = MS.ID_MASS_STORAGE OR CC.ID_MASS_STORAGE_THIRD = MS.ID_MASS_STORAGE);";
     private static final String INSERT = "INSERT INTO MASS_STORAGE (MASS_STORAGE_NAME, MASS_STORAGE_SERIAL_NUMBER, MASS_STORAGE_TYPE, MASS_STORAGE_CAPACITY) VALUES(?, ?, ?, ?);";
     private static final String UPDATE = "UPDATE MASS_STORAGE SET MASS_STORAGE_NAME=?, MASS_STORAGE_SERIAL_NUMBER=?, MASS_STORAGE_TYPE=?, MASS_STORAGE_CAPACITY=? WHERE ID_MASS_STORAGE=?;";
     private static final String DELETE = "DELETE FROM MASS_STORAGE WHERE ID_MASS_STORAGE=?;";
@@ -58,7 +58,7 @@ public class ComputerMassStorageDAO implements DAO<ComputerMassStorage>{
 			 	computerMassStorage.setMassStorageSerialNumber(resultSet.getString("MASS_STORAGE_SERIAL_NUMBER"));
 			 	computerMassStorage.setMassStorageType(resultSet.getString("MASS_STORAGE_TYPE"));
 			 	computerMassStorage.setMassStorageCapacityMB(resultSet.getInt("MASS_STORAGE_CAPACITY"));
-	
+			 	computerMassStorage.setUsed((resultSet.getObject("ID_COMPUTER_COMPONENTS") != null));
 			 }
 		  ps.close();
 		  resultSet.close();
@@ -85,7 +85,7 @@ public class ComputerMassStorageDAO implements DAO<ComputerMassStorage>{
 			 	computerMassStorage.setMassStorageSerialNumber(resultSet.getString("MASS_STORAGE_SERIAL_NUMBER"));
 			 	computerMassStorage.setMassStorageType(resultSet.getString("MASS_STORAGE_TYPE"));
 			 	computerMassStorage.setMassStorageCapacityMB(resultSet.getInt("MASS_STORAGE_CAPACITY"));
-			 	
+			 	computerMassStorage.setUsed((resultSet.getObject("ID_COMPUTER_COMPONENTS") != null));
 			 }
 		  ps.close();
 		  resultSet.close();
@@ -113,7 +113,8 @@ public class ComputerMassStorageDAO implements DAO<ComputerMassStorage>{
 				 	computerMassStorage.setMassStorageSerialNumber(resultSet.getString("MASS_STORAGE_SERIAL_NUMBER"));
 				 	computerMassStorage.setMassStorageType(resultSet.getString("MASS_STORAGE_TYPE"));
 				 	computerMassStorage.setMassStorageCapacityMB(resultSet.getInt("MASS_STORAGE_CAPACITY"));
-
+				 	computerMassStorage.setUsed((resultSet.getObject("ID_COMPUTER_COMPONENTS") != null));
+				 	
 				 	computerMassStorages.add(computerMassStorage);
 				}
 			  ps.close();
