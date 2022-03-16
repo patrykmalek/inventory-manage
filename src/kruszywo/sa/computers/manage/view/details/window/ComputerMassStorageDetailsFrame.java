@@ -8,7 +8,6 @@ import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.model.ComputerMassStorage;
 import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
-import kruszywo.sa.computers.manage.view.util.PMJComboBox;
 import kruszywo.sa.computers.manage.view.util.PMJScrollPane;
 import kruszywo.sa.computers.manage.view.util.PMJTextField;
 
@@ -17,10 +16,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 
