@@ -61,7 +61,7 @@ public class ComputerMassStorage {
 		String toString = "";
 		
 		if(getMassStorageName() != null && getMassStorageType() != null) {
-			toString = getMassStorageName() + ", " + getMassStorageType() + " (" + getMassStorageCapacityMB() + ")";
+			toString = getMassStorageName() + ", " + getMassStorageType() + " (" + getMassStorageCapacityGB() + " GB)";
 		}
 		
 		return toString;

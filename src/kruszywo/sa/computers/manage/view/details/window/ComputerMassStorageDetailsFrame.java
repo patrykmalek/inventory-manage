@@ -1,13 +1,14 @@
 package kruszywo.sa.computers.manage.view.details.window;
 
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
-
 
 import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.model.ComputerMassStorage;
 import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
+import kruszywo.sa.computers.manage.view.util.PMJComboBox;
 import kruszywo.sa.computers.manage.view.util.PMJScrollPane;
 import kruszywo.sa.computers.manage.view.util.PMJTextField;
 
@@ -16,6 +17,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -37,7 +39,7 @@ public class ComputerMassStorageDetailsFrame extends JDialog {
 	private JLabel additionalTitleHeaderLabel;
 	private PMJTextField computerMassStorageNameField;
 	private PMJTextField computerMassStorageSerialNumberField;
-	private PMJTextField computerMassStorageTypeField;
+	private PMJComboBox<String> computerMassStorageTypeField;
 	private PMJTextField computerMassStorageCapacityField;
 	
 	private JPanel headerPanel;
@@ -137,9 +139,17 @@ public class ComputerMassStorageDetailsFrame extends JDialog {
 		computerMassStorageTypeLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(computerMassStorageTypeLabel, "cell 1 3,alignx left");
 		
-		computerMassStorageTypeField = new PMJTextField(true, 13);
+		computerMassStorageTypeField = new PMJComboBox<String>();
 		computerMassStorageTypeField.setEditable(isEditable());
-		computerMassStorageTypeField.setColumns(10);
+		computerMassStorageTypeField.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		DefaultComboBoxModel<String> computerMassStorageTypeModel = new DefaultComboBoxModel<>();
+		
+		
+		computerMassStorageTypeModel.addAll(getController().getManagerDAO().getComputerMassStorageDAO().getMassStorageTypes());
+		
+		UIManager.put("ComboBox", "javax.swing.plaf.metal.MetalLookAndFeel");
+		
+		computerMassStorageTypeField.setModel(computerMassStorageTypeModel);
 		detailsPanel.add(computerMassStorageTypeField, "cell 2 3 4 1,grow");
 		
 		JLabel computerMassStorageCapacityLabel = new JLabel("Pojemność pamięci (MB):");
@@ -209,7 +219,7 @@ public class ComputerMassStorageDetailsFrame extends JDialog {
 		
 		computerMassStorageNameField.setText(computerMassStorage.getMassStorageName());
 		computerMassStorageSerialNumberField.setText(computerMassStorage.getMassStorageSerialNumber());
-		computerMassStorageTypeField.setText(computerMassStorage.getMassStorageType());
+		computerMassStorageTypeField.setSelectedItem(computerMassStorage.getMassStorageType());
 		computerMassStorageCapacityField.setText(String.valueOf(computerMassStorage.getMassStorageCapacityMB()));
 		
 		return true;
@@ -221,7 +231,7 @@ public class ComputerMassStorageDetailsFrame extends JDialog {
 
 			computerMassStorage.setMassStorageID(getComputerMassStorageID());
 			computerMassStorage.setMassStorageName(computerMassStorageNameField.getText());
-		 	computerMassStorage.setMassStorageType(computerMassStorageTypeField.getText());
+		 	computerMassStorage.setMassStorageType((String) computerMassStorageTypeField.getSelectedItem());
 		 	computerMassStorage.setMassStorageSerialNumber(computerMassStorageSerialNumberField.getText());
 		 	computerMassStorage.setMassStorageCapacityMB(computerMassStorageCapacityField.getInt());
 

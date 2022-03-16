@@ -42,7 +42,7 @@ public class ComputerMassStorageDictionaryTablePanel extends DictionaryTablePane
 				"Nazwa pamięci masowej",
 				"Typ pamięci masowej",
 				"Numer seryjny",
-				"Pojemność pamięci masowej",
+				"Pojemność pamięci masowej (GB)",
 				"Użyty"
 		});
 	}
@@ -54,7 +54,7 @@ public class ComputerMassStorageDictionaryTablePanel extends DictionaryTablePane
 		for( ComputerMassStorage computerMassStorage : computerMassStorages){
 			addRowToTable(new Object[] {computerMassStorage.getMassStorageID(), computerMassStorage.getMassStorageName(), 
 							 computerMassStorage.getMassStorageType(), computerMassStorage.getMassStorageSerialNumber(), 
-							 computerMassStorage.getMassStorageCapacityMB(), computerMassStorage.isUsed()});
+							 computerMassStorage.getMassStorageCapacityGB(), computerMassStorage.isUsed()});
 		}
 		resizeTable();
 	}
