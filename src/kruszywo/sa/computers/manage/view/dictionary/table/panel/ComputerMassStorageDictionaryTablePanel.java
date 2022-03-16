@@ -24,7 +24,7 @@ public class ComputerMassStorageDictionaryTablePanel extends DictionaryTablePane
 		this.controller.setComputerMassStorageDictionaryTable(this);
 		this.createTable();
 		this.setButtonEventListeners();
-		setPanelTitle("Słownik procesorów");
+		setPanelTitle("Słownik pamięci masowej");
 	}
 	
 	@Override

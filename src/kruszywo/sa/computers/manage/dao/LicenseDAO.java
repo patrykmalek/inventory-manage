@@ -62,7 +62,7 @@ public class LicenseDAO implements DAO<License>{
 			 	license.setAssignedEmail(resultSet.getString("assigned_email"));
 			 	license.setLicenseNotes(resultSet.getString("license_notes"));
 			 	license.setDevice(device);
-			 	license.setUsed((resultSet.getObject("id_device") != null));
+			 	license.setUsed((resultSet.getObject("id_device") != null && resultSet.getBoolean("id_device")));
 			 	
 			 }
 		  ps.close();
@@ -103,7 +103,7 @@ public class LicenseDAO implements DAO<License>{
 			 	license.setAssignedEmail(resultSet.getString("assigned_email"));
 			 	license.setLicenseNotes(resultSet.getString("license_notes"));
 			 	license.setDevice(device);
-			 	license.setUsed((resultSet.getObject("id_device") != null));
+			 	license.setUsed((resultSet.getObject("id_device") != null && resultSet.getBoolean("id_device")));
 			 }
 			 
 		  ps.close();
@@ -145,7 +145,7 @@ public class LicenseDAO implements DAO<License>{
 				 	license.setAssignedEmail(resultSet.getString("assigned_email"));
 				 	license.setLicenseNotes(resultSet.getString("license_notes"));
 				 	license.setDevice(device);
-				 	license.setUsed((resultSet.getObject("id_device") != null));
+				 	license.setUsed((resultSet.getObject("id_device") != null && resultSet.getBoolean("id_device")));
 				 	
 				 	licenses.add(license);
 				}

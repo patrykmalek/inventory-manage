@@ -10,7 +10,6 @@ import kruszywo.sa.computers.manage.model.License;
 import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
 import kruszywo.sa.computers.manage.view.util.PMCustomTextFieldWithDictionary;
-import kruszywo.sa.computers.manage.view.util.PMJScrollPane;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -71,10 +70,10 @@ public class ComputerLicenseAssignedDetailsFrame extends JDialog {
 	private void createVisuals() {
 		setTitle(getCorrectTitle());
 		setIconImage(new ImageIcon(getClass().getResource("/edit-solid-dark-blue-15.png")).getImage());
-		setSize(800, 600);
+		setSize(800, 400);
 		createPanels();
 		getContentPane().add(this.headerPanel, BorderLayout.NORTH);
-		getContentPane().add(new PMJScrollPane(this.detailsPanel), BorderLayout.CENTER);
+		getContentPane().add(this.detailsPanel, BorderLayout.CENTER);
 		getContentPane().add(this.footerPanel, BorderLayout.SOUTH);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -123,7 +122,7 @@ public class ComputerLicenseAssignedDetailsFrame extends JDialog {
 		detailsPanel.add(computerComponentDeviceLabel, "cell 1 1,alignx left");
 		
 		deviceField = new PMCustomTextFieldWithDictionary<Device>();
-		deviceField.setEditable(isEditable());
+		deviceField.setEditable(false);
 		detailsPanel.add(deviceField, "cell 2 1 4 1,grow");
 		
 		JLabel computerComponentCPULabel= new JLabel("Procesor:");

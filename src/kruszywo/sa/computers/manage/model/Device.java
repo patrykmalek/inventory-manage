@@ -111,7 +111,15 @@ public class Device {
 
 	@Override
 	public String toString() {
-		return deviceName;
+		String toString = "";
+		
+		if(getDeviceName() != null && getDeviceUniqueNumber() != null) {
+			toString = getDeviceName() + " ("+ getDeviceUniqueNumber()+")";
+		} else {
+			toString = getDeviceName();
+		}
+		
+		return toString;
 	}
 
 	public String getLastModificationDate() {

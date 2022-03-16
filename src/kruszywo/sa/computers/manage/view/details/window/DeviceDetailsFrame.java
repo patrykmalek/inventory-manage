@@ -99,6 +99,7 @@ public class DeviceDetailsFrame extends JDialog {
 		super(controller.getMainFrame(), "Panel", true);
 		this.controller = controller;
 		this.controller.setDeviceDetailsFrame(this);
+		createWindow();
 	}
 	
 	public void createWindow() {
@@ -172,7 +173,7 @@ public class DeviceDetailsFrame extends JDialog {
 	private JPanel createDetailsPanel() {
 		JPanel detailsPanel = new JPanel();
 		detailsPanel.setBackground(SystemColor.text);
-		detailsPanel.setLayout(new MigLayout("", "[10px][150px][grow][grow][grow][grow][grow][10px]", "[25px][25px][25px][25px][25px][25px][25px][25px][25px][25px][25px][25px][25px][grow][10px]"));
+		detailsPanel.setLayout(new MigLayout("", "[10px][150px][grow][grow][grow][grow][grow][10px]", "[25px][25px][25px][25px][25px][25px][25px][25px][25px][25px][25px][grow][10px]"));
 		
 		deviceNameLabel = new JLabel("Nazwa:");
 		deviceNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -267,7 +268,7 @@ public class DeviceDetailsFrame extends JDialog {
 		
 		JScrollPane deviceNotesContainer = new JScrollPane(deviceNotesField);
 		deviceNotesContainer.setBorder(null);
-		detailsPanel.add(deviceNotesContainer, "cell 1 13 6 1,grow");
+		detailsPanel.add(deviceNotesContainer, "cell 1 11 6 1,grow");
 		
 		return detailsPanel;
 	}

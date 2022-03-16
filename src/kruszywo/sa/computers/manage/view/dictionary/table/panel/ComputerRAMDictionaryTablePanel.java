@@ -24,7 +24,7 @@ public class ComputerRAMDictionaryTablePanel extends DictionaryTablePanel<Comput
 		this.controller.setComputerRAMDictionaryTable(this);
 		this.createTable();
 		this.setButtonEventListeners();
-		setPanelTitle("Słownik procesorów");
+		setPanelTitle("Słownik pamieci RAM");
 	}
 	
 	@Override

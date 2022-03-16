@@ -35,6 +35,7 @@ public class PMJComboBox<E> extends JComboBox<E> {
 	public PMJComboBox() {
 
 		setEditable(true);
+
 		
 		ComboBoxEditor comboBoxEditor = getEditor();
 		Component editor = comboBoxEditor.getEditorComponent();

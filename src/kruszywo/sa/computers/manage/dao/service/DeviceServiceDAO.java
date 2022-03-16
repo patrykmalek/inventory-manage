@@ -1,6 +1,7 @@
 package kruszywo.sa.computers.manage.dao.service;
 
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 
 import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.dao.ManagerDAO;

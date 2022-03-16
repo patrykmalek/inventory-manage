@@ -24,8 +24,7 @@ public class Main {
 				| IllegalAccessException | UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 			return;
-		} 
-		
+		}		
 		javax.swing.SwingUtilities.invokeLater(new Runnable()  {
 			public void run() {
 				String databasePath = System.getProperty("user.dir") + "\\database\\computers.db?foreign_keys=on;";
