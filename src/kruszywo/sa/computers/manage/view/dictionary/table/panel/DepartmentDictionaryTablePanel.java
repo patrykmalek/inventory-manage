@@ -31,7 +31,7 @@ public class DepartmentDictionaryTablePanel extends DictionaryTablePanel<Departm
 	public void createTable() {
 		this.setTableModelAndSorter(new Class[] { 
 				java.lang.Integer.class,
-				java.lang.String.class,
+				java.lang.Integer.class,
 				java.lang.String.class
 		});
 		this.setTableColumnNames(new String[] { 
@@ -46,7 +46,7 @@ public class DepartmentDictionaryTablePanel extends DictionaryTablePanel<Departm
 		clearTable();
 		if(isEmptyData(department)) return;
 		for( Department deviceType : department){
-			addRowToTable(new Object[] {deviceType.getDepartmentID(), deviceType.getDepartmentCode(), deviceType.getDepartmentName()});
+			addRowToTable(new Object[] {deviceType.getDepartmentID(), Integer.parseInt(deviceType.getDepartmentCode()), deviceType.getDepartmentName()});
 		}
 		resizeTable();
 	}

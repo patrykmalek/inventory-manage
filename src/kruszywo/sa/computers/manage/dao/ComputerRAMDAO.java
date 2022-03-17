@@ -30,8 +30,10 @@ public class ComputerRAMDAO implements DAO<ComputerRAM>{
 		
 		 List<String> memoryRamTypes = new ArrayList<>();
 		 
-		 memoryRamTypes.add("DDR 3");
-		 memoryRamTypes.add("DDR 4");
+		 memoryRamTypes.add("DDR2");
+		 memoryRamTypes.add("DDR3");
+		 memoryRamTypes.add("DDR4");
+		 memoryRamTypes.add("Element Nieznany");
 		 
 		return memoryRamTypes;
 	}

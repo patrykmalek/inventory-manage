@@ -44,6 +44,8 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 	private JPanel northPanel;
 	private ButtonPanel buttonPanel;
 	
+
+	private JButton showButton;
 	private JButton insertButton;
 	private JButton updateButton;
 	private JButton deleteButton;
@@ -69,6 +71,8 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 		this.tableContainer = new JScrollPane(table);
 	
 		this.buttonPanel = new ButtonPanel(FlowLayout.LEADING);
+
+		this.buttonPanel.addShowButton(new JButton());
 		this.buttonPanel.addInsertButton(new JButton());
 		this.buttonPanel.addEditButton(new JButton());
 		this.buttonPanel.addDeleteButton(new JButton());
@@ -90,7 +94,16 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 	public void createEventListeners() {
 		if (buttonPanel.getButtons().size() <= 0) return;
 		
-		insertButton = buttonPanel.getButtons().get(0);
+		showButton = buttonPanel.getButtons().get(0);
+		showButton.removeActionListener(showButton.getActionListeners()[0]);
+		showButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				JOptionPane.showMessageDialog(new JFrame(), "Przycisk jeszcze nie ma podpiętej akcji.", "Informacja", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		showButton.setVisible(false);
+		
+		insertButton = buttonPanel.getButtons().get(1);
 		insertButton.removeActionListener(insertButton.getActionListeners()[0]);
 		insertButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -98,7 +111,7 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 			}
 		});
 		
-		updateButton = buttonPanel.getButtons().get(1);
+		updateButton = buttonPanel.getButtons().get(2);
 		updateButton.removeActionListener(updateButton.getActionListeners()[0]);
 		updateButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -106,7 +119,7 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 			}
 		});
 		
-		deleteButton = buttonPanel.getButtons().get(2);
+		deleteButton = buttonPanel.getButtons().get(3);
 		deleteButton.removeActionListener(deleteButton.getActionListeners()[0]);
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -347,6 +360,14 @@ public abstract class DictionaryTablePanel<T> extends JPanel implements TablePan
 
 	public void setTableColumnManager(TableColumnManager tableColumnManager) {
 		this.tableColumnManager = tableColumnManager;
+	}
+
+	public JButton getShowButton() {
+		return showButton;
+	}
+
+	public void setShowButton(JButton showButton) {
+		this.showButton = showButton;
 	}
 
 }

@@ -45,6 +45,15 @@ public class ButtonPanel extends JPanel{
 		}
 	}
 	
+	public void addShowButton(JButton button) {
+		if (button.getText().equals("")) button.setText("Wyświetl");
+		Icon icon = new ImageIcon(getClass().getResource("/eye-solid.png"));
+		button.setIcon(icon);
+		button = createDefaultButton(button);
+		this.add(button);
+		this.buttons.add(button);
+	}
+	
 	public void addInsertButton(JButton button) {
 		if (button.getText().equals("")) button.setText("Dodaj");
 		Icon icon = new ImageIcon(getClass().getResource("/plus-circle-solid.png"));

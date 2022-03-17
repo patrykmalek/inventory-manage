@@ -54,7 +54,7 @@ public class ComputerMassStorageDictionaryTablePanel extends DictionaryTablePane
 		for( ComputerMassStorage computerMassStorage : computerMassStorages){
 			addRowToTable(new Object[] {computerMassStorage.getMassStorageID(), computerMassStorage.getMassStorageName(), 
 							 computerMassStorage.getMassStorageType(), computerMassStorage.getMassStorageSerialNumber(), 
-							 computerMassStorage.getMassStorageCapacityGB(), computerMassStorage.isUsed()});
+							 computerMassStorage.getMassStorageCapacityGBtoString(), computerMassStorage.isUsed()});
 		}
 		resizeTable();
 	}

@@ -20,7 +20,7 @@ public class ComputerMassStorage {
 	}
 
 	public String getMassStorageName() {
-		return massStorageName;
+		return (massStorageName == null) ? "----" : massStorageName;
 	}
 
 	public void setMassStorageName(String massStorageName) {
@@ -28,7 +28,7 @@ public class ComputerMassStorage {
 	}
 
 	public String getMassStorageSerialNumber() {
-		return massStorageSerialNumber;
+		return (massStorageSerialNumber == null) ? "----" : massStorageSerialNumber;
 	}
 
 	public void setMassStorageSerialNumber(String massStorageSerialNumber) {
@@ -36,7 +36,7 @@ public class ComputerMassStorage {
 	}
 
 	public String getMassStorageType() {
-		return massStorageType;
+		return (massStorageType == null) ? "----" : massStorageType;
 	}
 
 	public void setMassStorageType(String massStorageType) {
@@ -60,11 +60,15 @@ public class ComputerMassStorage {
 	public String toString() {
 		String toString = "";
 		
-		if(getMassStorageName() != null && getMassStorageType() != null) {
-			toString = getMassStorageName() + ", " + getMassStorageType() + " (" + getMassStorageCapacityGB() + " GB)";
+		if(massStorageType != null && massStorageName != null) {
+			toString = getMassStorageName() + ", " + getMassStorageType() + ", " + getMassStorageSerialNumber() + " (" + getMassStorageCapacityGB() + " GB)";
 		}
-		
+
 		return toString;
+	}
+	
+	public String getMassStorageCapacityGBtoString() {
+		return getMassStorageCapacityGB() + " GB";
 	}
 
 	public boolean isUsed() {

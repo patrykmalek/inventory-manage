@@ -1,7 +1,6 @@
 package kruszywo.sa.computers.manage.dao.service;
 
 import javax.swing.JOptionPane;
-import javax.swing.RowFilter;
 
 import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.dao.ManagerDAO;
@@ -71,6 +70,8 @@ public class DeviceServiceDAO {
 		deviceDetailsWindow.createWindow();
 		
 		ComputerLicenseAssignedTablePanel computerLicenseAssignedTablePanel = new ComputerLicenseAssignedTablePanel(getController());
+		computerLicenseAssignedTablePanel.setOperationType(OperationType.INSERT);
+		computerLicenseAssignedTablePanel.createPanel();
 		deviceDetailsWindow.setComputerLicenseAssignedTablePanel(computerLicenseAssignedTablePanel);
 		ComputerComponentDetailsFrame computerComponentDetailsFrame = new ComputerComponentDetailsFrame(getController());
 		computerComponentDetailsFrame.setOperationType(OperationType.INSERT);
@@ -91,6 +92,8 @@ public class DeviceServiceDAO {
 		deviceDetailsWindow.createWindow();
 		
 		ComputerLicenseAssignedTablePanel computerLicenseAssignedTablePanel = new ComputerLicenseAssignedTablePanel(getController());
+		computerLicenseAssignedTablePanel.setOperationType(OperationType.DISPLAY);
+		computerLicenseAssignedTablePanel.createPanel();
 		computerLicenseAssignedTablePanel.setDevice(device);
 		computerLicenseAssignedTablePanel.updateTable(getManagerDAO().getLicenseDAO().getAllByDeviceID(deviceID));
 		deviceDetailsWindow.setComputerLicenseAssignedTablePanel(computerLicenseAssignedTablePanel);
@@ -115,15 +118,16 @@ public class DeviceServiceDAO {
 		DeviceDetailsFrame deviceDetailsWindow = new DeviceDetailsFrame(controller);
 		deviceDetailsWindow.setOperationType(OperationType.UPDATE);
 		deviceDetailsWindow.createWindow();
-		
 		ComputerLicenseAssignedTablePanel computerLicenseAssignedTablePanel = new ComputerLicenseAssignedTablePanel(getController());
+		ComputerComponent computerComponent = getManagerDAO().getComputerComponentDAO().getByComputerID(deviceID);
+		ComputerComponentDetailsFrame computerComponentDetailsFrame = new ComputerComponentDetailsFrame(getController());
+		computerLicenseAssignedTablePanel.setOperationType((computerComponent != null) ? OperationType.UPDATE : OperationType.INSERT);
+		computerComponentDetailsFrame.setOperationType((computerComponent != null) ? OperationType.UPDATE : OperationType.INSERT);
+		computerLicenseAssignedTablePanel.createPanel();
 		computerLicenseAssignedTablePanel.setDevice(device);
 		computerLicenseAssignedTablePanel.updateTable(getManagerDAO().getLicenseDAO().getAllByDeviceID(deviceID));
 		deviceDetailsWindow.setComputerLicenseAssignedTablePanel(computerLicenseAssignedTablePanel);
 		
-		ComputerComponent computerComponent = getManagerDAO().getComputerComponentDAO().getByComputerID(deviceID);
-		ComputerComponentDetailsFrame computerComponentDetailsFrame = new ComputerComponentDetailsFrame(getController());
-		computerComponentDetailsFrame.setOperationType((computerComponent != null) ? OperationType.UPDATE : OperationType.INSERT);
 		computerComponentDetailsFrame.createPanels();
 		computerComponentDetailsFrame.createEventListeners();
 		computerComponentDetailsFrame.setAddedFromDevice(false);

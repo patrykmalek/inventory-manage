@@ -127,7 +127,7 @@ public class LicenseDetailsFrame extends JDialog {
 	private JPanel createDetailsPanel() {
 		JPanel detailsPanel = new JPanel();
 		detailsPanel.setBackground(SystemColor.text);
-		detailsPanel.setLayout(new MigLayout("", "[10px][150px][grow][grow][grow][grow][grow][10px]", "[25px][25px][25px][25px][25px][25px][25px][25px][25px][25px][grow][10px]"));
+		detailsPanel.setLayout(new MigLayout("", "[10px][150px][grow][grow][grow][grow][grow][10px]", "[25px][25px][25px][25px][25px][25px][25px][25px][25px][grow][10px]"));
 		
 		licenseSoftwareLabel = new JLabel("Typ oprogramowania:");
 		licenseSoftwareLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -200,7 +200,7 @@ public class LicenseDetailsFrame extends JDialog {
 		
 		JScrollPane licenseNotesContainer = new JScrollPane(licenseNotesField);
 		licenseNotesContainer.setBorder(null);
-		detailsPanel.add(licenseNotesContainer, "cell 1 10 6 1,grow");
+		detailsPanel.add(licenseNotesContainer, "cell 1 9 6 1,grow");
 		
 		return detailsPanel;
 	}
@@ -321,8 +321,8 @@ public class LicenseDetailsFrame extends JDialog {
 		List<Boolean> errors = new ArrayList<>();
 		
 		errors.add(licenseSoftwareField.isEmpty());
-		errors.add(licenseMainKeyField.isEmpty());
-		errors.add(licenseAssignedEmailField.isEmpty());
+//		errors.add(licenseMainKeyField.isEmpty());
+//		errors.add(licenseAssignedEmailField.isEmpty());
 		errors.add(licenseInvoiceNumberField.isEmpty());
 		
 		return !errors.contains(true);

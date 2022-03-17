@@ -31,14 +31,12 @@ public class ComputerRAMDictionaryTablePanel extends DictionaryTablePanel<Comput
 	public void createTable() {
 		this.setTableModelAndSorter(new Class[] { 
 				java.lang.Integer.class,
-				java.lang.Integer.class,
 				java.lang.String.class,
 				java.lang.Integer.class,
 				java.lang.Boolean.class
 		});
 		this.setTableColumnNames(new String[] { 
 				"ID pamięci",
-				"Lp.",
 				"Typ pamięci",
 				"Pojemność pamięci MB",
 				"Użyty"
@@ -50,7 +48,7 @@ public class ComputerRAMDictionaryTablePanel extends DictionaryTablePanel<Comput
 		clearTable();
 		if(isEmptyData(computerRAMs)) return;
 		for( ComputerRAM computerRam : computerRAMs){
-			addRowToTable(new Object[] {computerRam.getMemoryRamID(), getTable().getRowCount() + 1, computerRam.getMemoryRamType(), computerRam.getMemoryRamCapacityMB(), computerRam.isUsed()});
+			addRowToTable(new Object[] {computerRam.getMemoryRamID(), computerRam.getMemoryRamType(), computerRam.getMemoryRamCapacityMB(), computerRam.isUsed()});
 		}
 		resizeTable();
 	}

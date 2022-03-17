@@ -83,7 +83,7 @@ public class ComputerComponentDetailsFrame extends JDialog {
 	private void createVisuals() {
 		setTitle(getCorrectTitle());
 		setIconImage(new ImageIcon(getClass().getResource("/edit-solid-dark-blue-15.png")).getImage());
-		setSize(800, 600);
+		setSize(1200, 600);
 		createPanels();
 		getContentPane().add(this.headerPanel, BorderLayout.NORTH);
 		getContentPane().add(new PMJScrollPane(this.detailsPanel), BorderLayout.CENTER);
@@ -112,7 +112,7 @@ public class ComputerComponentDetailsFrame extends JDialog {
 		
 		headerPanel.add(titlePanel, BorderLayout.CENTER);
 		
-		JLabel titleHeaderLabel = new JLabel("Procesor");
+		JLabel titleHeaderLabel = new JLabel("Komponenty komputera");
 		titleHeaderLabel.setForeground(SystemColor.textInactiveText);
 		titleHeaderLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		titlePanel.add(titleHeaderLabel, "cell 0 0,alignx left,growy");
@@ -328,7 +328,7 @@ public class ComputerComponentDetailsFrame extends JDialog {
 	}
 
 	private String getCorrectTitle() {
-		return (isEditable()) ? "Edycja szczegółów procesora" : "Szczegóły procesora";
+		return (isEditable()) ? "Edycja komponentów komputera" : "Szczegóły komponentów komputera";
 	}
 
 	public boolean isEditable() {

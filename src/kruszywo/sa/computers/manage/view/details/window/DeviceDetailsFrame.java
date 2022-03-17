@@ -99,7 +99,6 @@ public class DeviceDetailsFrame extends JDialog {
 		super(controller.getMainFrame(), "Panel", true);
 		this.controller = controller;
 		this.controller.setDeviceDetailsFrame(this);
-		createWindow();
 	}
 	
 	public void createWindow() {
@@ -120,7 +119,7 @@ public class DeviceDetailsFrame extends JDialog {
 		tabPanel = createTabbedPanel();
 		footerPanel = createFooterPanel();		
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, new PMJScrollPane(this.detailsPanel), null);
-		splitPane.setDividerLocation(700);
+		splitPane.setDividerLocation(600);
 		splitPane.setBorder(null);
 		tabPanel.add("Dane podstawowe", splitPane);
 		getContentPane().add(this.headerPanel, BorderLayout.NORTH);
@@ -471,7 +470,7 @@ public class DeviceDetailsFrame extends JDialog {
 	
 	public void showComputerComponents() {
 		splitPane.add(getComputerComponentDetailsPanel());
-		splitPane.setDividerLocation(700);
+		splitPane.setDividerLocation(600);
 		tabPanel.add("Licencje", getComputerLicenseAssignedTablePanel());
 		repaint();
 	}

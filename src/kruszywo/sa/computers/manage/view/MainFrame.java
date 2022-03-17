@@ -39,7 +39,7 @@ public class MainFrame extends JFrame {
 		this.createListeners();
 		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.setLocationRelativeTo(null);
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+//		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 	}
 	
 	private JPanel createMainPanel() {

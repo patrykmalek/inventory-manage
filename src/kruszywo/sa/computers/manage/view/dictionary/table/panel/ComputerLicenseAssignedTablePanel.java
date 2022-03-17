@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.model.Device;
 import kruszywo.sa.computers.manage.model.License;
+import kruszywo.sa.computers.manage.model.OperationType;
 
 
 public class ComputerLicenseAssignedTablePanel extends DictionaryTablePanel<License> {
@@ -26,10 +27,16 @@ public class ComputerLicenseAssignedTablePanel extends DictionaryTablePanel<Lice
 	private JButton assignLicenseButton;
 	private JButton deleteAssignLicenseButton;
 	
+	private OperationType operationType;
+	private boolean editable;
+	
 	public ComputerLicenseAssignedTablePanel(Controller controller) {
 		super();
 		this.controller = controller;
 		this.controller.setComputerLicenseAssignedTable(this);
+	}
+	
+	public void createPanel() {
 		this.createTable();
 		this.createCustomButton();
 		this.setButtonEventListeners();
@@ -41,9 +48,11 @@ public class ComputerLicenseAssignedTablePanel extends DictionaryTablePanel<Lice
 		getButtonPanel().removeAllButtons();
 		assignLicenseButton = new JButton();
 		assignLicenseButton.setText("Powiąż");
+		assignLicenseButton.setEnabled(isEditable());
 		
 		deleteAssignLicenseButton = new JButton();
 		deleteAssignLicenseButton.setText("Odłącz");
+		deleteAssignLicenseButton.setEnabled(isEditable());
 		
 		getButtonPanel().addButton(assignLicenseButton, new ImageIcon(getClass().getResource("/handshake-solid.png")));
 		getButtonPanel().addButton(deleteAssignLicenseButton, new ImageIcon(getClass().getResource("/handshake-slash-solid.png")));
@@ -152,6 +161,22 @@ public class ComputerLicenseAssignedTablePanel extends DictionaryTablePanel<Lice
 
 	public void setDevice(Device device) {
 		this.device = device;
+	}
+
+	public OperationType getOperationType() {
+		return operationType;
+	}
+
+	public void setOperationType(OperationType operationType) {
+		setEditable(operationType.isWindowEditable());
+		this.operationType = operationType;
+	}
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
 	}
 
 

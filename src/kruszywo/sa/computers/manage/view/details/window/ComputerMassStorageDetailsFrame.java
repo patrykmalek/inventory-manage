@@ -1,7 +1,6 @@
 package kruszywo.sa.computers.manage.view.details.window;
 
 import javax.swing.JPanel;
-import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 
 import kruszywo.sa.computers.manage.controller.Controller;
@@ -141,14 +140,12 @@ public class ComputerMassStorageDetailsFrame extends JDialog {
 		
 		computerMassStorageTypeField = new PMJComboBox<String>();
 		computerMassStorageTypeField.setEditable(isEditable());
+		computerMassStorageTypeField.setEnabled(isEditable());
 		computerMassStorageTypeField.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		DefaultComboBoxModel<String> computerMassStorageTypeModel = new DefaultComboBoxModel<>();
 		
 		
 		computerMassStorageTypeModel.addAll(getController().getManagerDAO().getComputerMassStorageDAO().getMassStorageTypes());
-		
-		UIManager.put("ComboBox", "javax.swing.plaf.metal.MetalLookAndFeel");
-		
 		computerMassStorageTypeField.setModel(computerMassStorageTypeModel);
 		detailsPanel.add(computerMassStorageTypeField, "cell 2 3 4 1,grow");
 		

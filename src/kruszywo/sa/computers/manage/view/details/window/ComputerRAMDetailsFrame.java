@@ -8,6 +8,7 @@ import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.model.ComputerRAM;
 import kruszywo.sa.computers.manage.model.OperationType;
 import kruszywo.sa.computers.manage.view.util.ButtonPanel;
+import kruszywo.sa.computers.manage.view.util.PMJComboBox;
 import kruszywo.sa.computers.manage.view.util.PMJScrollPane;
 import kruszywo.sa.computers.manage.view.util.PMJTextField;
 
@@ -16,6 +17,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -35,7 +37,7 @@ public class ComputerRAMDetailsFrame extends JDialog {
 	private int computerCpuID;
 	
 	private JLabel additionalTitleHeaderLabel;
-	private PMJTextField computerRamTypeField;
+	private PMJComboBox<String> computerRamTypeField;
 	private PMJTextField computerRamCapacityField;
 	
 	private JPanel headerPanel;
@@ -116,9 +118,15 @@ public class ComputerRAMDetailsFrame extends JDialog {
 		computerCpuNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(computerCpuNameLabel, "cell 1 1,alignx left");
 		
-		computerRamTypeField = new PMJTextField(true, 13);
+		computerRamTypeField = new PMJComboBox<String>();
 		computerRamTypeField.setEditable(isEditable());
-		computerRamTypeField.setColumns(10);
+		computerRamTypeField.setEnabled(isEditable());
+		computerRamTypeField.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		DefaultComboBoxModel<String> computerRamTypeModel = new DefaultComboBoxModel<>();
+		
+		
+		computerRamTypeModel.addAll(getController().getManagerDAO().getComputerRAMDAO().getMemoryRamTypes());
+		computerRamTypeField.setModel(computerRamTypeModel);
 		detailsPanel.add(computerRamTypeField, "cell 2 1 4 1,grow");
 		
 		JLabel computerRamCapacityLabel = new JLabel("Pojemność pamięci:");
@@ -185,8 +193,7 @@ public class ComputerRAMDetailsFrame extends JDialog {
 		setComputerRAMID(computerRam.getMemoryRamID());
 		
 		additionalTitleHeaderLabel.setText("Szczegóły");
-		
-		computerRamTypeField.setText(computerRam.getMemoryRamType());
+		computerRamTypeField.setSelectedItem(computerRam.getMemoryRamType());
 		computerRamCapacityField.setText(String.valueOf(computerRam.getMemoryRamCapacityMB()));
 		
 		return true;
@@ -197,7 +204,7 @@ public class ComputerRAMDetailsFrame extends JDialog {
 		ComputerRAM computerRam = new ComputerRAM();
 
 			computerRam.setMemoryRamID(getComputerRAMID());
-			computerRam.setMemoryRamType(computerRamTypeField.getText());
+			computerRam.setMemoryRamType((String) computerRamTypeField.getSelectedItem());
 			computerRam.setMemoryRamCapacityMB(computerRamCapacityField.getInt());
 
 		getController().getManagerDAO().getComputerRAMServiceDAO().saveData(computerRam, getOperationType());

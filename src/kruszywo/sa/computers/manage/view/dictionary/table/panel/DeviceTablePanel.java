@@ -31,6 +31,15 @@ public class DeviceTablePanel extends DictionaryTablePanel<Device> {
 	
 	@Override
 	public void setButtonEventListeners() {
+		
+		getShowButton().removeActionListener(getShowButton().getActionListeners()[0]);
+		getShowButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				getController().getManagerDAO().getDeviceServiceDAO().openDeviceWindowToOnlyShowDetails(getIdFromTable());
+			}
+		});
+		getShowButton().setVisible(true);
+		
 		getInsertButton().removeActionListener(getInsertButton().getActionListeners()[0]);
 		getInsertButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -97,6 +106,7 @@ public class DeviceTablePanel extends DictionaryTablePanel<Device> {
 				java.lang.String.class,
 				java.lang.String.class,
 				java.lang.String.class,
+				java.lang.String.class,
 				java.util.Date.class,
 				java.util.Date.class,
 				java.util.Date.class,
@@ -114,11 +124,13 @@ public class DeviceTablePanel extends DictionaryTablePanel<Device> {
 				"Procesor",
 				"Pamięć RAM",
 				"Pamięć Masowa",
+				"Dodatkowy Opis",
 				"Data zakupu",
 				"Ostatnia instalacja",
 				"Ostatnia modyfikacja",
 				"Użyty"
 		});
+		getTableColumnManager().hideColumn(11);
 	}
 	
 	@Override
@@ -131,11 +143,11 @@ public class DeviceTablePanel extends DictionaryTablePanel<Device> {
 						device.getDeviceType().getDeviceTypeName(), device.getAssignedDepartment().toString(), 
 						device.getAssignedEmployee().toString(), device.getInvoiceNumber(),
 						device.getComputerComponent().getComputerCPU().toString(), device.getComputerComponent().getComputerRAM().toString(), 
-						device.getComputerComponent().getComputerMassStorageFirst().toString(),
+						device.getComputerComponent().getComputerMassStorageFirst().toString(), device.getNotes(),
 						device.getPurchaseDate(), device.getLastInstallationDate(), device.getLastModificationDate(), device.isUsed()});
 		}
 		List<RowSorter.SortKey> sortKeys = new ArrayList<>();
-		int columnIndexToSort = 13;
+		int columnIndexToSort = 14;
 		sortKeys.add(new RowSorter.SortKey(columnIndexToSort, SortOrder.DESCENDING));
 		getTable().getRowSorter().setSortKeys(sortKeys);
 		
