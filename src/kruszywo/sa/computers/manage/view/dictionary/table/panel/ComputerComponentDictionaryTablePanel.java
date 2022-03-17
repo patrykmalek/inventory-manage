@@ -54,13 +54,10 @@ public class ComputerComponentDictionaryTablePanel extends DictionaryTablePanel<
 		clearTable();
 		if(isEmptyData(computerComponents)) return;
 		for( ComputerComponent computerComponent : computerComponents){
-			if(computerComponent.getDevice() != null) {
 				addRowToTable(new Object[] {computerComponent.getComputerComponentID(), computerComponent.getDevice().getDeviceName(), 
 						computerComponent.getComputerCPU().toString(), computerComponent.getComputerRAM().toString(), 
 						computerComponent.getComputerMassStorageFirst().toString(), computerComponent.getComputerMassStorageSecond().toString(),
 						computerComponent.getComputerMassStorageThird().toString()});
-			}
-			
 		}
 		resizeTable();
 	}

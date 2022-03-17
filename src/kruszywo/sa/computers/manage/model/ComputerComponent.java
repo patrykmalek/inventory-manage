@@ -46,7 +46,7 @@ public class ComputerComponent {
 	}
 
 	public Device getDevice() {
-		return device;
+		return (device != null) ? device : new Device();
 	}
 
 	public void setDevice(Device device) {
