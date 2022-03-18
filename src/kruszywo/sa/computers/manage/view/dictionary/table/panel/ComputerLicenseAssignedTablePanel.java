@@ -89,7 +89,7 @@ public class ComputerLicenseAssignedTablePanel extends DictionaryTablePanel<Lice
 		
 		for( License license : licenses){
 			addRowToTable(new Object[] {license.getLicenseID(), license.getSoftware().toString(), license.getLicenseMainKey(),
-					license.getLicenseKey(), license.getAssignedEmail(), license.getInvoiceNumber(), 
+					license.getLicenseKey(), license.getAssignedEmail(), license.getInvoiceNumber(),
 					license.getPurchaseDate(), license.getLastInstallationDate()});
 		}
 		resizeTable();

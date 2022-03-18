@@ -39,6 +39,7 @@ public class LicenseDictionaryTablePanel extends DictionaryTablePanel<License> {
 				java.util.Date.class,
 				java.util.Date.class,
 				java.lang.String.class,
+				java.lang.String.class,
 				java.lang.Boolean.class
 		});
 		this.setTableColumnNames(new String[] { 
@@ -51,6 +52,7 @@ public class LicenseDictionaryTablePanel extends DictionaryTablePanel<License> {
 				"Data zakupu",
 				"Data ost. instalacji",
 				"Nazwa przypisanego komputera",
+				"Dodatkowe informacje",
 				"Ma powiązanie"
 		});
 	}
@@ -63,7 +65,7 @@ public class LicenseDictionaryTablePanel extends DictionaryTablePanel<License> {
 		for( License license : licenses){
 			addRowToTable(new Object[] {license.getLicenseID(), license.getSoftware().toString(), license.getLicenseMainKey(),
 					license.getLicenseKey(), license.getAssignedEmail(), license.getInvoiceNumber(), 
-					license.getPurchaseDate(), license.getLastInstallationDate(), license.getDevice().toString(), license.isUsed()});
+					license.getPurchaseDate(), license.getLastInstallationDate(), license.getDevice().toString(), license.getLicenseNotes(), license.isUsed()});
 		}
 		resizeTable();
 	}

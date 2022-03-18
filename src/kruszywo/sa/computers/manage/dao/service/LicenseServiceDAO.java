@@ -122,7 +122,7 @@ public class LicenseServiceDAO {
 	public void openLicenseDictionaryWindowAndAddItem() {
 		LicenseDictionaryTablePanel licenseDictionaryTablePanel = new LicenseDictionaryTablePanel(new Controller(getController().getDatabaseProvider()));
 		licenseDictionaryTablePanel.updateTable(getManagerDAO().getLicenseDAO().getAll());
-		licenseDictionaryTablePanel.getTable().getTableSorter().setRowFilter(RowFilter.regexFilter("(?i)" + false, 9));
+		licenseDictionaryTablePanel.getTable().getTableSorter().setRowFilter(RowFilter.regexFilter("(?i)" + false, 10));
 		DictionaryFrame<License> dictionaryFrame = new DictionaryFrame<>(getController(), licenseDictionaryTablePanel);
 		dictionaryFrame.setSize(1200, 600);
 		dictionaryFrame.setLocationRelativeTo(null);

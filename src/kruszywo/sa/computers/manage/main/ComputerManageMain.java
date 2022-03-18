@@ -11,7 +11,7 @@ import kruszywo.sa.computers.manage.controller.Controller;
 import kruszywo.sa.computers.manage.provider.DatabaseProvider;
 import kruszywo.sa.computers.manage.view.MainFrame;
 
-public class Main {
+public class ComputerManageMain {
 
 	public static void main(String[] args) throws ParseException, IOException {
 		

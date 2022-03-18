@@ -99,7 +99,7 @@ public class PMJComboBox<E> extends JComboBox<E> {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				if(!comboFocus) {
-					mouseOver = false;
+					setMouseOver(false);
 					setComboColorDefault();
 				}
 			}
@@ -107,7 +107,7 @@ public class PMJComboBox<E> extends JComboBox<E> {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				if(!comboFocus) {
-					mouseOver = true;
+					setMouseOver(true);
 					setComboColorHover();
 				}
 			}
@@ -177,7 +177,31 @@ public class PMJComboBox<E> extends JComboBox<E> {
         return new CompoundBorder(matteBorder, emptyBorder);
 	}
 
-    private class ComboUI extends BasicComboBoxUI {
+    public Color getCustomButtonColor() {
+		return customButtonColor;
+	}
+
+	public Color getCustomButtonColorActive() {
+		return customButtonColorActive;
+	}
+
+	public Color getCustomButtonColorHover() {
+		return customButtonColorHover;
+	}
+
+	public Color getCustomButtonColorEmpty() {
+		return customButtonColorEmpty;
+	}
+
+	public boolean isMouseOver() {
+		return mouseOver;
+	}
+
+	public void setMouseOver(boolean mouseOver) {
+		this.mouseOver = mouseOver;
+	}
+
+	private class ComboUI extends BasicComboBoxUI {
 
         @SuppressWarnings({ "rawtypes", "unused" })
 		private PMJComboBox combo;
