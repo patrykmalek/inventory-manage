@@ -138,7 +138,6 @@ public class ButtonPanel extends JPanel{
 	public void removeAllButtons() {
 		
 		int startIndex = buttons.size() - 1;
-		System.out.println(startIndex);
 		for(int index = startIndex; index >= 0; index--) {
 			removeButton(index);
 		}

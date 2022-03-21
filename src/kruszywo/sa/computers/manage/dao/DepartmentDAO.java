@@ -106,7 +106,9 @@ public class DepartmentDAO implements DAO<Department>{
 				 
 	            ps.setString(1, department.getDepartmentCode());
 	            ps.setString(2, department.getDepartmentName());
-				controller.getDatabaseProvider().executePreparedStatement(ps);
+	            
+	            ps.executeUpdate();
+				ps.close();
 				
 	            System.out.println("Department with following details was saved in DB: " + department.toString());
 			} catch (SQLException e) {
@@ -123,7 +125,8 @@ public class DepartmentDAO implements DAO<Department>{
             ps.setString(2, department.getDepartmentName());
             ps.setInt(3, department.getDepartmentID());
 
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+            ps.executeUpdate();
+			ps.close();
 			
             System.out.println("Department with id " + department.getDepartmentID() + " was updated in DB with following details: " + department.toString());
 		} catch (SQLException e) {
@@ -138,7 +141,8 @@ public class DepartmentDAO implements DAO<Department>{
 			 
             ps.setInt(1, department.getDepartmentID());
             
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+            ps.executeUpdate();
+			ps.close();
 			
 			System.out.println("Department with id: " +  department.getDepartmentID() + " was sucesfully deleted from DB.");
 		} catch (SQLException e) {

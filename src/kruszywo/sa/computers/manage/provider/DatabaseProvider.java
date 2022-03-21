@@ -24,7 +24,7 @@ public class DatabaseProvider {
 	        try {
 	            databaseConnection = DriverManager.getConnection(getUrl());       
 	        } catch (SQLException e) {
-	            System.out.println(e.getMessage());
+	            new SystemOperationException("Błąd podczas połączenia do bazy danych.", e);
 	        }
 	 }
 	 
@@ -34,7 +34,7 @@ public class DatabaseProvider {
 				this.databaseConnection.close();
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			new SystemOperationException("Błąd podczas zamykania połączenia do bazy danych.", e);
 		}
 	}
 	
@@ -60,14 +60,14 @@ public class DatabaseProvider {
 		}
 	}
 	
-	public void executePreparedStatement(PreparedStatement preparedStatement) {
-		try {
-			preparedStatement.executeUpdate();
-			preparedStatement.close();
-		} catch (SQLException e) {
-			new SystemOperationException("Błąd podczas wykonywania zapytania do bazy.", e);
-		}
-	}
+//	public void executePreparedStatement(PreparedStatement preparedStatement) {
+//		try {
+//			preparedStatement.executeUpdate();
+//			preparedStatement.close();
+//		} catch (SQLException e) {
+//			new SystemOperationException("Błąd podczas wykonywania zapytania do bazy.", e);
+//		}
+//	}
 	
 	public void executePreparedStatementWithResult(PreparedStatement preparedStatement) {
 		try {

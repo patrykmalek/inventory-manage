@@ -47,17 +47,17 @@ public class SystemOperationException extends Exception{
 	public SystemOperationException(final String loginException, final SQLException errorException) {
 		super(loginException, errorException);
 		this.addErrors(this.getStackTraceAsString());
+		this.writeLogToFile();
 		if(errorException.getErrorCode() != 18456) {
 			this.createVisuals();
 		}
-		this.writeLogToFile();
 	}
 	
 	public SystemOperationException(final String errorMessage, final Throwable errorException) {
 		super(errorMessage, errorException);
 		this.addErrors(this.getStackTraceAsString());
-		this.createVisuals();
 		this.writeLogToFile();
+		this.createVisuals();
 	}
 	/**
 	 * @wbp.parser.constructor
@@ -65,8 +65,8 @@ public class SystemOperationException extends Exception{
 	public SystemOperationException(final String errorMessage) {
 		super(errorMessage);
 		this.addErrors(this.getStackTraceAsString());
-		this.createVisuals();
 		this.writeLogToFile();
+		this.createVisuals();
 	}
 
 	private void createVisuals() {

@@ -69,6 +69,8 @@ public class LicenseDetailsFrame extends JDialog {
 	
 	private Controller controller;
 	
+	private License licenseTemp;
+	
 	public LicenseDetailsFrame(Controller controller) {
 		super(controller.getMainFrame(), "Panel", true);
 		this.controller = controller;
@@ -286,6 +288,7 @@ public class LicenseDetailsFrame extends JDialog {
 		if(license == null) return false;
 		setLicenseID(license.getLicenseID());
 		
+		setLicenseTemp(license);
 		additionalTitleHeaderLabel.setText(license.getSoftware().getSoftwareName());
 		         
 		licenseSoftwareField.addItem(license.getSoftware());
@@ -312,6 +315,7 @@ public class LicenseDetailsFrame extends JDialog {
 		license.setPurchaseDate(licensePurchaseDateField.getCustomDate());
 		license.setLastInstallationDate(licenseLastInstallationDateField.getCustomDate());
 		license.setLicenseNotes(licenseNotesField.getText());
+		license.setDevice(getLicenseTemp().getDevice());
 		
 		getController().getManagerDAO().getLicenseServiceDAO().saveData(license, getOperationType());
 	}
@@ -371,6 +375,14 @@ public class LicenseDetailsFrame extends JDialog {
 
 	public void setDetailsPanel(JPanel detailsPanel) {
 		this.detailsPanel = detailsPanel;
+	}
+
+	public License getLicenseTemp() {
+		return (licenseTemp == null) ? new License() : licenseTemp;
+	}
+
+	public void setLicenseTemp(License licenseTemp) {
+		this.licenseTemp = licenseTemp;
 	}
 
 	

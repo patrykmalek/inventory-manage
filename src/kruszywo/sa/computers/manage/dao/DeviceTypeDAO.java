@@ -114,7 +114,8 @@ public class DeviceTypeDAO implements DAO<DeviceType>{
 	            ps.setString(1, deviceType.getDeviceTypeName());
 	            ps.setString(2, deviceType.getDeviceTypeNotes());
 	            
-				controller.getDatabaseProvider().executePreparedStatement(ps);
+	            ps.executeUpdate();
+				ps.close();
 				
 	            System.out.println("Device Type with following details was saved in DB: " + deviceType.toString());
 			} catch (SQLException e) {
@@ -132,7 +133,8 @@ public class DeviceTypeDAO implements DAO<DeviceType>{
             ps.setInt(3, deviceType.getDeviceTypeID());
            
 
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+            ps.executeUpdate();
+			ps.close();
 			
             System.out.println("Device Type with id " + deviceType.getDeviceTypeID() + " was updated in DB with following details: " + deviceType.toString());
 		} catch (SQLException e) {
@@ -147,7 +149,8 @@ public class DeviceTypeDAO implements DAO<DeviceType>{
 			 
             ps.setInt(1, deviceType.getDeviceTypeID());
             
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+            ps.executeUpdate();
+			ps.close();
 			
 			System.out.println("Device Type with id: " +  deviceType.getDeviceTypeID() + " was sucesfully deleted from DB.");
 		} catch (SQLException e) {

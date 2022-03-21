@@ -276,8 +276,10 @@ public class DeviceDAO implements DAO<Device>{
 	            ps.setObject(10, device.getNotes());
 	            ps.setObject(11, CommonFunctions.formatDate(new Date(), "yyyy-MM-dd HH:mm:ss"));
 	            ps.setObject(12, device.isUsed());
-	            
-				controller.getDatabaseProvider().executePreparedStatement(ps);
+	           
+				
+				ps.executeUpdate();
+				ps.close();
 				
 	            System.out.println("Device with following details was saved in DB: " + device.toString());
 			} catch (SQLException e) {
@@ -305,7 +307,8 @@ public class DeviceDAO implements DAO<Device>{
             ps.setInt(13, device.getDeviceID());
             
             
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+            ps.executeUpdate();
+			ps.close();
 			
             System.out.println("Device with id " + device.getDeviceID() + " was updated in DB with following details: " + device.toString());
 		} catch (SQLException e) {
@@ -320,7 +323,8 @@ public class DeviceDAO implements DAO<Device>{
 			 
             ps.setInt(1, device.getDeviceID());
             
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+            ps.executeUpdate();
+			ps.close();
 			
 			System.out.println("Device with id: " +  device.getDeviceID() + " was sucesfully deleted from DB.");
 		} catch (SQLException e) {

@@ -212,7 +212,8 @@ public class ComputerComponentDAO implements DAO<ComputerComponent>{
 	            ps.setObject(6, (computerComponent.getComputerMassStorageThird().getMassStorageID() == 0) ? null : computerComponent.getComputerMassStorageThird().getMassStorageID());
 	            ps.setString(7, computerComponent.getComputerSystemName());
 	            
-				controller.getDatabaseProvider().executePreparedStatement(ps);
+	            ps.executeUpdate();
+				ps.close();
 				
 	            System.out.println("ComputerComponent with following details was saved in DB: " + computerComponent.toString());
 			} catch (SQLException e) {
@@ -234,7 +235,8 @@ public class ComputerComponentDAO implements DAO<ComputerComponent>{
             ps.setString(7, computerComponent.getComputerSystemName());
             ps.setInt(8, computerComponent.getComputerComponentID());
 
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+            ps.executeUpdate();
+			ps.close();
 			
             System.out.println("ComputerComponent with id " + computerComponent.getComputerComponentID() + " was updated in DB with following details: " + computerComponent.toString());
 		} catch (SQLException e) {
@@ -249,7 +251,8 @@ public class ComputerComponentDAO implements DAO<ComputerComponent>{
 			 
             ps.setInt(1, computerComponent.getComputerComponentID());
             
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+            ps.executeUpdate();
+			ps.close();
 			
 			System.out.println("ComputerComponent with id: " +  computerComponent.getComputerComponentID() + " was sucesfully deleted from DB.");
 		} catch (SQLException e) {

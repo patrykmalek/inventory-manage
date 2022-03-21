@@ -135,7 +135,8 @@ public class ComputerMassStorageDAO implements DAO<ComputerMassStorage>{
 	            ps.setString(3, computerMassStorage.getMassStorageType());
 	            ps.setInt(4, computerMassStorage.getMassStorageCapacityMB());
 	            
-				controller.getDatabaseProvider().executePreparedStatement(ps);
+	            ps.executeUpdate();
+				ps.close();
 				
 	            System.out.println("ComputerMassStorage with following details was saved in DB: " + computerMassStorage.toString());
 			} catch (SQLException e) {
@@ -155,7 +156,8 @@ public class ComputerMassStorageDAO implements DAO<ComputerMassStorage>{
             ps.setInt(5, computerMassStorage.getMassStorageID());
            
 
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+            ps.executeUpdate();
+			ps.close();
 			
             System.out.println("ComputerMassStorage with id " + computerMassStorage.getMassStorageID() + " was updated in DB with following details: " + computerMassStorage.toString());
 		} catch (SQLException e) {
@@ -170,7 +172,8 @@ public class ComputerMassStorageDAO implements DAO<ComputerMassStorage>{
 			 
             ps.setInt(1, computerMassStorage.getMassStorageID());
             
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+            ps.executeUpdate();
+			ps.close();
 			
 			System.out.println("ComputerMassStorage with id: " +  computerMassStorage.getMassStorageID() + " was sucesfully deleted from DB.");
 		} catch (SQLException e) {

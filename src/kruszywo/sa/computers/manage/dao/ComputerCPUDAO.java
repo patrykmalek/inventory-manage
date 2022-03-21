@@ -120,7 +120,8 @@ public class ComputerCPUDAO implements DAO<ComputerCPU>{
 	            ps.setInt(2, computerCpu.getComputerCpuCoresNumber());
 	            ps.setInt(3, computerCpu.getComputerCpuClockSpeed());
 	            
-				controller.getDatabaseProvider().executePreparedStatement(ps);
+	            ps.executeUpdate();
+				ps.close();
 				
 	            System.out.println("ComputerCPU with following details was saved in DB: " + computerCpu.toString());
 			} catch (SQLException e) {
@@ -139,7 +140,8 @@ public class ComputerCPUDAO implements DAO<ComputerCPU>{
              ps.setInt(4, computerCpu.getComputerCpuID());
            
 
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+             ps.executeUpdate();
+			 ps.close();
 			
             System.out.println("ComputerCPU with id " + computerCpu.getComputerCpuID() + " was updated in DB with following details: " + computerCpu.toString());
 		} catch (SQLException e) {
@@ -154,7 +156,8 @@ public class ComputerCPUDAO implements DAO<ComputerCPU>{
 			 
             ps.setInt(1, computerCpu.getComputerCpuID());
             
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+            ps.executeUpdate();
+			ps.close();
 			
 			System.out.println("ComputerCPU with id: " +  computerCpu.getComputerCpuID() + " was sucesfully deleted from DB.");
 		} catch (SQLException e) {

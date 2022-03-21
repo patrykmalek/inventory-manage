@@ -103,7 +103,8 @@ public class ComputerRAMDAO implements DAO<ComputerRAM>{
 	            ps.setString(1, computerRAM.getMemoryRamType());
 	            ps.setInt(2, computerRAM.getMemoryRamCapacityMB());
 	            
-				controller.getDatabaseProvider().executePreparedStatement(ps);
+	            ps.executeUpdate();
+				ps.close();
 				
 	            System.out.println("ComputerRAM with following details was saved in DB: " + computerRAM.toString());
 			} catch (SQLException e) {
@@ -123,7 +124,8 @@ public class ComputerRAMDAO implements DAO<ComputerRAM>{
             ps.setInt(3, computerRAM.getMemoryRamID());
            
 
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+            ps.executeUpdate();
+			ps.close();
 			
             System.out.println("ComputerRAM with id " + computerRAM.getMemoryRamID() + " was updated in DB with following details: " + computerRAM.toString());
 		} catch (SQLException e) {
@@ -138,7 +140,8 @@ public class ComputerRAMDAO implements DAO<ComputerRAM>{
 			 
             ps.setInt(1, computerRAM.getMemoryRamID());
             
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+            ps.executeUpdate();
+			ps.close();
 			
 			System.out.println("ComputerRAM with id: " +  computerRAM.getMemoryRamID() + " was sucesfully deleted from DB.");
 		} catch (SQLException e) {

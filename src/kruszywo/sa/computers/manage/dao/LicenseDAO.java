@@ -214,7 +214,8 @@ public class LicenseDAO implements DAO<License>{
 	            ps.setString(8, license.getAssignedEmail());
 	            ps.setObject(9, license.getDevice().getDeviceID());
 	            
-				controller.getDatabaseProvider().executePreparedStatement(ps);
+	            ps.executeUpdate();
+				ps.close();
 				
 	            System.out.println("License with following details was saved in DB: " + license.toString());
 			} catch (SQLException e) {
@@ -238,7 +239,8 @@ public class LicenseDAO implements DAO<License>{
             ps.setObject(9, license.getDevice().getDeviceID());
             ps.setInt(10, license.getLicenseID());
 
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+            ps.executeUpdate();
+			ps.close();
 			
             System.out.println("License with id " + license.getLicenseID() + " was updated in DB with following details: " + license.toString());
 		} catch (SQLException e) {
@@ -253,7 +255,8 @@ public class LicenseDAO implements DAO<License>{
 			 
             ps.setInt(1, license.getLicenseID());
             
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+            ps.executeUpdate();
+			ps.close();
 			
 			System.out.println("License with id: " +  license.getLicenseID() + " was sucesfully deleted from DB.");
 		} catch (SQLException e) {

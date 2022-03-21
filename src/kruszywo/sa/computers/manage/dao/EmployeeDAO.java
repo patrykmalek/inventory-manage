@@ -116,7 +116,8 @@ public class EmployeeDAO implements DAO<Employee>{
 	            ps.setString(1, employee.getFirstName());
 	            ps.setString(2, employee.getLastName());
 	            
-				controller.getDatabaseProvider().executePreparedStatement(ps);
+	            ps.executeUpdate();
+				ps.close();
 				
 	            System.out.println("Employee Type with following details was saved in DB: " + employee.toString());
 			} catch (SQLException e) {
@@ -133,7 +134,8 @@ public class EmployeeDAO implements DAO<Employee>{
             ps.setString(2, employee.getLastName());
             ps.setInt(3, employee.getEmployeeID());
 
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+            ps.executeUpdate();
+			ps.close();
 			
             System.out.println("Employee Type with id " + employee.getEmployeeID() + " was updated in DB with following details: " + employee.toString());
 		} catch (SQLException e) {
@@ -148,7 +150,8 @@ public class EmployeeDAO implements DAO<Employee>{
 			 
             ps.setInt(1, employee.getEmployeeID());
             
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+            ps.executeUpdate();
+			ps.close();
 			
 			System.out.println("Employee Type with id: " +  employee.getEmployeeID() + " was sucesfully deleted from DB.");
 		} catch (SQLException e) {

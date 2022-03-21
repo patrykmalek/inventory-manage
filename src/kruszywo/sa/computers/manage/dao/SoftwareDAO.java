@@ -114,7 +114,8 @@ public class SoftwareDAO implements DAO<Software>{
 	            ps.setString(1, software.getSoftwareName());
 	            ps.setString(2, software.getSoftwareNotes());
 	            
-				controller.getDatabaseProvider().executePreparedStatement(ps);
+	            ps.executeUpdate();
+				ps.close();
 				
 	            System.out.println("Software with following details was saved in DB: " + software.toString());
 			} catch (SQLException e) {
@@ -132,7 +133,8 @@ public class SoftwareDAO implements DAO<Software>{
             ps.setInt(3, software.getSoftwareID());
            
 
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+            ps.executeUpdate();
+			ps.close();
 			
             System.out.println("Software with id " + software.getSoftwareID() + " was updated in DB with following details: " + software.toString());
 		} catch (SQLException e) {
@@ -147,7 +149,8 @@ public class SoftwareDAO implements DAO<Software>{
 			 
             ps.setInt(1, software.getSoftwareID());
             
-			controller.getDatabaseProvider().executePreparedStatement(ps);
+            ps.executeUpdate();
+			ps.close();
 			
 			System.out.println("Software with id: " +  software.getSoftwareID() + " was sucesfully deleted from DB.");
 		} catch (SQLException e) {
