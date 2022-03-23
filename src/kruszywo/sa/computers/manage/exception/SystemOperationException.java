@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -48,8 +49,12 @@ public class SystemOperationException extends Exception{
 		super(loginException, errorException);
 		this.addErrors(this.getStackTraceAsString());
 		this.writeLogToFile();
-		if(errorException.getErrorCode() != 18456) {
+		
+		if(errorException.getErrorCode() != 19) {
 			this.createVisuals();
+		} else {
+			JOptionPane.showMessageDialog(new JFrame(), "Błąd prawdopodobnie związany z usuwaniem obiektu, który ma powiązanie z inną tabelą. ---> \n" 
+					+ errorException.getMessage(), "Błąd zapytania bazy danych.", JOptionPane.WARNING_MESSAGE);
 		}
 	}
 	
