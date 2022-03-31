@@ -463,7 +463,7 @@ public class DeviceDetailsFrame extends JDialog {
 		
 		errors.add(deviceNameField.isEmpty());
 		errors.add(deviceUniqueNumberField.isEmpty());
-		errors.add(deviceInventoryNumberField.isEmpty());
+//		errors.add(deviceInventoryNumberField.isEmpty());
 		
 		return !errors.contains(true);
 	}
@@ -476,9 +476,11 @@ public class DeviceDetailsFrame extends JDialog {
 	}
 	
 	public void removeComputerComponents() {
-		splitPane.remove(2);
-		tabPanel.remove(getComputerLicenseAssignedTablePanel());
-		repaint();
+		if(splitPane.getComponentCount() > 2) {
+			splitPane.remove(2);
+			tabPanel.remove(getComputerLicenseAssignedTablePanel());
+			repaint();
+		}
 	}
 
 	private String getCorrectTitle() {

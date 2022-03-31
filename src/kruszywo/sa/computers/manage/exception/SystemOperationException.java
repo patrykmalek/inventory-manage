@@ -49,8 +49,7 @@ public class SystemOperationException extends Exception{
 		super(loginException, errorException);
 		this.addErrors(this.getStackTraceAsString());
 		this.writeLogToFile();
-		
-		if(errorException.getErrorCode() != 19) {
+		if(errorException.getErrorCode() != 19 && errorException.getErrorCode() != 1) {
 			this.createVisuals();
 		} else {
 			JOptionPane.showMessageDialog(new JFrame(), "Błąd prawdopodobnie związany z usuwaniem obiektu, który ma powiązanie z inną tabelą. ---> \n" 

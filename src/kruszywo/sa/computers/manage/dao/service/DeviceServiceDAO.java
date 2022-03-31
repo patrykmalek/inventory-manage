@@ -149,7 +149,7 @@ public class DeviceServiceDAO {
 		if(choosenID < 0) return;
 		DeviceType deviceType = getManagerDAO().getDeviceTypeDAO().get(choosenID);
 		getController().getDeviceDetailsFrame().getDeviceTypeField().addItem(deviceType);
-		getController().getDeviceDetailsFrame().setComputer(deviceType.getDeviceTypeID() == 1001);
+		getController().getDeviceDetailsFrame().setComputer(deviceType.getDeviceTypeID() == 1001 || deviceType.getDeviceTypeID() == 1013);
 		if(getController().getDeviceDetailsFrame().isComputer()) {
 			getController().getDeviceDetailsFrame().showComputerComponents();
 		} else {

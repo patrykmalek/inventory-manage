@@ -265,7 +265,7 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 	}
 	
 	public boolean isEmpty() {
-		if(getCustomTextField().getText().isEmpty()) {
+		if(getItem() == null) {
 			setEmptyWarning();
 			return true;
 		} else {
