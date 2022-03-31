@@ -95,6 +95,8 @@ public class DeviceDetailsFrame extends JDialog {
 	
 	private JTabbedPane tabPanel;
 	
+	private boolean computerComponentsShow;
+	
 	public DeviceDetailsFrame(Controller controller) {
 		super(controller.getMainFrame(), "Panel", true);
 		this.controller = controller;
@@ -469,16 +471,20 @@ public class DeviceDetailsFrame extends JDialog {
 	}
 	
 	public void showComputerComponents() {
-		splitPane.add(getComputerComponentDetailsPanel());
-		splitPane.setDividerLocation(600);
-		tabPanel.add("Licencje", getComputerLicenseAssignedTablePanel());
-		repaint();
+		if(!isComputerComponentsShow()) {
+			setComputerComponentsShow(true);
+			splitPane.add(getComputerComponentDetailsPanel());
+			splitPane.setDividerLocation(600);
+			tabPanel.add("Licencje", getComputerLicenseAssignedTablePanel());
+			repaint();
+		}
 	}
 	
 	public void removeComputerComponents() {
-		if(splitPane.getComponentCount() > 2) {
+		if(splitPane.getComponentCount() > 2 && isComputerComponentsShow()) {
 			splitPane.remove(2);
 			tabPanel.remove(getComputerLicenseAssignedTablePanel());
+			setComputerComponentsShow(false);
 			repaint();
 		}
 	}
@@ -566,6 +572,14 @@ public class DeviceDetailsFrame extends JDialog {
 
 	public void setComputerLicenseAssignedTablePanel(ComputerLicenseAssignedTablePanel computerLicenseAssignedTablePanel) {
 		this.computerLicenseAssignedTablePanel = computerLicenseAssignedTablePanel;
+	}
+
+	public boolean isComputerComponentsShow() {
+		return computerComponentsShow;
+	}
+
+	public void setComputerComponentsShow(boolean computerComponentsShow) {
+		this.computerComponentsShow = computerComponentsShow;
 	}
 	
 }
