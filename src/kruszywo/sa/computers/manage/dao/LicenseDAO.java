@@ -212,7 +212,7 @@ public class LicenseDAO implements DAO<License>{
 	            ps.setString(6, license.getLastInstallationDate());
 	            ps.setString(7, license.getLicenseNotes());
 	            ps.setString(8, license.getAssignedEmail());
-	            ps.setObject(9, license.getDevice().getDeviceID());
+	            ps.setObject(9, (license.getDevice().getDeviceID() == 0) ? null : license.getDevice().getDeviceID());
 	            
 	            ps.executeUpdate();
 				ps.close();
@@ -225,6 +225,8 @@ public class LicenseDAO implements DAO<License>{
 
 	@Override
 	public void update(License license) {
+
+        System.out.println("test: " + ((license.getDevice().getDeviceID() == 0) ? null : license.getDevice().getDeviceID()));
 		try {
 			PreparedStatement ps = controller.getDatabaseProvider().getDatabaseConnection().prepareStatement(UPDATE);
 			 
@@ -236,9 +238,11 @@ public class LicenseDAO implements DAO<License>{
             ps.setString(6, license.getLastInstallationDate());
             ps.setString(7, license.getLicenseNotes());
             ps.setString(8, license.getAssignedEmail());
-            ps.setObject(9, license.getDevice().getDeviceID());
+            ps.setObject(9, (license.getDevice().getDeviceID() == 0) ? null : license.getDevice().getDeviceID());
             ps.setInt(10, license.getLicenseID());
 
+           
+            
             ps.executeUpdate();
 			ps.close();
 			

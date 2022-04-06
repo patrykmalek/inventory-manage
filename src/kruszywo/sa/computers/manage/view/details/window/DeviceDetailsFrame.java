@@ -248,6 +248,7 @@ public class DeviceDetailsFrame extends JDialog {
 		deviceUsedField.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		deviceUsedField.setBackground(Color.WHITE);
 		deviceUsedField.setFocusable(false);
+		deviceUsedField.setEnabled(isEditable());
 		detailsPanel.add(deviceUsedField, "cell 3 8,alignx center");
 		
 		deviceLastInstallationDateLabel = new JLabel("Data ostatniej instalacji:");
@@ -449,11 +450,12 @@ public class DeviceDetailsFrame extends JDialog {
 		device.setLastInstallationDate(deviceLastInstallationDateField.getCustomDate());
 		device.setNotes(deviceNotesField.getText());
 		device.setUsed(deviceUsedField.isSelected());
+	
+		
 		
 		if(isComputer()) {
 			getComputerComponentDetailsFrame().saveComputerComponentData(device);
 		}
-		
 		getController().getManagerDAO().getDeviceServiceDAO().saveData(device, getOperationType());
 	}
 	

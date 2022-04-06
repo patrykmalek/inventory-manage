@@ -174,6 +174,17 @@ public class LicenseServiceDAO {
 		if(!CommonFunctions.validateID(licenseID)) return;
 		License license = getManagerDAO().getLicenseDAO().get(licenseID);
 		
+		int result = JOptionPane.showOptionDialog(controller.getMainFrame(),
+			    "Czy napewno chcesz usunąć powiązanie licencji z tym urządzeniem?",
+			    "Potwierdzenie odłączenia",
+			    JOptionPane.YES_NO_CANCEL_OPTION,
+			    JOptionPane.QUESTION_MESSAGE,
+			    null,
+			    new Object[] {"Tak","Nie"},
+			    "Tak");
+	
+		 if(result != JOptionPane.OK_OPTION) return;
+		
 		if(license.getDevice().getDeviceID() == deviceID) {
 			license.setDevice(null);
 			getManagerDAO().getLicenseDAO().update(license);

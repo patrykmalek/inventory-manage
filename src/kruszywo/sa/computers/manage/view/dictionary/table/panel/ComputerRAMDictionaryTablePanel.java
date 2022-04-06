@@ -32,14 +32,18 @@ public class ComputerRAMDictionaryTablePanel extends DictionaryTablePanel<Comput
 		this.setTableModelAndSorter(new Class[] { 
 				java.lang.Integer.class,
 				java.lang.String.class,
+				java.lang.String.class,
+				java.lang.String.class,
 				java.lang.Integer.class,
 				java.lang.Boolean.class
 		});
 		this.setTableColumnNames(new String[] { 
 				"ID pamięci",
-				"Typ pamięci",
+				"Nazwa pamięci RAM",
+				"Numer seryjny",
+				"Typ pamięci RAM",
 				"Pojemność pamięci MB",
-				"Użyty"
+				"Przypisano"
 		});
 	}
 
@@ -48,7 +52,7 @@ public class ComputerRAMDictionaryTablePanel extends DictionaryTablePanel<Comput
 		clearTable();
 		if(isEmptyData(computerRAMs)) return;
 		for( ComputerRAM computerRam : computerRAMs){
-			addRowToTable(new Object[] {computerRam.getMemoryRamID(), computerRam.getMemoryRamType(), computerRam.getMemoryRamCapacityMB(), computerRam.isUsed()});
+			addRowToTable(new Object[] {computerRam.getMemoryRamID(),computerRam.getMemoryRamName(), computerRam.getMemoryRamSerialNumber(), computerRam.getMemoryRamType(), computerRam.getMemoryRamCapacityMB(), computerRam.isUsed()});
 		}
 		resizeTable();
 	}

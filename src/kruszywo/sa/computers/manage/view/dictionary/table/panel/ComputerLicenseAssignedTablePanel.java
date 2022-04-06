@@ -112,8 +112,8 @@ public class ComputerLicenseAssignedTablePanel extends DictionaryTablePanel<Lice
 		deleteAssignLicenseButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				getController().getManagerDAO().getLicenseServiceDAO().deleteAssignedLicense(getIdFromTable(), getDevice().getDeviceID());
-				updateTable(getController().getManagerDAO().getLicenseDAO().getAllByDeviceID(getDevice().getDeviceID()));
+					getController().getManagerDAO().getLicenseServiceDAO().deleteAssignedLicense(getIdFromTable(), getDevice().getDeviceID());
+					updateTable(getController().getManagerDAO().getLicenseDAO().getAllByDeviceID(getDevice().getDeviceID()));
 			}
 		});
 		

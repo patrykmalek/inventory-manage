@@ -37,6 +37,8 @@ public class ComputerRAMDetailsFrame extends JDialog {
 	private int computerCpuID;
 	
 	private JLabel additionalTitleHeaderLabel;
+	private PMJTextField computerRamNameField;
+	private PMJTextField computerRamSerialNumberField;
 	private PMJComboBox<String> computerRamTypeField;
 	private PMJTextField computerRamCapacityField;
 	
@@ -112,11 +114,31 @@ public class ComputerRAMDetailsFrame extends JDialog {
 	private JPanel createDetailsPanel() {
 		JPanel detailsPanel = new JPanel();
 		detailsPanel.setBackground(SystemColor.text);
-		detailsPanel.setLayout(new MigLayout("", "[10px][150px][grow][grow][grow][grow][grow][10px]", "[25px][25px][25px][25px][grow][10px]"));
+		detailsPanel.setLayout(new MigLayout("", "[10px][150px][grow][grow][grow][grow][grow][10px]", "[25px][25px][25px][25px][25px][25px][grow][10px]"));
+		
+		
+		JLabel computerRamNameLabel = new JLabel("Nazwa pamięci RAM:");
+		computerRamNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		detailsPanel.add(computerRamNameLabel, "cell 1 1,alignx left");
+		
+		computerRamNameField = new PMJTextField(true, 13);
+		computerRamNameField.setEditable(isEditable());
+		computerRamNameField.setColumns(10);
+		detailsPanel.add(computerRamNameField, "cell 2 1 4 1,grow");
+		
+		JLabel computerRamSerialNumberLabel = new JLabel("Numer seryjny:");
+		computerRamSerialNumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		detailsPanel.add(computerRamSerialNumberLabel, "cell 1 2,alignx left");
+		
+		computerRamSerialNumberField = new PMJTextField(true, 13);
+		computerRamSerialNumberField.setEditable(isEditable());
+		computerRamSerialNumberField.setColumns(10);
+		detailsPanel.add(computerRamSerialNumberField, "cell 2 2 4 1,grow");
+		
 		
 		JLabel computerCpuNameLabel = new JLabel("Typ pamięci:");
 		computerCpuNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		detailsPanel.add(computerCpuNameLabel, "cell 1 1,alignx left");
+		detailsPanel.add(computerCpuNameLabel, "cell 1 3,alignx left");
 		
 		computerRamTypeField = new PMJComboBox<String>();
 		computerRamTypeField.setEditable(isEditable());
@@ -127,16 +149,16 @@ public class ComputerRAMDetailsFrame extends JDialog {
 		
 		computerRamTypeModel.addAll(getController().getManagerDAO().getComputerRAMDAO().getMemoryRamTypes());
 		computerRamTypeField.setModel(computerRamTypeModel);
-		detailsPanel.add(computerRamTypeField, "cell 2 1 4 1,grow");
+		detailsPanel.add(computerRamTypeField, "cell 2 3 4 1,grow");
 		
 		JLabel computerRamCapacityLabel = new JLabel("Pojemność pamięci:");
 		computerRamCapacityLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		detailsPanel.add(computerRamCapacityLabel, "cell 1 2,alignx left");
+		detailsPanel.add(computerRamCapacityLabel, "cell 1 4,alignx left");
 		
 		computerRamCapacityField = new PMJTextField(true, 13);
 		computerRamCapacityField.setEditable(isEditable());
 		computerRamCapacityField.setColumns(10);
-		detailsPanel.add(computerRamCapacityField, "cell 2 2 4 1,grow");
+		detailsPanel.add(computerRamCapacityField, "cell 2 4 4 1,grow");
 		
 		return detailsPanel;
 	}
@@ -193,6 +215,8 @@ public class ComputerRAMDetailsFrame extends JDialog {
 		setComputerRAMID(computerRam.getMemoryRamID());
 		
 		additionalTitleHeaderLabel.setText("Szczegóły");
+		computerRamNameField.setText(computerRam.getMemoryRamName());
+		computerRamSerialNumberField.setText(computerRam.getMemoryRamSerialNumber());
 		computerRamTypeField.setSelectedItem(computerRam.getMemoryRamType());
 		computerRamCapacityField.setText(String.valueOf(computerRam.getMemoryRamCapacityMB()));
 		
@@ -204,6 +228,8 @@ public class ComputerRAMDetailsFrame extends JDialog {
 		ComputerRAM computerRam = new ComputerRAM();
 
 			computerRam.setMemoryRamID(getComputerRAMID());
+			computerRam.setMemoryRamName(computerRamNameField.getText());
+			computerRam.setMemoryRamSerialNumber(computerRamSerialNumberField.getText());
 			computerRam.setMemoryRamType((String) computerRamTypeField.getSelectedItem());
 			computerRam.setMemoryRamCapacityMB(computerRamCapacityField.getInt());
 

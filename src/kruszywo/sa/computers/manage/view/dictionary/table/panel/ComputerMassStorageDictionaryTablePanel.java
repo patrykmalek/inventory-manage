@@ -43,7 +43,7 @@ public class ComputerMassStorageDictionaryTablePanel extends DictionaryTablePane
 				"Typ pamięci masowej",
 				"Numer seryjny",
 				"Pojemność pamięci masowej (GB)",
-				"Użyty"
+				"Przypisano"
 		});
 	}
 

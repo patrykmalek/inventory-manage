@@ -28,7 +28,7 @@ public class ComputerManageMain {
 		javax.swing.SwingUtilities.invokeLater(new Runnable()  {
 			public void run() {
 				String databasePath = System.getProperty("user.dir") + "\\database\\computers.db?foreign_keys=on;";
-//				String databasePath = System.getProperty("user.dir") + "\\database\\computers_test.db?foreign_keys=on;";
+//				String databasePath = System.getProperty("user.dir") + "\\database\\computers_test2.db?foreign_keys=on;";
 				DatabaseProvider databaseProvider = new DatabaseProvider("jdbc:sqlite:" + databasePath);
 				databaseProvider.connect();
 				Controller controller = new Controller(databaseProvider);

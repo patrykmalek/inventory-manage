@@ -3,7 +3,9 @@ package kruszywo.sa.computers.manage.model;
 public class ComputerRAM {
 
 	private int memoryRamID;
+	private String memoryRamName;
 	private String memoryRamType;
+	private String memoryRamSerialNumber;
 	private int memoryRamCapacityMB;
 	private boolean used;
 	
@@ -65,6 +67,26 @@ public class ComputerRAM {
 
 	public void setUsed(boolean used) {
 		this.used = used;
+	}
+
+
+	public String getMemoryRamName() {
+		return memoryRamName;
+	}
+
+
+	public void setMemoryRamName(String memoryRamName) {
+		this.memoryRamName = memoryRamName;
+	}
+
+
+	public String getMemoryRamSerialNumber() {
+		return memoryRamSerialNumber;
+	}
+
+
+	public void setMemoryRamSerialNumber(String memoryRamSerialNumber) {
+		this.memoryRamSerialNumber = memoryRamSerialNumber;
 	}
 	
 	
