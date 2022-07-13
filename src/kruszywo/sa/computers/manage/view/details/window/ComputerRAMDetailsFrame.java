@@ -121,8 +121,7 @@ public class ComputerRAMDetailsFrame extends JDialog {
 		computerRamNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(computerRamNameLabel, "cell 1 1,alignx left");
 		
-		computerRamNameField = new PMJTextField(true, 13);
-		computerRamNameField.setEditable(isEditable());
+		computerRamNameField = new PMJTextField(true, 13, isEditable());
 		computerRamNameField.setColumns(10);
 		detailsPanel.add(computerRamNameField, "cell 2 1 4 1,grow");
 		
@@ -130,8 +129,7 @@ public class ComputerRAMDetailsFrame extends JDialog {
 		computerRamSerialNumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(computerRamSerialNumberLabel, "cell 1 2,alignx left");
 		
-		computerRamSerialNumberField = new PMJTextField(true, 13);
-		computerRamSerialNumberField.setEditable(isEditable());
+		computerRamSerialNumberField = new PMJTextField(true, 13, isEditable());
 		computerRamSerialNumberField.setColumns(10);
 		detailsPanel.add(computerRamSerialNumberField, "cell 2 2 4 1,grow");
 		
@@ -155,8 +153,7 @@ public class ComputerRAMDetailsFrame extends JDialog {
 		computerRamCapacityLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(computerRamCapacityLabel, "cell 1 4,alignx left");
 		
-		computerRamCapacityField = new PMJTextField(true, 13);
-		computerRamCapacityField.setEditable(isEditable());
+		computerRamCapacityField = new PMJTextField(true, 13, isEditable());
 		computerRamCapacityField.setColumns(10);
 		detailsPanel.add(computerRamCapacityField, "cell 2 4 4 1,grow");
 		

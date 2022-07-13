@@ -6,12 +6,16 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -38,8 +42,9 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 	private JButton dictionaryButton;
 	private ImageIcon dictionaryButtonIcon;
 	private ImageIcon dictionaryButtonIconActive;
-	
+
 	private ImageIcon clearFieldButtonIcon;
+	private ImageIcon copyFieldButtonIcon;
 	
 	private JTextField customTextField;
 	private Border customTextFieldBorder;
@@ -61,8 +66,13 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 	private T item;
 	
 	private boolean emptyAfterCheck;
+	
+	private boolean editable;
+	
+	private static final Clipboard CLIPBOARD = Toolkit.getDefaultToolkit().getSystemClipboard(); 
 
-	public PMCustomTextFieldWithDictionary() {
+	public PMCustomTextFieldWithDictionary(boolean editable) {
+		setEditable(editable);
 		createVisuals();
 	}
 
@@ -76,14 +86,20 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 		setCustomTextFieldBorder(getCustomBorderForTextField(getCustomBorderColor()));
 		
 		setClearFieldButtonIcon(createClearFieldButtonIcon());
+		setCopyFieldButtonIcon(createCopyFieldButtonIcon());
 		setPopupMenu(createPopupMenuForCustomTextField());
+		
+		createTextFieldListeners();
 		
 		setInputPanel(createInputPanel());
 		setLayout(getLayoutPanel());
 
 		add(getInputPanel());
+		setFieldsEditable();
 	}
-	
+
+
+
 	private JPanel createInputPanel() {
 		JPanel inputPanel = new JPanel();
 		inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.X_AXIS));
@@ -159,6 +175,10 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 		return new ImageIcon(getClass().getResource("/times-circle-regular.png"));
 	}
 	
+	private ImageIcon createCopyFieldButtonIcon() {
+		return new ImageIcon(getClass().getResource("/copy-regular.png"));
+	}
+	
 	private JButton createDictionaryButton() {
 		JButton dictionaryButton = new JButton();
 		
@@ -208,7 +228,17 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 				removeItem();
 			}
 		});
-		popupMenu.add(clearFieldButton);
+		
+		if(isEditable()) popupMenu.add(clearFieldButton);
+		
+		JMenuItem copyFieldButton = new JMenuItem("Kopiuj");
+		copyFieldButton.setIcon(getCopyFieldButtonIcon());
+		copyFieldButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				copyToClipboard();
+			}
+		});
+		popupMenu.add(copyFieldButton);
 		
 		getCustomTextField().addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -229,6 +259,42 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 		return popupMenu;
 	}
 	
+	
+	private void createTextFieldListeners() {
+		getCustomTextField().addMouseListener(new MouseListener() {
+				
+				@Override
+				public void mouseReleased(MouseEvent arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mousePressed(MouseEvent arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mouseExited(MouseEvent arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mouseEntered(MouseEvent arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					if(e.getClickCount() == 2) {
+						getCustomTextField().selectAll();
+					}
+				}
+			});
+	}
 	
 	private void setTextFieldDefault() {
 		getCustomTextField().setBackground(getCustomTextFieldColor());
@@ -260,10 +326,18 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 	
 	
 	public void setEditable(boolean editable) {
-		getCustomTextField().setEditable(editable);
-		getDictionaryButton().setEnabled(editable);
+		this.editable = editable;
 	}
 	
+	public boolean isEditable() {
+		return editable;
+	}
+	
+	public void setFieldsEditable() {
+		getCustomTextField().setEditable(isEditable());
+		getDictionaryButton().setEnabled(isEditable());
+	}
+
 	public boolean isEmpty() {
 		if(getItem() == null) {
 			setEmptyWarning();
@@ -285,6 +359,12 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 			setTextFieldDefault();
 		}
 		setEmptyAfterCheck(false);
+	}
+	
+	private void copyToClipboard() {
+		String text = getCustomTextField().getText();
+		StringSelection sel  = new StringSelection(text.toString()); 
+        CLIPBOARD.setContents(sel, sel); 
 	}
 	
 	public JButton getDictionaryButton() {
@@ -445,6 +525,14 @@ public class PMCustomTextFieldWithDictionary<T> extends JPanel {
 
 	public Color getCustomBorderColorEmpty() {
 		return customBorderColorEmpty;
+	}
+	
+	public void setCopyFieldButtonIcon(ImageIcon copyFieldButtonIcon) {
+		this.copyFieldButtonIcon = copyFieldButtonIcon;
+	}
+	
+	public ImageIcon getCopyFieldButtonIcon() {
+		return copyFieldButtonIcon;
 	}
 	
 }

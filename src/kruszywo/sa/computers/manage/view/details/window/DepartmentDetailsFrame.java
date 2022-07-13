@@ -113,8 +113,7 @@ public class DepartmentDetailsFrame extends JDialog {
 		deviceCodeLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceCodeLabel, "cell 1 1,alignx left");
 		
-		departmentCodeField = new PMJTextField(true, 13);
-		departmentCodeField.setEditable(isEditable());
+		departmentCodeField = new PMJTextField(true, 13, isEditable());
 		departmentCodeField.setColumns(10);
 		detailsPanel.add(departmentCodeField, "cell 2 1 4 1,grow");
 		
@@ -122,8 +121,7 @@ public class DepartmentDetailsFrame extends JDialog {
 		deviceNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceNameLabel, "cell 1 2,alignx left");
 		
-		departmentNameField = new PMJTextField(true, 13);
-		departmentNameField.setEditable(isEditable());
+		departmentNameField = new PMJTextField(true, 13, isEditable());
 		departmentNameField.setColumns(10);
 		detailsPanel.add(departmentNameField, "cell 2 2 4 1,grow");
 		

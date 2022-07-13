@@ -121,16 +121,14 @@ public class ComputerLicenseAssignedDetailsFrame extends JDialog {
 		computerComponentDeviceLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(computerComponentDeviceLabel, "cell 1 1,alignx left");
 		
-		deviceField = new PMCustomTextFieldWithDictionary<Device>();
-		deviceField.setEditable(false);
+		deviceField = new PMCustomTextFieldWithDictionary<Device>(isEditable());
 		detailsPanel.add(deviceField, "cell 2 1 4 1,grow");
 		
 		JLabel computerComponentCPULabel= new JLabel("Procesor:");
 		computerComponentCPULabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(computerComponentCPULabel, "cell 1 2,alignx left");
 		
-		licenseField = new PMCustomTextFieldWithDictionary<License>();
-		licenseField.setEditable(isEditable());
+		licenseField = new PMCustomTextFieldWithDictionary<License>(isEditable());
 		detailsPanel.add(licenseField, "cell 2 2 4 1,grow");
 
 		

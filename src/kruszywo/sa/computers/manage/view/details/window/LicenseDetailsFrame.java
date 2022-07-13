@@ -135,15 +135,14 @@ public class LicenseDetailsFrame extends JDialog {
 		licenseSoftwareLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(licenseSoftwareLabel, "cell 1 1,alignx left");
 		
-		licenseSoftwareField = new PMCustomTextFieldWithDictionary<Software>();
-		licenseSoftwareField.setEditable(isEditable());
+		licenseSoftwareField = new PMCustomTextFieldWithDictionary<Software>(isEditable());
 		detailsPanel.add(licenseSoftwareField, "cell 2 1 4 1,grow");
 		
 		licenseMainKeyLabel = new JLabel("Główny klucz licencji:");
 		licenseMainKeyLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(licenseMainKeyLabel, "cell 1 2,alignx left");
 		
-		licenseMainKeyField = new PMJTextField(true, 12);
+		licenseMainKeyField = new PMJTextField(true, 13, isEditable());
 		licenseMainKeyField.setEditable(isEditable());
 		licenseMainKeyField.setColumns(10);
 		detailsPanel.add(licenseMainKeyField, "cell 2 2 4 1,grow");
@@ -152,8 +151,7 @@ public class LicenseDetailsFrame extends JDialog {
 		licenseKeyLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(licenseKeyLabel, "cell 1 3,alignx left");
 		
-		licenseKeyField = new PMJTextField(true, 13);
-		licenseKeyField.setEditable(isEditable());
+		licenseKeyField = new PMJTextField(true, 13, isEditable());
 		licenseKeyField.setColumns(10);
 		detailsPanel.add(licenseKeyField, "cell 2 3 4 1,grow");
 		
@@ -161,8 +159,7 @@ public class LicenseDetailsFrame extends JDialog {
 		licenseAssignedEmailLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(licenseAssignedEmailLabel, "cell 1 4,alignx left");
 		
-		licenseAssignedEmailField = new PMJTextField(true, 13);
-		licenseAssignedEmailField.setEditable(isEditable());
+		licenseAssignedEmailField = new PMJTextField(true, 13, isEditable());
 		licenseAssignedEmailField.setColumns(10);
 		detailsPanel.add(licenseAssignedEmailField, "cell 2 4 4 1,grow");
 		
@@ -170,8 +167,7 @@ public class LicenseDetailsFrame extends JDialog {
 		licenseInvoiceNumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(licenseInvoiceNumberLabel, "cell 1 5,alignx left");
 		
-		licenseInvoiceNumberField = new PMJTextField(true, 13);
-		licenseInvoiceNumberField.setEditable(isEditable());
+		licenseInvoiceNumberField = new PMJTextField(true, 13, isEditable());
 		licenseInvoiceNumberField.setColumns(10);
 		detailsPanel.add(licenseInvoiceNumberField, "cell 2 5 4 1,grow");
 		

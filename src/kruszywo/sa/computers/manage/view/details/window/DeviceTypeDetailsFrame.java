@@ -117,8 +117,7 @@ public class DeviceTypeDetailsFrame extends JDialog {
 		deviceNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceNameLabel, "cell 1 1,alignx left");
 		
-		deviceTypeNameField = new PMJTextField(true, 13);
-		deviceTypeNameField.setEditable(isEditable());
+		deviceTypeNameField = new PMJTextField(true, 13, isEditable());
 		deviceTypeNameField.setColumns(10);
 		detailsPanel.add(deviceTypeNameField, "cell 2 1 4 1,grow");
 		

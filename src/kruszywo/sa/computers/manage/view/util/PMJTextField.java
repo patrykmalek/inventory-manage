@@ -3,6 +3,9 @@ package kruszywo.sa.computers.manage.view.util;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -13,6 +16,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -31,17 +35,20 @@ public class PMJTextField extends JTextField{
 	private static final long serialVersionUID = -7525085440768397157L;
 	
 	private ImageIcon clearFieldButtonIcon;
+	private ImageIcon copyFieldButtonIcon;
 	private JPopupMenu popupMenu;
 	private boolean warningAfterCheck;
+	private static final Clipboard CLIPBOARD = Toolkit.getDefaultToolkit().getSystemClipboard(); 
 	
 	public PMJTextField (String text) {
 		super(text);
 		this.createDefaultEventListeners();
 	}
 
-	public PMJTextField (boolean custom, int fontSize) {
+	public PMJTextField (boolean custom, int fontSize, boolean editable) {
 		super();
 		if(custom) {
+			this.setEditable(editable);
 			this.setFont(new Font("Tahoma", Font.PLAIN, fontSize));
 			this.setBorder(getCustomFieldBorder(UIManager.getColor("Button.shadow")));
 			this.setBackground(SystemColor.white);
@@ -99,6 +106,41 @@ public class PMJTextField extends JTextField{
 				setBorder(getCustomFieldBorder(UIManager.getColor("Button.shadow")));
 			}
 
+		});
+		
+		
+		this.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getClickCount() == 2) {
+					selectAll();
+				}
+			}
 		});
 	}
 	
@@ -204,6 +246,10 @@ public class PMJTextField extends JTextField{
 		return new ImageIcon(getClass().getResource("/times-circle-regular.png"));
 	}
 	
+	private ImageIcon createCopyFieldButtonIcon() {
+		return new ImageIcon(getClass().getResource("/copy-regular.png"));
+	}
+	
 	private JPopupMenu createPopupMenuForCustomTextField() {
 		JPopupMenu popupMenu = new JPopupMenu();
 		
@@ -215,7 +261,18 @@ public class PMJTextField extends JTextField{
 				setText("");
 			}
 		});
-		popupMenu.add(clearFieldButton);
+		if(isEditable()) popupMenu.add(clearFieldButton);
+		
+		
+		JMenuItem copyFieldButton = new JMenuItem("Kopiuj");
+		setCopyFieldButtonIcon(createCopyFieldButtonIcon());
+		copyFieldButton.setIcon(getCopyFieldButtonIcon());
+		copyFieldButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				copyToClipboard();
+			}
+		});
+		popupMenu.add(copyFieldButton);
 		
 		this.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -269,6 +326,13 @@ public class PMJTextField extends JTextField{
 		setBorder(getCustomFieldBorder(UIManager.getColor("Button.shadow")));
 		setWarningAfterCheck(false);
 	}
+	
+	
+	private void copyToClipboard() {
+		String text = getText();
+		StringSelection sel  = new StringSelection(text.toString()); 
+        CLIPBOARD.setContents(sel, sel); 
+	}
 
 	private boolean isWarningAfterCheck() {
 		return warningAfterCheck;
@@ -294,8 +358,16 @@ public class PMJTextField extends JTextField{
 		this.clearFieldButtonIcon = clearFieldButtonIcon;
 	}
 	
+	public void setCopyFieldButtonIcon(ImageIcon copyFieldButtonIcon) {
+		this.copyFieldButtonIcon = copyFieldButtonIcon;
+	}
+	
 	public int getInt() {
 		return (getText().isEmpty()) ? 0 : Integer.parseInt(getText());
+	}
+
+	public ImageIcon getCopyFieldButtonIcon() {
+		return copyFieldButtonIcon;
 	}
 
 }

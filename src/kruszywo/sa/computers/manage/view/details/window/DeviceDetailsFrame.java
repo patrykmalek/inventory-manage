@@ -180,8 +180,7 @@ public class DeviceDetailsFrame extends JDialog {
 		deviceNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceNameLabel, "cell 1 1,alignx left");
 		
-		deviceNameField = new PMJTextField(true, 13);
-		deviceNameField.setEditable(isEditable());
+		deviceNameField = new PMJTextField(true, 13, isEditable());
 		deviceNameField.setColumns(10);
 		detailsPanel.add(deviceNameField, "cell 2 1 4 1,grow");
 		
@@ -189,7 +188,7 @@ public class DeviceDetailsFrame extends JDialog {
 		deviceUniqueNumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceUniqueNumberLabel, "cell 1 2,alignx left");
 		
-		deviceUniqueNumberField = new PMJTextField(true, 13);
+		deviceUniqueNumberField = new PMJTextField(true, 13, isEditable());
 		deviceUniqueNumberField.setEditable(isEditable());
 		deviceUniqueNumberField.setColumns(10);
 		detailsPanel.add(deviceUniqueNumberField, "cell 2 2 4 1,grow");
@@ -198,8 +197,7 @@ public class DeviceDetailsFrame extends JDialog {
 		deviceInventoryNumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceInventoryNumberLabel, "cell 1 3,alignx left");
 		
-		deviceInventoryNumberField = new PMJTextField(true, 13);
-		deviceInventoryNumberField.setEditable(isEditable());
+		deviceInventoryNumberField = new PMJTextField(true, 13, isEditable());
 		deviceInventoryNumberField.setColumns(10);
 		detailsPanel.add(deviceInventoryNumberField, "cell 2 3 4 1,grow");
 		
@@ -207,32 +205,28 @@ public class DeviceDetailsFrame extends JDialog {
 		deviceTypeNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceTypeNameLabel, "cell 1 4,alignx left");
 		
-		deviceTypeField = new PMCustomTextFieldWithDictionary<DeviceType>();
-		deviceTypeField.setEditable(isEditable());
+		deviceTypeField = new PMCustomTextFieldWithDictionary<DeviceType>(isEditable());
 		detailsPanel.add(deviceTypeField, "cell 2 4 4 1, grow");
 		
 		deviceAssignedDepartmentLabel = new JLabel("Miejsce użycia:");
 		deviceAssignedDepartmentLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceAssignedDepartmentLabel, "cell 1 5,alignx left");
 		
-		deviceAssignedDepartmentField = new PMCustomTextFieldWithDictionary<Department>();
-		deviceAssignedDepartmentField.setEditable(isEditable());
+		deviceAssignedDepartmentField = new PMCustomTextFieldWithDictionary<Department>(isEditable());
 		detailsPanel.add(deviceAssignedDepartmentField, "cell 2 5 4 1,grow");
 		
 		deviceAssignedEmployeeLabel = new JLabel("Przypisany pracownik:");
 		deviceAssignedEmployeeLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceAssignedEmployeeLabel, "cell 1 6,alignx left");
 		
-		deviceAssignedEmployeeField = new PMCustomTextFieldWithDictionary<Employee>();
-		deviceAssignedEmployeeField.setEditable(isEditable());
+		deviceAssignedEmployeeField = new PMCustomTextFieldWithDictionary<Employee>(isEditable());
 		detailsPanel.add(deviceAssignedEmployeeField, "cell 2 6 4 1,grow");
 		
 		deviceInvoiceNumberLabel = new JLabel("Powiązana faktura:");
 		deviceInvoiceNumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceInvoiceNumberLabel, "cell 1 7,alignx left");
 		
-		deviceInvoiceNumberField = new PMJTextField(true, 13);
-		deviceInvoiceNumberField.setEditable(isEditable());
+		deviceInvoiceNumberField = new PMJTextField(true, 13, isEditable());
 		deviceInvoiceNumberField.setColumns(10);
 		detailsPanel.add(deviceInvoiceNumberField, "cell 2 7 4 1,grow");
 		
@@ -453,12 +447,11 @@ public class DeviceDetailsFrame extends JDialog {
 		device.setNotes(deviceNotesField.getText());
 		device.setUsed(deviceUsedField.isSelected());
 	
-		
+		getController().getManagerDAO().getDeviceServiceDAO().saveData(device, getOperationType());
 		
 		if(isComputer()) {
 			getComputerComponentDetailsFrame().saveComputerComponentData(device);
 		}
-		getController().getManagerDAO().getDeviceServiceDAO().saveData(device, getOperationType());
 	}
 	
 	private boolean validateFields() {

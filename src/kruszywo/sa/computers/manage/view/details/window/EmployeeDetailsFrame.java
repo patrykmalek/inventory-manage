@@ -115,8 +115,7 @@ public class EmployeeDetailsFrame extends JDialog {
 		deviceFirstNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceFirstNameLabel, "cell 1 1,alignx left");
 		
-		employeeFirstNameField = new PMJTextField(true, 13);
-		employeeFirstNameField.setEditable(isEditable());
+		employeeFirstNameField = new PMJTextField(true, 13, isEditable());
 		employeeFirstNameField.setColumns(10);
 		detailsPanel.add(employeeFirstNameField, "cell 2 1 4 1,grow");
 		
@@ -124,8 +123,7 @@ public class EmployeeDetailsFrame extends JDialog {
 		deviceNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceNameLabel, "cell 1 2,alignx left");
 		
-		employeeLastNameField = new PMJTextField(true, 13);
-		employeeLastNameField.setEditable(isEditable());
+		employeeLastNameField = new PMJTextField(true, 13, isEditable());
 		employeeLastNameField.setColumns(10);
 		detailsPanel.add(employeeLastNameField, "cell 2 2 4 1,grow");
 		

@@ -134,56 +134,49 @@ public class ComputerComponentDetailsFrame extends JDialog {
 		computerComponentDeviceLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(computerComponentDeviceLabel, "cell 1 1,alignx left");
 		
-		computerComponentDeviceField = new PMCustomTextFieldWithDictionary<Device>();
-		computerComponentDeviceField.setEditable(isEditable());
+		computerComponentDeviceField = new PMCustomTextFieldWithDictionary<Device>(isEditable());
 		detailsPanel.add(computerComponentDeviceField, "cell 2 1 4 1,grow");
 		
 		JLabel computerComponentCPULabel= new JLabel("Procesor:");
 		computerComponentCPULabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(computerComponentCPULabel, "cell 1 2,alignx left");
 		
-		computerComponentCPUField = new PMCustomTextFieldWithDictionary<ComputerCPU>();
-		computerComponentCPUField.setEditable(isEditable());
+		computerComponentCPUField = new PMCustomTextFieldWithDictionary<ComputerCPU>(isEditable());
 		detailsPanel.add(computerComponentCPUField, "cell 2 2 4 1,grow");
 		
 		JLabel computerComponentRAMLabel = new JLabel("Pamięć RAM:");
 		computerComponentRAMLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(computerComponentRAMLabel, "cell 1 3,alignx left");
 		
-		computerComponentRAMField = new PMCustomTextFieldWithDictionary<ComputerRAM>();
-		computerComponentRAMField.setEditable(isEditable());
+		computerComponentRAMField = new PMCustomTextFieldWithDictionary<ComputerRAM>(isEditable());
 		detailsPanel.add(computerComponentRAMField, "cell 2 3 4 1,grow");
 		
 		JLabel computerComponentMassStorageFirstLabel = new JLabel("Pamięć masowa - 1:");
 		computerComponentMassStorageFirstLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(computerComponentMassStorageFirstLabel, "cell 1 4,alignx left");
 		
-		computerComponentMassStorageFirstField = new PMCustomTextFieldWithDictionary<ComputerMassStorage>();
-		computerComponentMassStorageFirstField.setEditable(isEditable());
+		computerComponentMassStorageFirstField = new PMCustomTextFieldWithDictionary<ComputerMassStorage>(isEditable());
 		detailsPanel.add(computerComponentMassStorageFirstField, "cell 2 4 4 1,grow");
 		
 		JLabel computerComponentMassStorageSecondLabel = new JLabel("Pamięć masowa - 2:");
 		computerComponentMassStorageSecondLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(computerComponentMassStorageSecondLabel, "cell 1 5,alignx left");
 		
-		computerComponentMassStorageSecondField = new PMCustomTextFieldWithDictionary<ComputerMassStorage>();
-		computerComponentMassStorageSecondField.setEditable(isEditable());
+		computerComponentMassStorageSecondField = new PMCustomTextFieldWithDictionary<ComputerMassStorage>(isEditable());
 		detailsPanel.add(computerComponentMassStorageSecondField, "cell 2 5 4 1,grow");
 		
 		JLabel computerComponentMassStorageThirdLabel = new JLabel("Pamięć masowa - 3:");
 		computerComponentMassStorageThirdLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(computerComponentMassStorageThirdLabel, "cell 1 6,alignx left");
 		
-		computerComponentMassStorageThirdField = new PMCustomTextFieldWithDictionary<ComputerMassStorage>();
-		computerComponentMassStorageThirdField.setEditable(isEditable());
+		computerComponentMassStorageThirdField = new PMCustomTextFieldWithDictionary<ComputerMassStorage>(isEditable());
 		detailsPanel.add(computerComponentMassStorageThirdField, "cell 2 6 4 1,grow");
 		
 		JLabel deviceComputerSystemNameLabel= new JLabel("Nazwa systemowa:");
 		deviceComputerSystemNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceComputerSystemNameLabel, "cell 1 7,alignx left");
 		
-		deviceComputerSystemNameField = new PMJTextField(true, 13);
-		deviceComputerSystemNameField.setEditable(isEditable());
+		deviceComputerSystemNameField = new PMJTextField(true, 13, isEditable());
 		deviceComputerSystemNameField.setColumns(10);
 		detailsPanel.add(deviceComputerSystemNameField, "cell 2 7 4 1,grow");
 		

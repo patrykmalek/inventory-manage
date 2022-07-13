@@ -117,8 +117,7 @@ public class SoftwareDetailsFrame extends JDialog {
 		deviceNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(deviceNameLabel, "cell 1 1,alignx left");
 		
-		softwareNameField = new PMJTextField(true, 13);
-		softwareNameField.setEditable(isEditable());
+		softwareNameField = new PMJTextField(true, 13, isEditable());
 		softwareNameField.setColumns(10);
 		detailsPanel.add(softwareNameField, "cell 2 1 4 1,grow");
 		

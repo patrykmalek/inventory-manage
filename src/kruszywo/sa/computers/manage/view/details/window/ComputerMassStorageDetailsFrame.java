@@ -120,8 +120,7 @@ public class ComputerMassStorageDetailsFrame extends JDialog {
 		computerMassStorageNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(computerMassStorageNameLabel, "cell 1 1,alignx left");
 		
-		computerMassStorageNameField = new PMJTextField(true, 13);
-		computerMassStorageNameField.setEditable(isEditable());
+		computerMassStorageNameField = new PMJTextField(true, 13, isEditable());
 		computerMassStorageNameField.setColumns(10);
 		detailsPanel.add(computerMassStorageNameField, "cell 2 1 4 1,grow");
 		
@@ -129,8 +128,7 @@ public class ComputerMassStorageDetailsFrame extends JDialog {
 		computerMassStorageSerialNumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(computerMassStorageSerialNumberLabel, "cell 1 2,alignx left");
 		
-		computerMassStorageSerialNumberField = new PMJTextField(true, 13);
-		computerMassStorageSerialNumberField.setEditable(isEditable());
+		computerMassStorageSerialNumberField = new PMJTextField(true, 13, isEditable());
 		computerMassStorageSerialNumberField.setColumns(10);
 		detailsPanel.add(computerMassStorageSerialNumberField, "cell 2 2 4 1,grow");
 		
@@ -153,8 +151,7 @@ public class ComputerMassStorageDetailsFrame extends JDialog {
 		computerMassStorageCapacityLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(computerMassStorageCapacityLabel, "cell 1 4,alignx left");
 		
-		computerMassStorageCapacityField = new PMJTextField(true, 13);
-		computerMassStorageCapacityField.setEditable(isEditable());
+		computerMassStorageCapacityField = new PMJTextField(true, 13, isEditable());
 		computerMassStorageCapacityField.setColumns(10);
 		detailsPanel.add(computerMassStorageCapacityField, "cell 2 4 4 1,grow");
 		

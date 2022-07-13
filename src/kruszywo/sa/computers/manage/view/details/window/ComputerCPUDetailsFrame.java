@@ -117,8 +117,7 @@ public class ComputerCPUDetailsFrame extends JDialog {
 		computerCpuNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(computerCpuNameLabel, "cell 1 1,alignx left");
 		
-		computerCpuNameField = new PMJTextField(true, 13);
-		computerCpuNameField.setEditable(isEditable());
+		computerCpuNameField = new PMJTextField(true, 13, isEditable());
 		computerCpuNameField.setColumns(10);
 		detailsPanel.add(computerCpuNameField, "cell 2 1 4 1,grow");
 		
@@ -126,8 +125,7 @@ public class ComputerCPUDetailsFrame extends JDialog {
 		computerCpuCoresNumberLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(computerCpuCoresNumberLabel, "cell 1 2,alignx left");
 		
-		computerCpuCoresNumberField = new PMJTextField(true, 13);
-		computerCpuCoresNumberField.setEditable(isEditable());
+		computerCpuCoresNumberField = new PMJTextField(true, 13, isEditable());
 		computerCpuCoresNumberField.setColumns(10);
 		detailsPanel.add(computerCpuCoresNumberField, "cell 2 2 4 1,grow");
 		
@@ -135,8 +133,7 @@ public class ComputerCPUDetailsFrame extends JDialog {
 		computerCpuClockSpeedLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		detailsPanel.add(computerCpuClockSpeedLabel, "cell 1 3,alignx left");
 		
-		computerCpuClockSpeedField = new PMJTextField(true, 13);
-		computerCpuClockSpeedField.setEditable(isEditable());
+		computerCpuClockSpeedField = new PMJTextField(true, 13, isEditable());
 		computerCpuClockSpeedField.setColumns(10);
 		detailsPanel.add(computerCpuClockSpeedField, "cell 2 3 4 1,grow");
 		
