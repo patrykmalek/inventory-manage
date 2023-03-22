@@ -1,4 +1,4 @@
-# Inventory Menage
+# Inventory Manage
 
 ## Table of Contents
 
