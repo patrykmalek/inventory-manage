@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Sealed: true
-Main-Class: computers.manage.main.ComputerManageMain
-
