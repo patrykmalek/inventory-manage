@@ -39,7 +39,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import javax.swing.JTextPane;
 import javax.swing.JCheckBox;
@@ -92,7 +92,7 @@ public class DeviceDetailsFrame extends JDialog {
 	private ComputerComponentDetailsFrame computerComponentDetailsFrame;
 	private JPanel computerComponentDetailsPanel;
 	
-	private int[] idsToShowComputerNameField = {1013, 1001};
+	private String[] namesToShowComputerNameField = {"laptop", "laptopy", "laptops", "komputer", "komputery", "computer", "computers", "notebook", "notebooks"};
 	private JCheckBox deviceUsedField;
 	
 	private JTabbedPane tabPanel;
@@ -408,13 +408,14 @@ public class DeviceDetailsFrame extends JDialog {
 	public boolean addDeviceDataToView(Device device) {
 		
 		if(device == null) return false;
-		setDeviceID(device.getDeviceID());
-		setComputer(IntStream.of(getIdsToShowComputerNameField()).anyMatch(x -> x == device.getDeviceType().getDeviceTypeID()));
+			setDeviceID(device.getDeviceID());
+			
+		if(device.getDeviceType().getDeviceTypeName() != null)
+			setComputer(Stream.of(getNamesToShowComputerNameField()).anyMatch(x -> x.equals(device.getDeviceType().getDeviceTypeName().toLowerCase())));
 		
-		
-		if(isComputer()) {
+		if(isComputer())
 			showComputerComponents();
-		}
+		
 		additionalTitleHeaderLabel.setText(device.getDeviceName());
 		
 		deviceNameField.setText(device.getDeviceName());                
@@ -541,12 +542,12 @@ public class DeviceDetailsFrame extends JDialog {
 		return isComputer;
 	}
 
-	public int[] getIdsToShowComputerNameField() {
-		return idsToShowComputerNameField;
+	public String[] getNamesToShowComputerNameField() {
+		return namesToShowComputerNameField;
 	}
 
-	public void setIdsToShowComputerNameField(int[] idsToShowComputerNameField) {
-		this.idsToShowComputerNameField = idsToShowComputerNameField;
+	public void setIdsToShowComputerNameField(String[] namesToShowComputerNameField) {
+		this.namesToShowComputerNameField = namesToShowComputerNameField;
 	}
 
 	public ComputerComponentDetailsFrame getComputerComponentDetailsFrame() {

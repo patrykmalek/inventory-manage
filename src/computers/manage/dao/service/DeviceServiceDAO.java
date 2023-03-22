@@ -1,5 +1,7 @@
 package computers.manage.dao.service;
 
+import java.util.stream.Stream;
+
 import javax.swing.JOptionPane;
 
 import computers.manage.controller.Controller;
@@ -166,7 +168,8 @@ public class DeviceServiceDAO {
 		if(choosenID < 0) return;
 		DeviceType deviceType = getManagerDAO().getDeviceTypeDAO().get(choosenID);
 		getController().getDeviceDetailsFrame().getDeviceTypeField().addItem(deviceType);
-		getController().getDeviceDetailsFrame().setComputer(deviceType.getDeviceTypeID() == 1001 || deviceType.getDeviceTypeID() == 1013);
+		getController().getDeviceDetailsFrame().setComputer(Stream.of(getController().getDeviceDetailsFrame().getNamesToShowComputerNameField())
+																		.anyMatch(x -> x.equals(deviceType.getDeviceTypeName().toLowerCase())));
 		if(getController().getDeviceDetailsFrame().isComputer()) {
 			getController().getDeviceDetailsFrame().removeComputerComponents();
 			getController().getDeviceDetailsFrame().showComputerComponents();
