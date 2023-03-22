@@ -39,7 +39,7 @@ public class AboutFrame extends JDialog {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		
-		JLabel headerTitle = new JLabel("Ewidencja urządzeń - InventoryPass");
+		JLabel headerTitle = new JLabel("Ewidencja urządzeń - Inventory Manage");
 		headerTitle.setFont(new Font("Tahoma", Font.BOLD, 12));
 		headerTitle.setBounds(10, 11, 364, 15);
 		panel.add(headerTitle);
@@ -55,7 +55,7 @@ public class AboutFrame extends JDialog {
 		lblCopyrightPatryk.setBounds(10, 62, 364, 15);
 		panel.add(lblCopyrightPatryk);
 		
-		JLabel lblCopyright = new JLabel("Ewidencja urządzeń - InventoryPass is Open Source Software");
+		JLabel lblCopyright = new JLabel("Ewidencja urządzeń - Inventory Manage is Open Source Software");
 		lblCopyright.setVerticalAlignment(SwingConstants.TOP);
 		lblCopyright.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		lblCopyright.setBounds(10, 81, 364, 15);

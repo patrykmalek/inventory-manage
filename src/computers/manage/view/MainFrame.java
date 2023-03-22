@@ -30,7 +30,7 @@ public class MainFrame extends JFrame {
 	}
 	
 	private void createVisuals() {
-		this.setTitle("Ewidencja urządzeń - InventoryPass");
+		this.setTitle("Ewidencja urządzeń - Inventory Manage");
 		this.setIconImage(new ImageIcon(getClass().getResource("/industry-solid-25.png")).getImage());
 		this.setSize(1600, 800);
 		this.mainPanel = createMainPanel();
