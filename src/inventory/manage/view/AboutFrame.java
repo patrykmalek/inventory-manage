@@ -44,55 +44,55 @@ public class AboutFrame extends JDialog {
 		headerTitle.setBounds(10, 11, 364, 15);
 		panel.add(headerTitle);
 		
-		JLabel lblVersion = new JLabel("Version 1.0.10");
+		JLabel lblVersion = new JLabel("Version 1.0.0");
 		lblVersion.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		lblVersion.setBounds(10, 26, 364, 15);
 		panel.add(lblVersion);
 		
-		JLabel lblCopyrightPatryk = new JLabel("Copyright © 2021-2022 Patryk Małek");
-		lblCopyrightPatryk.setVerticalAlignment(SwingConstants.TOP);
-		lblCopyrightPatryk.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		lblCopyrightPatryk.setBounds(10, 62, 364, 15);
-		panel.add(lblCopyrightPatryk);
-		
-		JLabel lblCopyright = new JLabel("Ewidencja urządzeń - Inventory Manage is Open Source Software");
+		JLabel lblCopyright = new JLabel("Copyright © 2021-2023 Patryk Małek");
 		lblCopyright.setVerticalAlignment(SwingConstants.TOP);
 		lblCopyright.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		lblCopyright.setBounds(10, 81, 364, 15);
+		lblCopyright.setBounds(10, 62, 364, 15);
 		panel.add(lblCopyright);
 		
-		JLabel lblNewLabel = new JLabel("MIT License");
-		lblNewLabel.setVerticalAlignment(SwingConstants.TOP);
-		lblNewLabel.setBounds(10, 110, 165, 15);
-		panel.add(lblNewLabel);
+		JLabel lblSoftwareName = new JLabel("Ewidencja urządzeń - Inventory Manage is Open Source Software");
+		lblSoftwareName.setVerticalAlignment(SwingConstants.TOP);
+		lblSoftwareName.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblSoftwareName.setBounds(10, 81, 364, 15);
+		panel.add(lblSoftwareName);
 		
-		JLabel lblCopyright_1 = new JLabel("<html>Permission is hereby granted, free of charge, to any person obtaining a copy\r\n"
+		JLabel lblLicense = new JLabel("MIT License");
+		lblLicense.setVerticalAlignment(SwingConstants.TOP);
+		lblLicense.setBounds(10, 110, 165, 15);
+		panel.add(lblLicense);
+		
+		JLabel lblDescription = new JLabel("<html>Permission is hereby granted, free of charge, to any person obtaining a copy\r\n"
 				+ "of this software and associated documentation files (the \"Software\"), to deal\r\n"
 				+ "in the Software without restriction, including without limitation the rights\r\n"
 				+ "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\r\n"
 				+ "copies of the Software, and to permit persons to whom the Software is\r\n"
 				+ "furnished to do so, subject to the following conditions:</html>");
-		lblCopyright_1.setVerticalAlignment(SwingConstants.TOP);
-		lblCopyright_1.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		lblCopyright_1.setBounds(10, 136, 364, 86);
-		panel.add(lblCopyright_1);
+		lblDescription.setVerticalAlignment(SwingConstants.TOP);
+		lblDescription.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblDescription.setBounds(10, 136, 364, 86);
+		panel.add(lblDescription);
 		
-		JLabel lblNewLabel_1 = new JLabel("<html>The above copyright notice and this permission notice shall be included in all\r\n"
+		JLabel lblSecondDescription = new JLabel("<html>The above copyright notice and this permission notice shall be included in all\r\n"
 				+ "copies or substantial portions of the Software.</html>");
-		lblNewLabel_1.setVerticalAlignment(SwingConstants.TOP);
-		lblNewLabel_1.setBounds(10, 233, 364, 28);
-		panel.add(lblNewLabel_1);
+		lblSecondDescription.setVerticalAlignment(SwingConstants.TOP);
+		lblSecondDescription.setBounds(10, 233, 364, 28);
+		panel.add(lblSecondDescription);
 		
-		JLabel lblNewLabel_1_1 = new JLabel("<html>THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\n"
+		JLabel lblThirdDescription = new JLabel("<html>THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\n"
 				+ "IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\n"
 				+ "FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\n"
 				+ "AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\n"
 				+ "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\n"
 				+ "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\r\n"
 				+ "SOFTWARE.</html>");
-		lblNewLabel_1_1.setVerticalAlignment(SwingConstants.TOP);
-		lblNewLabel_1_1.setBounds(10, 272, 364, 178);
-		panel.add(lblNewLabel_1_1);
+		lblThirdDescription.setVerticalAlignment(SwingConstants.TOP);
+		lblThirdDescription.setBounds(10, 272, 364, 178);
+		panel.add(lblThirdDescription);
 		
 		return panel;
 	}
