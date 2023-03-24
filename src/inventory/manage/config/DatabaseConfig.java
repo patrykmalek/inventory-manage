@@ -66,7 +66,7 @@ public class DatabaseConfig {
 	}
 	
 	public String getDefaultDatabasePath() {
-		return System.getProperty("user.dir") + "\\database\\computers.db";
+		return System.getProperty("user.dir") + "\\database\\database.db";
 	}
 	
 	public void createDefaultConfigFile() {
