@@ -147,15 +147,15 @@ public class DocumentServiceDAO {
 		getManagerDAO().getDocumentDAO().delete(document);
 		if(getController().getDocumentDictionaryTable() != null) getController().getDocumentDictionaryTable().updateTable(getManagerDAO().getDocumentDAO().getAll());
 		if(getController().getDeviceConnectedDocumentTablePanel() != null && document.getConnectedDocument() != null) getController().getDeviceConnectedDocumentTablePanel().updateTable(getManagerDAO().getDocumentDAO().getAllByDevice(document.getConnectedDocument().getDeviceID()));
-		String deletedFilePath = getController().getDatabaseConfig().getLocalDirectoryPath() + "deleted\\arch_" + getController().getFileNameFromFilePath(document.getDocumentPath());
+		String deletedFilePath = getController().getApplicationConfig().getLocalDirectoryPath() + "deleted\\arch_" + getController().getFileNameFromFilePath(document.getDocumentPath());
 		getController().copyFileWithDeleteSource(document.getDocumentPath(), deletedFilePath);
 	}
 	
 	public Document copyFileToServerDirectory(Document document) {
-		if(getController().isFileExist(getController().getDatabaseConfig().getLocalDirectoryPath() + getController().getFileNameFromFilePath(document.getDocumentPath()))) return document;
+		if(getController().isFileExist(getController().getApplicationConfig().getLocalDirectoryPath() + getController().getFileNameFromFilePath(document.getDocumentPath()))) return document;
 		String newDocumentName = System.currentTimeMillis() + "_" + document.getOriginalName();
-		String newDocumentPath = getController().getDatabaseConfig().getLocalDirectoryPath() + newDocumentName;
-		String newRelativeDocumentPath = getController().getDatabaseConfig().getDefaultRelativeLocalDirectoryPath() + newDocumentName;
+		String newDocumentPath = getController().getApplicationConfig().getLocalDirectoryPath() + newDocumentName;
+		String newRelativeDocumentPath = getController().getApplicationConfig().getDefaultRelativeLocalDirectoryPath() + newDocumentName;
 		getController().copyFile(document.getDocumentPath(), newDocumentPath);
 		document.setDocumentPath(newRelativeDocumentPath);
 		return document;

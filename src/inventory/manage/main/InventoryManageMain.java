@@ -7,7 +7,7 @@ import java.text.ParseException;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import inventory.manage.config.DatabaseConfig;
+import inventory.manage.config.ApplicationConfig;
 import inventory.manage.controller.Controller;
 import inventory.manage.provider.DatabaseProvider;
 import inventory.manage.view.MainFrame;
@@ -30,13 +30,13 @@ public class InventoryManageMain {
 			public void run() {
 				
 				
-				DatabaseConfig dbConfig = new DatabaseConfig();
+				ApplicationConfig appConfig = new ApplicationConfig();
 				
-				DatabaseProvider databaseProvider = new DatabaseProvider(dbConfig.getDatabaseURL());
+				DatabaseProvider databaseProvider = new DatabaseProvider(appConfig.getDatabaseURL());
 				databaseProvider.connect();
 				
 				Controller controller = new Controller(databaseProvider);
-				controller.setDatabaseConfig(dbConfig);
+				controller.setApplicationConfig(appConfig);
 				controller.createFolderForFilesIfNotExist();
 				
 				MainFrame mainFrame = new MainFrame(controller);

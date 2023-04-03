@@ -15,12 +15,12 @@ import javax.swing.JFileChooser;
 
 import inventory.manage.exception.SystemOperationException;
 
-public class DatabaseConfig {
+public class ApplicationConfig {
 
 	private MyCipher cipher;
 	private String databasePath;
 	
-	public DatabaseConfig() {
+	public ApplicationConfig() {
 		try {
 			this.cipher = new MyCipher("kluczszyfrujacy", "123456789");
 			if(!isConfigFileExists()) createDefaultConfigFile();

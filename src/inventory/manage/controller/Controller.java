@@ -18,7 +18,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import inventory.manage.config.DatabaseConfig;
+import inventory.manage.config.ApplicationConfig;
 import inventory.manage.dao.ManagerDAO;
 import inventory.manage.exception.SystemOperationException;
 import inventory.manage.model.CommonFunctions;
@@ -105,7 +105,7 @@ public class Controller {
 
 	private Calendar calendar;
 	
-	private DatabaseConfig databaseConfig;
+	private ApplicationConfig applicationConfig;
 	
 	
 	public Controller(DatabaseProvider databaseProvider) {
@@ -174,23 +174,23 @@ public class Controller {
 	}
 	
 	public void updateDatabasePathInfo() {
-		this.getFooterPanel().updateDatabasePathInfo(getDatabaseConfig().getDatabasePath());
+		this.getFooterPanel().updateDatabasePathInfo(getApplicationConfig().getDatabasePath());
 	}
 	
 
 	public void updateConfigView() {
-		this.getConfigFrame().getDatabasePathField().setText(getDatabaseConfig().getDatabasePath());
+		this.getConfigFrame().getDatabasePathField().setText(getApplicationConfig().getDatabasePath());
 	}
 	
 	public void updateDatabasePath(String databasePath) {
-		this.getDatabaseConfig().setDatabasePathAndSaveToConfigFile(databasePath);
+		this.getApplicationConfig().setDatabasePathAndSaveToConfigFile(databasePath);
 		this.updateDatabasePathInfo();
 		this.createNewDatabaseProvider();	
 		this.getTabbedPanel().getTabbedPane().removeAll();
 	}
 	
 	private void createNewDatabaseProvider(){
-		DatabaseProvider databaseProvider = new DatabaseProvider(this.getDatabaseConfig().getDatabaseURL());
+		DatabaseProvider databaseProvider = new DatabaseProvider(this.getApplicationConfig().getDatabaseURL());
 		databaseProvider.connect();
 		this.setDatabaseProvider(databaseProvider);
 	}
@@ -438,12 +438,12 @@ public class Controller {
 		this.computerLicenseAssignedDetailsFrame = computerLicenseAssignedDetailsFrame;
 	}
 
-	public DatabaseConfig getDatabaseConfig() {
-		return databaseConfig;
+	public ApplicationConfig getApplicationConfig() {
+		return applicationConfig;
 	}
 
-	public void setDatabaseConfig(DatabaseConfig databaseConfig) {
-		this.databaseConfig = databaseConfig;
+	public void setApplicationConfig(ApplicationConfig applicationConfig) {
+		this.applicationConfig = applicationConfig;
 	}
 
 	public void setFooterPanel(FooterPanel footerPanel) {
@@ -550,7 +550,7 @@ public class Controller {
 	}
 	
 	public void createFolderForFilesIfNotExist() {
-		String directoryName = getDatabaseConfig().getLocalDirectoryPath() + "deleted";
+		String directoryName = getApplicationConfig().getLocalDirectoryPath() + "deleted";
 		 File directory = new File(directoryName);
 		    if (! directory.exists()){
 		        directory.mkdirs();
