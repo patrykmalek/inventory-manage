@@ -167,8 +167,11 @@ public class DatabaseConfig {
 	}
 
 	public String getLocalDirectoryPath() {
-		return System.getProperty("user.dir") + "\\files\\";
+		return System.getProperty("user.dir") + getDefaultRelativeLocalDirectoryPath();
 	}
 
+	public String getDefaultRelativeLocalDirectoryPath() {
+		return "\\files\\";
+	}
 
 }
