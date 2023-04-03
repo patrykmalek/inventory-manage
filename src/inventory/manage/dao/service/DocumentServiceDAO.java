@@ -153,9 +153,11 @@ public class DocumentServiceDAO {
 	
 	public Document copyFileToServerDirectory(Document document) {
 		if(getController().isFileExist(getController().getDatabaseConfig().getLocalDirectoryPath() + getController().getFileNameFromFilePath(document.getDocumentPath()))) return document;
-		String newDocumentPath = getController().getDatabaseConfig().getLocalDirectoryPath() + System.currentTimeMillis() + "_" + document.getOriginalName();
+		String newDocumentName = System.currentTimeMillis() + "_" + document.getOriginalName();
+		String newDocumentPath = getController().getDatabaseConfig().getLocalDirectoryPath() + newDocumentName;
+		String newRelativeDocumentPath = getController().getDatabaseConfig().getDefaultRelativeLocalDirectoryPath() + newDocumentName;
 		getController().copyFile(document.getDocumentPath(), newDocumentPath);
-		document.setDocumentPath(newDocumentPath);
+		document.setDocumentPath(newRelativeDocumentPath);
 		return document;
 	}
 	

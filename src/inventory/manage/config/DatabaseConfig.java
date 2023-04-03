@@ -62,11 +62,11 @@ public class DatabaseConfig {
 	}
 	
 	public String getConfigFilePath(){
-			return System.getProperty("user.dir") + "\\config_"+ getComputerName() +".dat";
+			return getAbsoluteApplicationPath() + "\\config_"+ getComputerName() +".dat";
 	}
 	
 	public String getDefaultDatabasePath() {
-		return System.getProperty("user.dir") + "\\database\\database.db";
+		return getAbsoluteApplicationPath() + "\\database\\database.db";
 	}
 	
 	public void createDefaultConfigFile() {
@@ -165,9 +165,13 @@ public class DatabaseConfig {
 	public void setDatabasePath(String databasePath) {
 		this.databasePath = databasePath;
 	}
+	
+	public String getAbsoluteApplicationPath() {
+		return System.getProperty("user.dir");
+	}
 
 	public String getLocalDirectoryPath() {
-		return System.getProperty("user.dir") + getDefaultRelativeLocalDirectoryPath();
+		return getAbsoluteApplicationPath() + getDefaultRelativeLocalDirectoryPath();
 	}
 
 	public String getDefaultRelativeLocalDirectoryPath() {
