@@ -200,7 +200,10 @@ public class DocumentDetailsFrame extends JDialog {
 		documentPathField.getButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String choosenFilePath = getController().openFileChooserAndGetPath();
-				if(choosenFilePath != "") documentPathField.addItem(choosenFilePath);	
+				if(choosenFilePath != "") documentPathField.addItem(choosenFilePath);
+				if(documentNameField.getText().isEmpty()) {
+					documentNameField.setText(getController().getFileNameFromFilePathWithoutExtension(choosenFilePath));
+				}
 			}
 		});
 

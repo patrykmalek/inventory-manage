@@ -500,6 +500,16 @@ public class Controller {
         return path.getFileName().toString();
 	}
 	
+	public String getFileNameFromFilePathWithoutExtension(String filePath) {
+        Path path = Paths.get(filePath);
+        String fileName = path.getFileName().toString();
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex > 0) {
+        	fileName = fileName.substring(0, dotIndex);
+        }
+        return fileName;
+	}
+	
 	public String getFolderPathFromFilePath(String filePath) {
         Path path = Paths.get(filePath);
   
