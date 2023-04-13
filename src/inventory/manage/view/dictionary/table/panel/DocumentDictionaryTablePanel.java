@@ -7,9 +7,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 
 import inventory.manage.controller.Controller;
 import inventory.manage.model.Document;
@@ -67,6 +70,10 @@ public class DocumentDictionaryTablePanel extends DictionaryTablePanel<Document>
 		for( Document document : documents){
 			addRowToTable(new Object[] {document.getDocumentID(), document.getDocumentName(), document.getOriginalName(), document.getDocumentPath(), document.getDocumentDate(), document.getAddedDate()});
 		}
+		List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+		int columnIndexToSort = 5;
+		sortKeys.add(new RowSorter.SortKey(columnIndexToSort, SortOrder.DESCENDING));
+		getTable().getRowSorter().setSortKeys(sortKeys);
 		resizeTable();
 	}
 
