@@ -101,7 +101,8 @@ public class DocumentServiceDAO {
 	public void showDocumentFile(int documentID) {	
 		if(!CommonFunctions.validateID(documentID)) return;
 		Document document = getManagerDAO().getDocumentDAO().get(documentID);
-		getController().openFileByFilePath(document.getDocumentPath());
+		String filePath = getController().getApplicationConfig().getAbsoluteApplicationPath() + document.getDocumentPath();
+		getController().openFileByFilePath(filePath);
 	}
 	
 	public void openAssignDocumentToDevice(Device device) {
@@ -136,7 +137,13 @@ public class DocumentServiceDAO {
 
 	public void updateDocument(Document document) {
 		Document oldDocument = getManagerDAO().getDocumentDAO().get(document.getDocumentID());
-		if(document.getDocumentPath() != oldDocument.getDocumentPath()) document = copyFileToServerDirectory(document);
+		if(document.getDocumentPath() != oldDocument.getDocumentPath()) {
+			document = copyFileToServerDirectory(document);
+			String deletedFilePath = getController().getApplicationConfig().getLocalDirectoryPath() + "deleted\\arch_" + getController().getFileNameFromFilePath(oldDocument.getDocumentPath());
+			String sourceFilePath = getController().getApplicationConfig().getAbsoluteApplicationPath() + oldDocument.getDocumentPath();
+			getController().copyFileWithDeleteSource(sourceFilePath, deletedFilePath);
+		}
+			
 		getManagerDAO().getDocumentDAO().update(document);
 		if(getController().getDocumentDictionaryTable() != null) getController().getDocumentDictionaryTable().updateTable(getManagerDAO().getDocumentDAO().getAll());
 		if(getController().getDeviceConnectedDocumentTablePanel() != null && document.getConnectedDocument() != null) getController().getDeviceConnectedDocumentTablePanel().updateTable(getManagerDAO().getDocumentDAO().getAllByDevice(document.getConnectedDocument().getDeviceID()));
@@ -148,7 +155,8 @@ public class DocumentServiceDAO {
 		if(getController().getDocumentDictionaryTable() != null) getController().getDocumentDictionaryTable().updateTable(getManagerDAO().getDocumentDAO().getAll());
 		if(getController().getDeviceConnectedDocumentTablePanel() != null && document.getConnectedDocument() != null) getController().getDeviceConnectedDocumentTablePanel().updateTable(getManagerDAO().getDocumentDAO().getAllByDevice(document.getConnectedDocument().getDeviceID()));
 		String deletedFilePath = getController().getApplicationConfig().getLocalDirectoryPath() + "deleted\\arch_" + getController().getFileNameFromFilePath(document.getDocumentPath());
-		getController().copyFileWithDeleteSource(document.getDocumentPath(), deletedFilePath);
+		String sourceFilePath = getController().getApplicationConfig().getAbsoluteApplicationPath() + document.getDocumentPath();
+		getController().copyFileWithDeleteSource(sourceFilePath, deletedFilePath);
 	}
 	
 	public Document copyFileToServerDirectory(Document document) {
