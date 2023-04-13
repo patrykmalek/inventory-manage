@@ -107,7 +107,7 @@ public class DocumentDictionaryTablePanel extends DictionaryTablePanel<Document>
 		getTable().addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					if(getParentWindow() == null) getController().getManagerDAO().getDocumentServiceDAO().openDocumentWindowToOnlyShowDetails(getIdFromTable());
+					getController().getManagerDAO().getDocumentServiceDAO().showDocumentFile(getIdFromTable());
 				}
 			}
 		});
