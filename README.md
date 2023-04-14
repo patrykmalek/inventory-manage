@@ -38,3 +38,10 @@
 ## Project Status
 
 Project is: _no longer being worked on_.
+
+## External Libraries
+
+The project uses the following external libraries:
+
+- [DJ-Raven/swing-jnafilechooser](https://github.com/DJ-Raven/swing-jnafilechooser)
+  - [steos/jnafilechooser](https://github.com/steos/jnafilechooser)

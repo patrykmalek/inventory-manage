@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -55,6 +54,7 @@ import inventory.manage.view.dictionary.table.panel.DocumentDictionaryTablePanel
 import inventory.manage.view.dictionary.table.panel.EmployeeDictionaryTablePanel;
 import inventory.manage.view.dictionary.table.panel.LicenseDictionaryTablePanel;
 import inventory.manage.view.dictionary.table.panel.SoftwareDictionaryTablePanel;
+import jnafilechooser.api.JnaFileChooser;
 
 public class Controller {
 
@@ -483,14 +483,13 @@ public class Controller {
 	
 	public String openFileChooserAndGetPath() {
 		String path = "";
-			JFileChooser file = new JFileChooser();
-		      file.setMultiSelectionEnabled(true);
-		      file.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		      file.setFileHidingEnabled(false);
-		      if (file.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-		         java.io.File f = file.getSelectedFile();
-		         path = f.getPath();
-		      }
+
+		JnaFileChooser fileChooser = new JnaFileChooser();
+		fileChooser.addFilter("All Files", "*");
+		if (fileChooser.showOpenDialog(null)) {
+			File file = fileChooser.getSelectedFile();
+			path = file.getPath();
+		}  
 			return path;
 	}
 	

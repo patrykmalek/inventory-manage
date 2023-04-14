@@ -7,6 +7,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import inventory.manage.controller.Controller;
+import jnafilechooser.api.JnaFileChooser;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,7 +18,6 @@ import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -92,16 +92,14 @@ public class ConfigFrame extends JDialog {
 	private void createEventListeners() {
 		
 		databaseChooserButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser file = new JFileChooser();
-				file.setCurrentDirectory(new File(databasePathField.getText()));
-			      file.setMultiSelectionEnabled(true);
-			      file.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-			      file.setFileHidingEnabled(false);
-			      if (file.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			         java.io.File f = file.getSelectedFile();
-			         databasePathField.setText(f.getPath());
-			      }
+			public void actionPerformed(ActionEvent e) {			      
+				JnaFileChooser fileChooser = new JnaFileChooser();
+				fileChooser.setCurrentDirectory(databasePathField.getText());
+				fileChooser.addFilter("SQLite Database", "db");
+				if (fileChooser.showOpenDialog(null)) {
+					File file = fileChooser.getSelectedFile();
+					databasePathField.setText(file.getPath());
+				} 
 			}
 		});
 		

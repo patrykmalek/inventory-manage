@@ -11,9 +11,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Properties;
 
-import javax.swing.JFileChooser;
-
 import inventory.manage.exception.SystemOperationException;
+import jnafilechooser.api.JnaFileChooser;
 
 public class ApplicationConfig {
 
@@ -33,16 +32,15 @@ public class ApplicationConfig {
 	public String getDatabasePath() {
 		
 		if(!isFileExits(databasePath)) {
-			JFileChooser file = new JFileChooser();
-		      file.setMultiSelectionEnabled(true);
-		      file.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		      file.setFileHidingEnabled(false);
-		      if (file.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-		         java.io.File f = file.getSelectedFile();
-		         setDatabasePathAndSaveToConfigFile(f.getPath());
-		      } else {
-		    	  System.exit(1);
-		      }
+			
+			JnaFileChooser fileChooser = new JnaFileChooser();
+			fileChooser.addFilter("SQLite Database", "db");
+			if (fileChooser.showOpenDialog(null)) {
+				File file = fileChooser.getSelectedFile();
+				setDatabasePathAndSaveToConfigFile(file.getPath());
+			} else {
+				System.exit(1);
+			}
 		}
 		
 		return databasePath;
