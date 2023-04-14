@@ -200,7 +200,7 @@ public class DocumentDetailsFrame extends JDialog {
 		documentPathField.getButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String choosenFilePath = getController().openFileChooserAndGetPath();
-				if(choosenFilePath != "") documentPathField.addItem(choosenFilePath);
+				if(!choosenFilePath.equals("")) documentPathField.addItem(choosenFilePath);
 				if(documentNameField.getText().isEmpty()) {
 					documentNameField.setText(getController().getFileNameFromFilePathWithoutExtension(choosenFilePath));
 				}
@@ -243,10 +243,11 @@ public class DocumentDetailsFrame extends JDialog {
 		} else {
 			document.setAddedDate(getTempDocument().getAddedDate());
 			document.setConnectedDocument(getTempDocument().getConnectedDocument());
-			document.setOriginalName(getTempDocument().getDocumentPath() != documentPathField.getItem() 
+			document.setOriginalName(!getTempDocument().getDocumentPath().equals(documentPathField.getItem()) 
 					? getController().getFileNameFromFilePath(documentPathField.getItem()) : getTempDocument().getOriginalName());
-			document.setDocumentPath(getTempDocument().getDocumentPath() != documentPathField.getItem() 
+			document.setDocumentPath(!getTempDocument().getDocumentPath().equals(documentPathField.getItem())
 					? documentPathField.getItem() : getTempDocument().getDocumentPath());
+			
 		}
 		
 		if(getController().getManagerDAO().getDocumentServiceDAO().checkIfDocumentAlreadyExists(document)) {

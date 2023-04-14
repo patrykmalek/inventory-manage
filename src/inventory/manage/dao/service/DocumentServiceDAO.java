@@ -137,7 +137,9 @@ public class DocumentServiceDAO {
 
 	public void updateDocument(Document document) {
 		Document oldDocument = getManagerDAO().getDocumentDAO().get(document.getDocumentID());
-		if(document.getDocumentPath() != oldDocument.getDocumentPath()) {
+		System.out.println(document.getOriginalName());
+		System.out.println(oldDocument.getOriginalName());
+		if(!document.getOriginalName().equals(oldDocument.getOriginalName())) {
 			document = copyFileToServerDirectory(document);
 			String deletedFilePath = getController().getApplicationConfig().getLocalDirectoryPath() + "deleted\\arch_" + getController().getFileNameFromFilePath(oldDocument.getDocumentPath());
 			String sourceFilePath = getController().getApplicationConfig().getAbsoluteApplicationPath() + oldDocument.getDocumentPath();
