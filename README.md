@@ -54,12 +54,14 @@ The project uses the following external libraries:
 
 > Adding new stuff
 
-https://github.com/patrykmalek/inventory-manage/assets/81641561/d45f0955-28df-489c-8b39-65ed704e0ab4
+https://github.com/patrykmalek/inventory-manage/assets/81641561/7c8b6e32-1211-468a-a710-a5f4b32cfbfb
 
 > Changing database
 
-https://github.com/patrykmalek/inventory-manage/assets/81641561/3967700a-b7c1-4fe4-9361-520ee7942512
+https://github.com/patrykmalek/inventory-manage/assets/81641561/21e6a12a-5a71-4a6b-8b89-1b1d80bb29d3
 
 > All tabs
 
-https://github.com/patrykmalek/inventory-manage/assets/81641561/c2c6c433-6b9e-4d74-b990-66e59c506d66
+https://github.com/patrykmalek/inventory-manage/assets/81641561/dd580668-f8e6-4d33-bd34-d7a39ba73894
+
+
