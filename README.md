@@ -4,9 +4,11 @@
 
 - [General Info](#general-information)
 - [Technologies Used](#technologies-used)
-- [Screenshots](#screenshots)
 - [Setup](#setup)
 - [Project Status](#project-status)
+- [External Libraries](#external-libraries)
+- [Screenshots](#screenshots)
+- [Demo Video](#demo-video)
 
 ## General Information
 
@@ -20,10 +22,6 @@
 
 - Java 11
 - SQLite 3.39.2
-
-## Screenshots
-
-<!-- ![Screenshot](./img/) -->
 
 ## Setup
 
@@ -46,12 +44,17 @@ The project uses the following external libraries:
 - [DJ-Raven/swing-jnafilechooser](https://github.com/DJ-Raven/swing-jnafilechooser)
   - [steos/jnafilechooser](https://github.com/steos/jnafilechooser)
 
+## Screenshots
+
+![Screenshot](./screenshots/dashboard.png)
+![Screenshot](./screenshots/device_details.png)
+![Screenshot](./screenshots/computer_device_editing.png)
+
 ## Demo Video
 
 > Adding new stuff
 
 https://github.com/patrykmalek/inventory-manage/assets/81641561/d45f0955-28df-489c-8b39-65ed704e0ab4
-
 
 > Changing database
 
@@ -60,4 +63,3 @@ https://github.com/patrykmalek/inventory-manage/assets/81641561/3967700a-b7c1-4f
 > All tabs
 
 https://github.com/patrykmalek/inventory-manage/assets/81641561/c2c6c433-6b9e-4d74-b990-66e59c506d66
-
