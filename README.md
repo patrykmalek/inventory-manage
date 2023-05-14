@@ -56,5 +56,7 @@ https://github.com/patrykmalek/inventory-manage/assets/81641561/d45f0955-28df-48
 https://github.com/patrykmalek/inventory-manage/assets/81641561/3967700a-b7c1-4fe4-9361-520ee7942512
 
 > All tabs
+
+
 https://github.com/patrykmalek/inventory-manage/assets/81641561/c2c6c433-6b9e-4d74-b990-66e59c506d66
 
