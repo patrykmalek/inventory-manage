@@ -12,5 +12,7 @@
 	<classpathentry kind="lib" path="jar/json-simple_1.1.jar"/>
 	<classpathentry kind="lib" path="jar/miglayout15-swing.jar"/>
 	<classpathentry kind="lib" path="jar/sqlite-jdbc-3.36.0.3.jar"/>
+	<classpathentry kind="lib" path="jar/jna-5.5.0.jar"/>
+	<classpathentry kind="lib" path="jar/swing-jnafilechooser.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
